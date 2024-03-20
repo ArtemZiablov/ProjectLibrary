@@ -2,7 +2,7 @@
 
 ## Contributors
 - [Sviatoslav Siatynia](https://github.com/SviatoslavSiatynia)
-- [Ziablov Artem](https://github.com/ArtemZiablov)
+- [Artem Ziablov](https://github.com/ArtemZiablov)
 - [Taras Buksha](github.com/JustGNUKen)
 
 ## Overview
