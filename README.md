@@ -48,4 +48,4 @@ Welcome to the Library Management System (LMS) Web App – a cutting-edge and us
    - View current reservations, borrowed books, and due dates.
 
 ## Database Schema
-[Link to Database Schema](https://lucid.app/lucidchart/c351f134-190c-49c9-a453-6661af0587d0/edit?invitationId=inv_f13879ff-954e-49fe-bdbd-5bcf5b8bb677)
+[Link to Database Schema](https://drive.google.com/file/d/1YT6wqWTHhum-XA3YA2S9TzZfJEGQWzvP/view?usp=sharing)
