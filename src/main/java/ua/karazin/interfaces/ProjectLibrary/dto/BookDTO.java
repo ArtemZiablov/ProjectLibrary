@@ -1,15 +1,6 @@
 package ua.karazin.interfaces.ProjectLibrary.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.*;
-import lombok.NonNull;
-import ua.karazin.interfaces.ProjectLibrary.models.Author;
-import ua.karazin.interfaces.ProjectLibrary.models.Translator;
-
-import java.util.List;
 
 public record BookDTO(
         @NotNull
@@ -36,24 +27,6 @@ public record BookDTO(
         String language,
 
         @NotBlank(message = "Book photo is required")
-        String bookPhoto,
-
-        @NonNull
-        @ManyToMany
-        @JoinTable(
-                name = "Author_of_the_book",
-                joinColumns = @JoinColumn(name = "isbn"),
-                inverseJoinColumns = @JoinColumn(name = "id")
-        )
-        List<AuthorDTO> authors,  /////////////////////////////////////
-
-        @NonNull
-        @ManyToMany
-        @JoinTable(
-                name = "Translator_of_the_book",
-                joinColumns = @JoinColumn(name = "isbn"),
-                inverseJoinColumns = @JoinColumn(name = "id")
-        )
-        List<TranslatorDTO> translators//////////////////////////////////////////////////////////////////
+        String bookPhoto
         ) {
 }

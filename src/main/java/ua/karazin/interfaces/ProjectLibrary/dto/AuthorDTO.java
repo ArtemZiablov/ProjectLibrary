@@ -1,17 +1,12 @@
 package ua.karazin.interfaces.ProjectLibrary.dto;
 
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NonNull;
-import ua.karazin.interfaces.ProjectLibrary.models.Book;
 
 import java.util.Date;
-import java.util.List;
 
 public record AuthorDTO(
         @NotBlank(message = "Full name is required")

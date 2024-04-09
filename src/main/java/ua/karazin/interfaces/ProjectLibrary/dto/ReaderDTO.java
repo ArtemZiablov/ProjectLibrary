@@ -1,10 +1,8 @@
 package ua.karazin.interfaces.ProjectLibrary.dto;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.NonNull;
 
 public record ReaderDTO(
         @NotBlank(message = "Full name is required")
