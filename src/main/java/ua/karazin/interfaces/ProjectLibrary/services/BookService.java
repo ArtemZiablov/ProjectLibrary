@@ -10,6 +10,7 @@ import ua.karazin.interfaces.ProjectLibrary.dto.TranslatorDTO;
 import ua.karazin.interfaces.ProjectLibrary.models.*;
 import ua.karazin.interfaces.ProjectLibrary.repositories.BookRepo;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +23,8 @@ public class BookService {
     private final BookRepo bookRepo;
     private final BookCopyService bookCopyService;
     private final AuthorService authorService;
+    private final TranslatorService translatorService;
+    private final GenreService genreService;
     //private final BookMapper bookMapper;
 
     @Transactional
@@ -29,12 +32,26 @@ public class BookService {
         Book book = mapToBook(bookToAddDTO);
         bookRepo.save(book);
         assignBookToAuthors(book);
+        assignBookToTranslators(book);
+        assignBookToGenres(book);
         bookCopyService.addBookCopies(new BookCopy(book.getIsbn(), "free"), bookToAddDTO.copiesAmount());
     }
 
     private void assignBookToAuthors(Book book) {
         for(Author author : book.getAuthors()){
             author.getBooks().add(book);
+        }
+    }
+
+    private void assignBookToTranslators(Book book) {
+        for(Translator translator : book.getTranslators()){
+            translator.getBooks().add(book);
+        }
+    }
+
+    private void assignBookToGenres(Book book) {
+        for(Genre genre : book.getGenres()){
+            genre.getBooks().add(book);
         }
     }
 
@@ -71,8 +88,7 @@ public class BookService {
                         author.setFullName(authorDTO.fullName());
                         author.setNationality(authorDTO.nationality());
                         author.setDateOfBirth(authorDTO.dateOfBirth());
-                        author.setBooks(Collections.emptyList()); // ???????
-
+                        author.setBooks(new ArrayList<>());
                         authorService.AddAuthor(author);  // TODO
 
                         return author;
@@ -87,26 +103,42 @@ public class BookService {
         }
         return translatorDTOs.stream()
                 .map(translatorDTO -> {
-                    Translator translator = new Translator();
-                    // Assuming you have methods to set properties of Translator from TranslatorDTO
-                    //translator.setName(translatorDTO.getName());
-                    // Set other properties
-                    return translator;
+                    var optionalTranslator = translatorService.findTranslatorByFullName(translatorDTO.fullName());
+
+                    if (optionalTranslator.isPresent()){
+                        return optionalTranslator.get();
+                    } else {
+                        Translator translator = new Translator();
+
+                        translator.setFullName(translatorDTO.fullName());
+                        translator.setBooks(new ArrayList<>());
+                        translatorService.addTranslator(translator);
+
+                        return translator;
+                    }
                 })
                 .collect(Collectors.toList());
     }
 
-    protected List<Genre> mapToGenres(List<GenreDTO> authorDTOs) {
-        if (authorDTOs == null) {
+    protected List<Genre> mapToGenres(List<GenreDTO> genreDTOS) {
+        if (genreDTOS == null) {
             return Collections.emptyList(); // Вернуть пустой список
         }
-        return authorDTOs.stream()
-                .map(authorDTO -> {
-                    Genre genre = new Genre();
-                    // Assuming you have methods to set properties of Author from AuthorDTO
-                    //author.setName(authorDTO.getName());
-                    // Set other properties
-                    return genre;
+        return genreDTOS.stream()
+                .map(genreDTO -> {
+                    var optionalGenre = genreService.findGenreByName(genreDTO.genreName());
+
+                    if (optionalGenre.isPresent()){
+                        return optionalGenre.get();
+                    } else {
+                        Genre genre = new Genre();
+
+                        genre.setGenreName(genreDTO.genreName());
+                        genre.setBooks(new ArrayList<>());
+                        genreService.addGenre(genre);
+
+                        return genre;
+                    }
                 })
                 .collect(Collectors.toList());
     }

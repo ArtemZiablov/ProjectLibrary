@@ -27,10 +27,9 @@ public class BookController {
     @PostMapping("/add-book")
     public ResponseEntity<HttpStatus> addBook(@RequestBody @Valid BookToAddDTO bookToAddDTO,
                                               BindingResult bindingResult) {
-        System.out.println(bookToAddDTO);
+        System.out.println(bookToAddDTO.toString());
         //Book bookToAdd = convertToBook(bookToAddDTO);
         /*bookValidator.validate(bookToAdd, bindingResult);*/
-        //System.out.println(bookToAdd);
 
         if (bindingResult.hasErrors()) {
             returnErrorsToClient(bindingResult);

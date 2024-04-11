@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "Book_copies")
+@Table(name = "Book_copy")
 @Getter @Setter @NoArgsConstructor @RequiredArgsConstructor
 public class BookCopy {
 

@@ -15,7 +15,11 @@ public class BookCopyService {
     @Transactional
     public void addBookCopies(BookCopy bookCopy, int amount){
         for(int i = 0; i<amount; i++) {
-            bookCopyRepo.save(bookCopy);
+            BookCopy newBookCopy = new BookCopy();
+            newBookCopy.setIsbn(bookCopy.getIsbn());
+            newBookCopy.setStatus(bookCopy.getStatus());
+
+            bookCopyRepo.save(newBookCopy);
         }
     }
 }
