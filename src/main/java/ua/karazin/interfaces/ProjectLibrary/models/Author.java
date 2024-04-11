@@ -14,9 +14,9 @@ import java.util.List;
 public class Author {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "author_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int authorId;
 
     @Column(name = "full_name")
     @NotBlank(message = "Full name is required")

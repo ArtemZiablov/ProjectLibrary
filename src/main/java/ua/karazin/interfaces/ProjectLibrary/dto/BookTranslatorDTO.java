@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record BookTranslatorDTO(
         @NotNull
-        BookDTO book,
+        BookToAddDTO book,
 
         @NotNull
         TranslatorDTO translator

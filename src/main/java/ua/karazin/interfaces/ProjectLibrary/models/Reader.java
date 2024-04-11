@@ -14,7 +14,7 @@ import java.util.List;
 @ToString(exclude = {"bookCopies"})
 public class Reader {
     @Id
-    @Column(name = "id")
+    @Column(name = "reader_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 

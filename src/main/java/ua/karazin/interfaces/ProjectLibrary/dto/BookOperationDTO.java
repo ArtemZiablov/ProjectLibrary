@@ -24,6 +24,6 @@ public record BookOperationDTO(
         ReaderDTO reader,
 
         @NotNull
-        BookDTO book
+        BookToAddDTO book
 ) {
 }

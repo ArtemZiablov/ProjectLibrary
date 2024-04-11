@@ -13,6 +13,7 @@ public class Librarian {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "librarian_id")
     private int id;
 
     @Column(name = "full_name", nullable = false, length = 100)

@@ -2,7 +2,9 @@ package ua.karazin.interfaces.ProjectLibrary.dto;
 
 import jakarta.validation.constraints.*;
 
-public record BookDTO(
+import java.util.List;
+
+public record BookToAddDTO(
         @NotNull
         Integer isbn,
 
@@ -27,6 +29,19 @@ public record BookDTO(
         String language,
 
         @NotBlank(message = "Book photo is required")
-        String bookPhoto
+        String bookPhoto,
+
+        @NotNull
+        Integer copiesAmount,
+
+        // not null, because folk books might appear
+        List<AuthorDTO> authors,
+
+        // not null, because it can be an original text
+        List<TranslatorDTO> translators,
+
+        @NotNull
+        List<GenreDTO> genres
+
         ) {
 }

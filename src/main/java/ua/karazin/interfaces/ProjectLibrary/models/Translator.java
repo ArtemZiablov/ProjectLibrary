@@ -13,7 +13,7 @@ import java.util.List;
 @ToString(exclude = {"books"})
 public class Translator {
     @Id
-    @Column(name = "id")
+    @Column(name = "translator_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
