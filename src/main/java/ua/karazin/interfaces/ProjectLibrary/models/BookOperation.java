@@ -12,6 +12,7 @@ import java.util.Date;
 public class BookOperation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "operation_id")
     private int id;
 
     @Column(name = "date_of_issuance")
@@ -27,17 +28,17 @@ public class BookOperation {
     private Date dateOfReturn;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "librarian_id", referencedColumnName = "librarian_id")
     @NonNull
     private Librarian librarian;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "reader_id", referencedColumnName = "reader_id")
     @NonNull
     private Reader reader;
 
     @ManyToOne
-    @JoinColumn(name = "isbn")
+    @JoinColumn(name = "copy_id", referencedColumnName = "copy_id")
     @NonNull
-    private Book book;
+    private BookCopy bookCopy;
 }

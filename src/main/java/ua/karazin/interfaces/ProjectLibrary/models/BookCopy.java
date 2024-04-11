@@ -17,7 +17,12 @@ public class BookCopy {
     @NonNull
     private Integer isbn;
 
+
+    @Column(name = "status", nullable = false)
+    @NonNull
+    private String status;
+
     @ManyToOne
-    @JoinColumn(name = "reader_id", referencedColumnName = "id")
+    @JoinColumn(name = "reader_id", referencedColumnName = "reader_id")
     private Reader reader;
 }

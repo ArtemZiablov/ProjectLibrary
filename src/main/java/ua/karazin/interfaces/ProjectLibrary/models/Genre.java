@@ -13,8 +13,8 @@ import java.util.List;
 @ToString
 public class Genre {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "genre_id")
     private int id;
 
     @Column(name = "genre_name")

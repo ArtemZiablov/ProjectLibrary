@@ -44,7 +44,7 @@ public class Book {
     @NonNull
     private String annotation;
 
-    @Column(name = "annotation")
+    @Column(name = "language")
     @NotBlank(message = "Language is required")
     @NonNull
     private String language;
@@ -59,7 +59,7 @@ public class Book {
     @JoinTable(
             name = "Author_of_the_book",
             joinColumns = @JoinColumn(name = "isbn"),
-            inverseJoinColumns = @JoinColumn(name = "id")
+            inverseJoinColumns = @JoinColumn(name = "author_id")
     )
     private List<Author> authors;
 
@@ -68,7 +68,7 @@ public class Book {
     @JoinTable(
             name = "Translator_of_the_book",
             joinColumns = @JoinColumn(name = "isbn"),
-            inverseJoinColumns = @JoinColumn(name = "id")
+            inverseJoinColumns = @JoinColumn(name = "translator_id")
     )
     private List<Translator> translators;
 
@@ -77,7 +77,7 @@ public class Book {
     @JoinTable(
             name = "Genre_of_the_book",
             joinColumns = @JoinColumn(name = "isbn"),
-            inverseJoinColumns = @JoinColumn(name = "id")
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
     private List<Genre> genres;
 

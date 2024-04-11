@@ -15,6 +15,6 @@ public record BookReservationDTO(
         ReaderDTO reader,
 
         @NotNull
-        BookDTO book
+        BookToAddDTO book
 ) {
 }

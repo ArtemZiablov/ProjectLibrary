@@ -13,6 +13,7 @@ public class BookReservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "reservation_id")
     private int id;
 
     @Column(name = "date_of_reservation")
@@ -20,12 +21,12 @@ public class BookReservation {
     private Date dateOfReservation;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "reader_id", referencedColumnName = "reader_id")
     @NonNull
     private Reader reader;
 
     @ManyToOne
-    @JoinColumn(name = "isbn")
+    @JoinColumn(name = "isbn", referencedColumnName = "isbn")
     @NonNull
     private Book book;
 }
