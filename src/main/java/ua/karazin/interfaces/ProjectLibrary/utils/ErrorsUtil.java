@@ -2,7 +2,7 @@ package ua.karazin.interfaces.ProjectLibrary.utils;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import ua.karazin.interfaces.ProjectLibrary.models.Book;
+import ua.karazin.interfaces.ProjectLibrary.exceptions.BusinessException;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class ErrorsUtil {
                     .append(" - ").append(error.getDefaultMessage())
                     .append(";");
         }
-        throw new BookNotCreatedException(errorMsg.toString());
+        throw new BusinessException(errorMsg.toString());
 
     }
 }
