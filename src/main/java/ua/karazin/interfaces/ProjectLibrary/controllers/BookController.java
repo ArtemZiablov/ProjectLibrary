@@ -2,6 +2,7 @@ package ua.karazin.interfaces.ProjectLibrary.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -13,6 +14,7 @@ import ua.karazin.interfaces.ProjectLibrary.utils.BookMapper;
 
 import static ua.karazin.interfaces.ProjectLibrary.utils.ErrorsUtil.returnErrorsToClient;
 
+@Slf4j
 @RestController
 @RequestMapping("/book")
 @RequiredArgsConstructor
@@ -25,7 +27,7 @@ public class BookController {
     @PostMapping("/add_book")
     public ResponseEntity<HttpStatus> addBook(@RequestBody @Valid BookToAddDTO bookToAddDTO,
                                               BindingResult bindingResult) {
-        System.out.println(bookToAddDTO.toString());
+        log.info("Req to /add_book : {}", bookToAddDTO);
         //Book bookToAdd = convertToBook(bookToAddDTO);
         /*bookValidator.validate(bookToAdd, bindingResult);*/
 
@@ -33,8 +35,8 @@ public class BookController {
             returnErrorsToClient(bindingResult);
         }
 
-        Book book = bookMapper.mapToBook(bookToAddDTO);
-        bookService.addBook(book, bookToAddDTO.copiesAmount());
+        Book bookToAdd = bookMapper.mapToBook(bookToAddDTO);
+        bookService.addBook(bookToAdd, bookToAddDTO.copiesAmount());
 
         return ResponseEntity.ok(HttpStatus.OK);
     }

@@ -1,7 +1,11 @@
 package ua.karazin.interfaces.ProjectLibrary.models;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Optional;
+
 
 @Entity
 @Table(name = "Book_copy")
@@ -10,7 +14,7 @@ public class BookCopy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "copy_id")
+    @Column(name = "copyId")
     private int copyId;
 
     @Column(name = "isbn", nullable = false)
@@ -25,4 +29,8 @@ public class BookCopy {
     @ManyToOne
     @JoinColumn(name = "reader_id", referencedColumnName = "reader_id")
     private Reader reader;
+
+    public Optional<Reader> getReader() {
+        return Optional.ofNullable(reader);
+    }
 }

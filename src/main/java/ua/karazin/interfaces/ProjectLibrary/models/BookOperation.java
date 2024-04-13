@@ -38,7 +38,7 @@ public class BookOperation {
     private Reader reader;
 
     @ManyToOne
-    @JoinColumn(name = "copy_id", referencedColumnName = "copy_id")
+    @JoinColumn(name = "copyId", referencedColumnName = "copyId")
     @NonNull
     private BookCopy bookCopy;
 }
