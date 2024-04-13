@@ -2,10 +2,11 @@ package ua.karazin.interfaces.ProjectLibrary.dto;
 
 import jakarta.validation.constraints.NotNull;
 
-public record BookCopyDTO(
+public record BookCopiesToAddDTO(
         @NotNull
         Integer isbn,
 
-        ReaderDTO reader // ?????????????
+        @NotNull
+        Integer copiesAmount
 ) {
 }

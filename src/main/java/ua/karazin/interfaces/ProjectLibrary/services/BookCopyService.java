@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.karazin.interfaces.ProjectLibrary.models.BookCopy;
 import ua.karazin.interfaces.ProjectLibrary.repositories.BookCopyRepo;
+import ua.karazin.interfaces.ProjectLibrary.exceptions.BookNotRegisteredException;
 
 @Service
 @RequiredArgsConstructor
@@ -13,8 +14,8 @@ public class BookCopyService {
     private final BookCopyRepo bookCopyRepo;
 
     @Transactional
-    public void addBookCopies(BookCopy bookCopy, int amount){
-        for(int i = 0; i<amount; i++) {
+    public void addBookCopies(BookCopy bookCopy, int amount) {
+        for (int i = 0; i < amount; i++) {
             BookCopy newBookCopy = new BookCopy();
             newBookCopy.setIsbn(bookCopy.getIsbn());
             newBookCopy.setStatus(bookCopy.getStatus());
