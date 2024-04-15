@@ -83,4 +83,9 @@ public class Book {
 
     @OneToMany(mappedBy = "book")
     private List<BookReservation> bookReservations;
+
+    @OneToMany(mappedBy = "book")
+    private List<BookCopy> bookCopies;
+
+
 }

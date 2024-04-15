@@ -3,7 +3,7 @@ package ua.karazin.interfaces.ProjectLibrary.utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ua.karazin.interfaces.ProjectLibrary.dto.AuthorDTO;
-import ua.karazin.interfaces.ProjectLibrary.dto.BookToAddDTO;
+import ua.karazin.interfaces.ProjectLibrary.dto.BookDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.GenreDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.TranslatorDTO;
 import ua.karazin.interfaces.ProjectLibrary.models.Author;
@@ -26,7 +26,8 @@ public class BookMapper {
     private final TranslatorService translatorService;
     private final GenreService genreService;
 
-    public Book mapToBook(BookToAddDTO bookToAddDTO) {
+
+    public Book mapToBook(BookDTO bookToAddDTO) {
         Book book = new Book();
         book.setIsbn(bookToAddDTO.isbn());
         book.setTitle(bookToAddDTO.title());
@@ -99,7 +100,7 @@ public class BookMapper {
                 .map(genreDTO -> {
                     var optionalGenre = genreService.findGenreByName(genreDTO.genreName());
 
-                    if (optionalGenre.isPresent()){
+                    if (optionalGenre.isPresent()) {
                         return optionalGenre.get();
                     } else {
                         Genre genre = new Genre();
@@ -113,5 +114,4 @@ public class BookMapper {
                 })
                 .collect(Collectors.toList());
     }
-
 }

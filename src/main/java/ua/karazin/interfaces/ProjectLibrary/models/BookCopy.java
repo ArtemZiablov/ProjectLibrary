@@ -17,10 +17,14 @@ public class BookCopy {
     @Column(name = "copyId")
     private int copyId;
 
-    @Column(name = "isbn", nullable = false)
+    /*@Column(name = "isbn", nullable = false)
     @NonNull
-    private Integer isbn;
+    private Integer isbn;*/
 
+    @ManyToOne
+    @JoinColumn(name = "isbn", referencedColumnName = "isbn")
+    @NonNull
+    private Book book;
 
     @Column(name = "status", nullable = false)
     @NonNull
@@ -29,6 +33,7 @@ public class BookCopy {
     @ManyToOne
     @JoinColumn(name = "reader_id", referencedColumnName = "reader_id")
     private Reader reader;
+
 
     public Optional<Reader> getReader() {
         return Optional.ofNullable(reader);

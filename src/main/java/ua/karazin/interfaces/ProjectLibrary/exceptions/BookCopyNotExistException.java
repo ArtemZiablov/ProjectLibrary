@@ -1,7 +1,7 @@
 package ua.karazin.interfaces.ProjectLibrary.exceptions;
 
-public class BookCopyNotFoundException extends BusinessException {
-    public BookCopyNotFoundException() {
+public class BookCopyNotExistException extends BusinessException {
+    public BookCopyNotExistException() {
         super("There is no such book copy in the system!");
     }
 }
