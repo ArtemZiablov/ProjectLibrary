@@ -2,11 +2,11 @@ package ua.karazin.interfaces.ProjectLibrary.dto;
 
 import jakarta.validation.constraints.NotNull;
 
-public record BookGenreDTO(
+public record OperationWithBookCopyDTO(
         @NotNull
-        BookDTO book,
+        Integer readerId,
 
         @NotNull
-        GenreDTO genre
+        Integer bookCopyId
 ) {
 }
