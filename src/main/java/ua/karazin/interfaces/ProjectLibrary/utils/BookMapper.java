@@ -2,10 +2,7 @@ package ua.karazin.interfaces.ProjectLibrary.utils;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ua.karazin.interfaces.ProjectLibrary.dto.AuthorDTO;
-import ua.karazin.interfaces.ProjectLibrary.dto.BookDTO;
-import ua.karazin.interfaces.ProjectLibrary.dto.GenreDTO;
-import ua.karazin.interfaces.ProjectLibrary.dto.TranslatorDTO;
+import ua.karazin.interfaces.ProjectLibrary.dto.*;
 import ua.karazin.interfaces.ProjectLibrary.models.Author;
 import ua.karazin.interfaces.ProjectLibrary.models.Book;
 import ua.karazin.interfaces.ProjectLibrary.models.Genre;
@@ -26,6 +23,21 @@ public class BookMapper {
     private final TranslatorService translatorService;
     private final GenreService genreService;
 
+
+    public SearchedBooksDTO mapToSearchedBookDTO(List<Book> searchedBooks){
+        return new SearchedBooksDTO(searchedBooks.stream()
+                .map(book -> new SearchBookDTO(
+                        book.getIsbn(),
+                        book.getTitle(),
+                        book.getAuthors().stream().
+                                map(Author::getFullName).collect(Collectors.joining(", ")),
+                        book.getGenres().stream().
+                                map(Genre::getGenreName).collect(Collectors.joining(", ")),
+                        book.getBookPhoto()
+                ))
+                .toList()
+        );
+    }
 
     public Book mapToBook(BookDTO bookToAddDTO) {
         Book book = new Book();
@@ -114,4 +126,6 @@ public class BookMapper {
                 })
                 .collect(Collectors.toList());
     }
+
+
 }

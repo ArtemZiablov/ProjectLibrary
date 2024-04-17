@@ -7,6 +7,7 @@ import ua.karazin.interfaces.ProjectLibrary.exceptions.BookAlreadyRegisteredExce
 import ua.karazin.interfaces.ProjectLibrary.models.*;
 import ua.karazin.interfaces.ProjectLibrary.repositories.BookRepo;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,4 +54,16 @@ public class BookService {
         return bookRepo.findByIsbn(isbn);
     }
 
+    public List<Book> findBooksByTitleStartingWith(String titlePrefix){
+        return bookRepo.findBooksByTitleStartingWith(titlePrefix);
+    }
+
+
+   public List<Book> findBooksByAuthorsNameStartingWith(String authorsPrefix){
+        return bookRepo.findBooksByAuthorsStartingWith(authorsPrefix);
+    }
+
+    public List<Book> findBooksByGenreStartingWith(String genrePrefix){
+        return bookRepo.findBooksByGenreStartingWith(genrePrefix);
+    }
 }

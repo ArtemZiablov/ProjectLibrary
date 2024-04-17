@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "Genre")
 @Getter @Setter @NoArgsConstructor @RequiredArgsConstructor
-@ToString
+@ToString(exclude = {"books"})
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
