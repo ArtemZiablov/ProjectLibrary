@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "Book")
 @Getter @Setter @NoArgsConstructor @RequiredArgsConstructor
-@ToString
+@ToString(exclude = {"bookReservations"})
 public class Book {
 
     @Id
@@ -55,7 +55,7 @@ public class Book {
     private String bookPhoto;
 
     @NonNull
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "Author_of_the_book",
             joinColumns = @JoinColumn(name = "book_isbn"),
@@ -64,7 +64,7 @@ public class Book {
     private List<Author> authors;
 
     @NonNull
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "Translator_of_the_book",
             joinColumns = @JoinColumn(name = "book_isbn"),
@@ -73,7 +73,7 @@ public class Book {
     private List<Translator> translators;
 
     @NonNull
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "Genre_of_the_book",
             joinColumns = @JoinColumn(name = "book_isbn"),
@@ -81,10 +81,10 @@ public class Book {
     )
     private List<Genre> genres;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     private List<BookReservation> bookReservations;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     private List<BookCopy> bookCopies;
 
 
