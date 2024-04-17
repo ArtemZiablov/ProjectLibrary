@@ -21,7 +21,7 @@ import static ua.karazin.interfaces.ProjectLibrary.utils.ErrorsUtil.returnErrors
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/book_copy")
+@RequestMapping("/book-copy")
 public class BookCopyController {
     private final BookCopyService bookCopyService;
     private final BookService bookService;
@@ -29,7 +29,7 @@ public class BookCopyController {
     private final BookProperties bookProperties;
     private final LibrarianService librarianService;
 
-    @PostMapping("/add_book_copies")
+    @PostMapping("/add-book-copies")
     public ResponseEntity<HttpStatus> addBookCopies(@RequestBody @Valid BookCopiesToAddDTO bookCopiesToAddDTO,
                                               BindingResult bindingResult) {
 
@@ -49,7 +49,7 @@ public class BookCopyController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("/delete_book_copy")
+    @PostMapping("/delete-book-copy")
     public ResponseEntity<HttpStatus> deleteBookCopy(@RequestBody @Valid BookCopyToDeleteDTO bookCopyToDeleteDTO,
                                                      BindingResult bindingResult){
         log.info("Req to /delete_book_copy : {}", bookCopyToDeleteDTO);
@@ -64,7 +64,7 @@ public class BookCopyController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("/assign_book_copy")
+    @PostMapping("/assign-book-copy")
     public ResponseEntity<HttpStatus> assignBookCopy(@RequestBody @Valid OperationWithBookCopyDTO assignBookCopyDTO){
         log.info("Req to /assign_book_copy : {}", assignBookCopyDTO);
 
@@ -81,7 +81,7 @@ public class BookCopyController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("/release_book_copy")
+    @PostMapping("/release-book-copy")
     public ResponseEntity<HttpStatus> releaseBook(@RequestBody @Valid OperationWithBookCopyDTO releaseBookCopyDTO){
 
         log.info("Req to /release_book_copy : {}", releaseBookCopyDTO);
@@ -96,7 +96,7 @@ public class BookCopyController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/get_readers_books")
+    @GetMapping("/get-readers-books")
     public ReadersBookCopiesDTO getReadersBooks(@RequestParam(name = "readerId") Integer readerId){
         log.info("Req to /get_readers_books with readerID: {}", readerId);
 
