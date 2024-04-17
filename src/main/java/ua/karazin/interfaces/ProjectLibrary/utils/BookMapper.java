@@ -39,6 +39,32 @@ public class BookMapper {
         );
     }
 
+    public BookInfoDTO mapToBookInfoDTO(Book book){
+        return new BookInfoDTO(
+                book.getIsbn(),
+                book.getTitle(),
+                book.getYearOfPublishing(),
+                book.getNumberOfPages(),
+                book.getAnnotation(),
+                book.getLanguage(),
+                book.getBookPhoto(),
+                book.getAuthors().stream()
+                        .map(author -> new AuthorDTO(
+                                author.getFullName(),
+                                author.getDateOfBirth(),
+                                author.getNationality()
+                        )).toList(),
+                book.getTranslators().stream()
+                        .map(translator -> new TranslatorDTO(
+                                translator.getFullName()
+                        )).toList(),
+                book.getGenres().stream()
+                        .map(genre -> new GenreDTO(
+                                genre.getGenreName()
+                        )).toList()
+        );
+    }
+
     public Book mapToBook(BookDTO bookToAddDTO) {
         Book book = new Book();
         book.setIsbn(bookToAddDTO.isbn());

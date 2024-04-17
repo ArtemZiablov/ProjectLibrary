@@ -12,10 +12,7 @@ import java.util.Optional;
 public interface BookRepo extends JpaRepository<Book, Integer> {
     Optional<Book> findByIsbn(Integer isbn);
 
-
     List<Book> findBooksByTitleStartingWith(String titlePrefix);
-
-    // TODO еревірити цей метод List<Book> findBooksByTitleContaining(String titlePrefix);
 
     @Query("SELECT b FROM Book b JOIN b.authors a WHERE a.fullName LIKE CONCAT(:authorsPrefix, '%')")
     List<Book> findBooksByAuthorsStartingWith(String authorsPrefix);

@@ -9,7 +9,7 @@ import ua.karazin.interfaces.ProjectLibrary.services.BookOperationService;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/book_operation")
+@RequestMapping("/book-operation")
 public class BookOperationController {
 
     private final BookOperationService bookOperationService;
