@@ -9,26 +9,21 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.karazin.interfaces.ProjectLibrary.dto.BookDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.BookInfoDTO;
-import ua.karazin.interfaces.ProjectLibrary.dto.SearchBookDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.SearchedBooksDTO;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.NoSearchedParametersWereProvidedException;
-import ua.karazin.interfaces.ProjectLibrary.models.Author;
 import ua.karazin.interfaces.ProjectLibrary.models.Book;
-import ua.karazin.interfaces.ProjectLibrary.models.Genre;
 import ua.karazin.interfaces.ProjectLibrary.services.BookService;
 import ua.karazin.interfaces.ProjectLibrary.utils.BookMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static ua.karazin.interfaces.ProjectLibrary.utils.ErrorsUtil.returnErrorsToClient;
 
-@Slf4j
-@RestController
-@RequestMapping("/book")
+@Slf4j(topic = "BookController")
 @RequiredArgsConstructor
+@RequestMapping("/book")
+@RestController
 public class BookController {
 
     private final BookService bookService;
@@ -37,7 +32,7 @@ public class BookController {
     @PostMapping("/add-book")
     public ResponseEntity<HttpStatus> addBook(@RequestBody @Valid BookDTO bookToAddDTO,
                                               BindingResult bindingResult) {
-        log.info("Req to /add_book : {}", bookToAddDTO);
+        log.info("Req to /book/add_book : {}", bookToAddDTO);
 
         if (bindingResult.hasErrors())
             returnErrorsToClient(bindingResult);
@@ -55,25 +50,24 @@ public class BookController {
 
         List<Book> res;
         if (title.isPresent() && title.get().trim().length() >= 4) {
-            log.info("Req to /search?title={}", title);
+            log.info("Req to /book/search?title={}", title);
             res = bookService.findBooksByTitleStartingWith(title.get().trim());
-            return bookMapper.mapToSearchedBookDTO(res);
         } else if (author.isPresent() && author.get().trim().length() >= 4) {
-            log.info("Req to /search?author={}", author);
+            log.info("Req to /book/search?author={}", author);
             res = bookService.findBooksByAuthorsNameStartingWith(author.get().trim());
-            return bookMapper.mapToSearchedBookDTO(res);
         } else if (genre.isPresent() && genre.get().trim().length() >= 4) {
-            log.info("Req to /search?genre={}", genre);
+            log.info("Req to /book/search?genre={}", genre);
             res = bookService.findBooksByGenreStartingWith(genre.get().trim());
-            return bookMapper.mapToSearchedBookDTO(res);
         } else {
             throw new NoSearchedParametersWereProvidedException();
         }
+
+        return bookMapper.mapToSearchedBookDTO(res);
     }
 
     @GetMapping("/get-book-by-isbn")
-    public BookInfoDTO getBookByIsbn(@RequestParam(value = "isbn") Optional<Integer> isbn) {
-        log.info("Req to /get-book-by-isbn?isbn={}", isbn);
+    public BookInfoDTO viewBookInfo(@RequestParam(value = "isbn") Optional<Integer> isbn) {
+        log.info("Req to /book/get-book-by-isbn?isbn={}", isbn);
         return isbn.flatMap(bookService::findBookByIsbn)
                 .map(bookMapper::mapToBookInfoDTO)
                 .orElseThrow(NoSearchedParametersWereProvidedException::new);

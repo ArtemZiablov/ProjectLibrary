@@ -18,7 +18,7 @@ import ua.karazin.interfaces.ProjectLibrary.services.ReaderService;
 
 import static ua.karazin.interfaces.ProjectLibrary.utils.ErrorsUtil.returnErrorsToClient;
 
-@Slf4j
+@Slf4j(topic = "BookCopyController")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/book-copy")
@@ -33,7 +33,7 @@ public class BookCopyController {
     public ResponseEntity<HttpStatus> addBookCopies(@RequestBody @Valid BookCopiesToAddDTO bookCopiesToAddDTO,
                                               BindingResult bindingResult) {
 
-        log.info("Req to /add_book_copies : {}", bookCopiesToAddDTO);
+        log.info("Req to /book-copy/add_book_copies : {}", bookCopiesToAddDTO);
 
         // TODO validate
 
@@ -52,7 +52,7 @@ public class BookCopyController {
     @PostMapping("/delete-book-copy")
     public ResponseEntity<HttpStatus> deleteBookCopy(@RequestBody @Valid BookCopyToDeleteDTO bookCopyToDeleteDTO,
                                                      BindingResult bindingResult){
-        log.info("Req to /delete_book_copy : {}", bookCopyToDeleteDTO);
+        log.info("Req to /book-copy/delete_book_copy : {}", bookCopyToDeleteDTO);
 
         // TODO validate
 
@@ -66,7 +66,7 @@ public class BookCopyController {
 
     @PostMapping("/assign-book-copy")
     public ResponseEntity<HttpStatus> assignBookCopy(@RequestBody @Valid OperationWithBookCopyDTO assignBookCopyDTO){
-        log.info("Req to /assign_book_copy : {}", assignBookCopyDTO);
+        log.info("Req to /book-copy/assign_book_copy : {}", assignBookCopyDTO);
 
         var reader = readerService.findReaderById(assignBookCopyDTO.readerId());
         var bookCopy = bookCopyService.findBookCopyByCopyId(assignBookCopyDTO.bookCopyId());
@@ -84,7 +84,7 @@ public class BookCopyController {
     @PostMapping("/release-book-copy")
     public ResponseEntity<HttpStatus> releaseBook(@RequestBody @Valid OperationWithBookCopyDTO releaseBookCopyDTO){
 
-        log.info("Req to /release_book_copy : {}", releaseBookCopyDTO);
+        log.info("Req to /book-copy/release_book_copy : {}", releaseBookCopyDTO);
 
         var reader = readerService.findReaderById(releaseBookCopyDTO.readerId());
         var bookCopy = bookCopyService.findBookCopyByCopyId(releaseBookCopyDTO.bookCopyId());
@@ -98,7 +98,7 @@ public class BookCopyController {
 
     @GetMapping("/get-readers-books")
     public ReadersBookCopiesDTO getReadersBooks(@RequestParam(name = "readerId") Integer readerId){
-        log.info("Req to /get_readers_books with readerID: {}", readerId);
+        log.info("Req to /book-copy/get_readers_books with readerID: {}", readerId);
 
         var books = bookCopyService.getReadersBookCopies(readerId);
 

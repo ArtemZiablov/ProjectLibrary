@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ua.karazin.interfaces.ProjectLibrary.services.BookOperationService;
 
 
-@Slf4j
+@Slf4j(topic = "BookOperationController")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/book-operation")
