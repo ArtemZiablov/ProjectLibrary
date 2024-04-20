@@ -19,7 +19,8 @@ public class ErrorControllerAdvice {
             ReaderIsDebtorException.class,
             AssignBookLimitOutOfBoundsException.class,
             BookNotReturnedFromReaderException.class,
-            NoSearchedParametersWereProvidedException.class
+            NoSearchedParametersWereProvidedException.class,
+            ReadersNotFoundException.class
     })
     ErrorDTO notAcceptableExceptionHandler(BusinessException ex){
         return new ErrorDTO(ex.getMessage());
