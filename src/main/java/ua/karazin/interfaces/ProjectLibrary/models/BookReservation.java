@@ -18,6 +18,7 @@ public class BookReservation {
 
     @Column(name = "date_of_reservation")
     @Temporal(TemporalType.TIMESTAMP)
+    @NonNull
     private Date dateOfReservation;
 
     @ManyToOne
@@ -26,7 +27,7 @@ public class BookReservation {
     private Reader reader;
 
     @ManyToOne
-    @JoinColumn(name = "isbn", referencedColumnName = "isbn")
+    @JoinColumn(name = "book_isbn", referencedColumnName = "isbn")
     @NonNull
     private Book book;
 }

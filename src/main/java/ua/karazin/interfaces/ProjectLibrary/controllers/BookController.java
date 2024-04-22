@@ -8,11 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.karazin.interfaces.ProjectLibrary.dto.BookDTO;
-import ua.karazin.interfaces.ProjectLibrary.dto.BookInfoDTO;
+import ua.karazin.interfaces.ProjectLibrary.dto.BooksInfoDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.SearchedBooksDTO;
-import ua.karazin.interfaces.ProjectLibrary.exceptions.NoSearchedParametersWereProvidedException;
+import ua.karazin.interfaces.ProjectLibrary.exceptions.NoRequestedParametersWereProvidedException;
+import ua.karazin.interfaces.ProjectLibrary.exceptions.ReaderIsDebtorException;
+import ua.karazin.interfaces.ProjectLibrary.exceptions.ReaderNotExistException;
 import ua.karazin.interfaces.ProjectLibrary.models.Book;
+import ua.karazin.interfaces.ProjectLibrary.services.BookReservationService;
 import ua.karazin.interfaces.ProjectLibrary.services.BookService;
+import ua.karazin.interfaces.ProjectLibrary.services.ReaderService;
 import ua.karazin.interfaces.ProjectLibrary.utils.BookMapper;
 
 import java.util.List;
@@ -59,19 +63,19 @@ public class BookController {
             log.info("Req to /book/search?genre={}", genre);
             res = bookService.findBooksByGenreStartingWith(genre.get().trim());
         } else {
-            throw new NoSearchedParametersWereProvidedException();
+            throw new NoRequestedParametersWereProvidedException();
         }
 
         return bookMapper.mapToSearchedBookDTO(res);
     }
 
-    @GetMapping("/get-book-by-isbn")
-    public BookInfoDTO viewBookInfo(@RequestParam(value = "isbn") Optional<Integer> isbn) {
+    @GetMapping("/view-info")
+    public BooksInfoDTO viewBookInfo(@RequestParam(value = "isbn") Optional<Integer> isbn) {
         log.info("Req to /book/get-book-by-isbn?isbn={}", isbn);
         return isbn.flatMap(bookService::findBookByIsbn)
                 .map(bookMapper::mapToBookInfoDTO)
-                .orElseThrow(NoSearchedParametersWereProvidedException::new);
+                .orElseThrow(NoRequestedParametersWereProvidedException::new);
     }
 
-    // TODO: reserve-book
+
 }

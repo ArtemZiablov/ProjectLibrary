@@ -10,5 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface BookOperationRepo extends JpaRepository<BookOperation, Integer> {
-    Optional<BookOperation> findBookOperationByBookCopyAndReader(BookCopy bookCopy, Reader reader);
+
+    Optional<BookOperation> findBookOperationByBookCopyAndReaderAndDateOfReturnIsNull(BookCopy bookCopy, Reader reader);
 }

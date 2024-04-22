@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.BookAlreadyRegisteredException;
+import ua.karazin.interfaces.ProjectLibrary.exceptions.ReaderNotExistException;
 import ua.karazin.interfaces.ProjectLibrary.models.*;
 import ua.karazin.interfaces.ProjectLibrary.repositories.BookRepo;
 
@@ -17,7 +18,8 @@ public class BookService {
 
     private final BookRepo bookRepo;
     private final BookCopyService bookCopyService;
-
+    private final BookOperationService bookOperationService;
+    private final ReaderService readerService;
 
     @Transactional
     public void addBook(Book book, int copiesAmount) {
@@ -66,4 +68,16 @@ public class BookService {
     public List<Book> findBooksByGenreStartingWith(String genrePrefix){
         return bookRepo.findBooksByGenreStartingWith(genrePrefix);
     }
+
+    /*public void reserveBook(Reader reader, Integer isbn) {
+
+        List<BookCopy> bookCopies = bookCopyService.findBookCopiesByIsbnAndStatus(isbn, "free");
+        if(!bookCopies.isEmpty()){
+            var bookCopy = bookCopies.stream().findFirst().get();
+            bookCopy.setReader(reader);
+            bookCopy.setStatus("reserved");
+        } else {
+            // TODO
+        }
+    }*/
 }

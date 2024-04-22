@@ -100,9 +100,7 @@ public class BookCopyController {
     public ReadersBookCopiesDTO getReadersBooks(@RequestParam(name = "readerId") Integer readerId){
         log.info("Req to /book-copy/get_readers_books with readerID: {}", readerId);
 
-        var books = bookCopyService.getReadersBookCopies(readerId);
-
-        return books;
+        return bookCopyService.getReadersBookCopies(readerId);
     }
 
 }
