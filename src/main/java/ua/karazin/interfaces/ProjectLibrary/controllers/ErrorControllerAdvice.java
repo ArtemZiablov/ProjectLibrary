@@ -19,8 +19,10 @@ public class ErrorControllerAdvice {
             ReaderIsDebtorException.class,
             AssignBookLimitOutOfBoundsException.class,
             BookNotReturnedFromReaderException.class,
-            NoSearchedParametersWereProvidedException.class,
-            ReadersNotFoundException.class
+            NoRequestedParametersWereProvidedException.class,
+            ReadersNotFoundException.class,
+            BookIsReservedException.class,
+            OpenBookOperationAlreadyExists.class
     })
     ErrorDTO notAcceptableExceptionHandler(BusinessException ex){
         return new ErrorDTO(ex.getMessage());

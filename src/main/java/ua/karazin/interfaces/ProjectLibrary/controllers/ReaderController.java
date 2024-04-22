@@ -6,10 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ua.karazin.interfaces.ProjectLibrary.dto.ReadersInfoDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.SearchReaderDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.SearchedReadersDTO;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.ReadersNotFoundException;
+import ua.karazin.interfaces.ProjectLibrary.exceptions.ReaderNotExistException;
 import ua.karazin.interfaces.ProjectLibrary.models.Reader;
+import ua.karazin.interfaces.ProjectLibrary.services.BookCopyService;
 import ua.karazin.interfaces.ProjectLibrary.services.ReaderService;
 
 import java.util.List;
@@ -21,11 +24,21 @@ import java.util.Optional;
 @RestController
 public class ReaderController {
     private final ReaderService readerService;
+    private final BookCopyService bookCopyService;
 
-    /*@GetMapping("/viewInfo")
+    @GetMapping("/view-info")
     public ReadersInfoDTO viewReadersInfo(@RequestParam("id") Integer id){
 
-    }*/
+        return readerService.findReaderById(id).map(reader ->
+            new ReadersInfoDTO(
+                    reader.getId(),
+                    reader.getFullName(),
+                    reader.getPhoneNumber(),
+                    reader.getEmail(),
+                    bookCopyService.getReadersBookCopies(id)
+            )
+        ).orElseThrow(ReaderNotExistException::new);
+    }
 
     @GetMapping("/search")
     public SearchedReadersDTO findReaders(@RequestParam("name")     Optional<String> name,
@@ -57,6 +70,4 @@ public class ReaderController {
                 .map(SearchedReadersDTO::new)
                 .orElseThrow(ReadersNotFoundException::new);
     }
-
-
 }

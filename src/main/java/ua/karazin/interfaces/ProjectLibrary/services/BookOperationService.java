@@ -10,7 +10,6 @@ import ua.karazin.interfaces.ProjectLibrary.repositories.BookOperationRepo;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -50,13 +49,13 @@ public class BookOperationService {
     }
 
 
-    public Optional<BookOperation> findBookOperationByBookCopyAndReader(BookCopy bookCopy, Reader reader){
-        return bookOperationRepo.findBookOperationByBookCopyAndReader(bookCopy, reader);
+    public Optional<BookOperation> findBookOperationByBookCopyAndReaderAndDateOfReturnIsNull(BookCopy bookCopy, Reader reader){
+        return bookOperationRepo.findBookOperationByBookCopyAndReaderAndDateOfReturnIsNull(bookCopy, reader);
     }
 
     @Transactional
     public void releaseOperation(BookCopy bookCopy, Reader reader){
-        var operation = findBookOperationByBookCopyAndReader(bookCopy, reader);
+        var operation = findBookOperationByBookCopyAndReaderAndDateOfReturnIsNull(bookCopy, reader);
         if (operation.isEmpty())
             throw new BookOperationDoesntExistException();
         operation.get().setDateOfReturn(new Date());

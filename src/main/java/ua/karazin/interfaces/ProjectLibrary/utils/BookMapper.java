@@ -39,8 +39,8 @@ public class BookMapper {
         );
     }
 
-    public BookInfoDTO mapToBookInfoDTO(Book book){
-        return new BookInfoDTO(
+    public BooksInfoDTO mapToBookInfoDTO(Book book){
+        return new BooksInfoDTO(
                 book.getIsbn(),
                 book.getTitle(),
                 book.getYearOfPublishing(),

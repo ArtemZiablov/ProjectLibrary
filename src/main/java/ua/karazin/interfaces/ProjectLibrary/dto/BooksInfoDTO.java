@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*;
 
 import java.util.List;
 
-public record BookInfoDTO(
+public record BooksInfoDTO(
         @NotNull
         Integer isbn,
 
