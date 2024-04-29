@@ -2,12 +2,12 @@ package ua.karazin.interfaces.ProjectLibrary.dto;
 
 import java.util.Date;
 
-public record ReadersInfoDTO(
-        Integer readerId,
+public record RegisterReaderDTO(
         String fullName,
         Date dateOfBirth,
-        String phoneNumber,
         String email,
-        ReadersBookCopiesDTO readersBooks
-) {
+        String phoneNumber,
+        String password,
+        String photo
+        ) {
 }

@@ -1,6 +1,7 @@
 package ua.karazin.interfaces.ProjectLibrary.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ua.karazin.interfaces.ProjectLibrary.models.Reader;
 import ua.karazin.interfaces.ProjectLibrary.repositories.ReaderRepo;
@@ -13,8 +14,17 @@ import java.util.Optional;
 public class ReaderService {
     private final ReaderRepo readerRepo;
 
+    public void save(Reader reader) {
+        readerRepo.save(reader);
+    }
+
     public Optional<Reader> findReaderById(int readerId){
         return readerRepo.findById(readerId);
+    }
+
+    public Reader findByFullName(String username){
+        return readerRepo.findByFullName(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Reader with username " + username + " not found"));
     }
 
     public Optional<List<Reader>> findReadersByFullNameStartingWith(String fullName){

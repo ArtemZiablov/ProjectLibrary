@@ -1,29 +1,23 @@
 package ua.karazin.interfaces.ProjectLibrary.services;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.ReaderNotExistException;
+import ua.karazin.interfaces.ProjectLibrary.repositories.ReaderRepo;
+import ua.karazin.interfaces.ProjectLibrary.security.ReaderDetails;
 
-@Slf4j(topic = "CompositeUserDetailsService")
 @Service
 @RequiredArgsConstructor
-public class CompositeUserDetailsService implements UserDetailsService {
-
-
-    private final ReaderDetailsService readerDetailsService;
-
-    private final LibrarianDetailsService librarianDetailsService;
+public class ReaderDetailsService implements UserDetailsService {
+    private final ReaderRepo readerRepo;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        try {
-            return readerDetailsService.loadUserByUsername(username);
-        } catch (ReaderNotExistException e) {
-            return librarianDetailsService.loadUserByUsername(username);
-        }
+        return readerRepo.findByFullName(username)
+                .map(ReaderDetails::new)
+                .orElseThrow(ReaderNotExistException::new);
     }
 }

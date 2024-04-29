@@ -42,8 +42,7 @@ public class Librarian {
     private String email;
 
     @Column(name = "profile_photo", nullable = false, length = 300)
-    @NotBlank(message = "Profile photo URL is required")
-    @Size(max = 300, message = "Profile photo URL must be less than 300 characters")
+    @NonNull
     private String profilePhoto;
 }
 
