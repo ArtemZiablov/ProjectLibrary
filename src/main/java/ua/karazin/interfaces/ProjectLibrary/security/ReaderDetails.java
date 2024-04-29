@@ -1,4 +1,3 @@
-/*
 package ua.karazin.interfaces.ProjectLibrary.security;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -55,4 +54,3 @@ public class ReaderDetails implements UserDetails {
         return reader;
     }
 }
-*/

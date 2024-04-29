@@ -5,19 +5,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.karazin.interfaces.ProjectLibrary.dto.BookDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.BooksInfoDTO;
-import ua.karazin.interfaces.ProjectLibrary.dto.PhotoDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.SearchedBooksDTO;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.NoRequestedParametersWereProvidedException;
-import ua.karazin.interfaces.ProjectLibrary.exceptions.ReaderIsDebtorException;
-import ua.karazin.interfaces.ProjectLibrary.exceptions.ReaderNotExistException;
 import ua.karazin.interfaces.ProjectLibrary.models.Book;
-import ua.karazin.interfaces.ProjectLibrary.services.BookReservationService;
+import ua.karazin.interfaces.ProjectLibrary.security.LibrarianDetails;
+import ua.karazin.interfaces.ProjectLibrary.security.ReaderDetails;
 import ua.karazin.interfaces.ProjectLibrary.services.BookService;
-import ua.karazin.interfaces.ProjectLibrary.services.ReaderService;
 import ua.karazin.interfaces.ProjectLibrary.utils.BookMapper;
 
 import java.util.List;
@@ -53,6 +51,7 @@ public class BookController {
                                         @RequestParam(value = "author") Optional<String> author,
                                         @RequestParam(value = "genre") Optional<String> genre){
 
+
         List<Book> res;
         if (title.isPresent() && title.get().trim().length() >= 4) {
             log.info("Req to /book/search?title={}", title);
@@ -70,9 +69,21 @@ public class BookController {
         return bookMapper.mapToSearchedBookDTO(res);
     }
 
-    @CrossOrigin(origins = "http://localhost:3001")
+    //@CrossOrigin(origins = "http://localhost:3001")
     @GetMapping("/info")
-    public BooksInfoDTO viewBookInfo(@RequestParam(value = "isbn") Optional<Integer> isbn) {
+    public BooksInfoDTO viewBookInfo(@RequestParam(value = "isbn") Optional<Integer> isbn, Authentication authentication) {
+
+        if (authentication != null && authentication.getPrincipal() instanceof ReaderDetails readerDetails) {
+            String fullName = readerDetails.getUsername();/*.concat(readerDetails.getAuthorities().toString());//readerDetails.getReader().toString().concat("; role: ").concat(readerDetails.getAuthorities().toString());*/
+            log.info("Authenticated readers name: {}", fullName);
+        } else if(authentication != null && authentication.getPrincipal() instanceof LibrarianDetails librarianDetails) {
+            String fullName = librarianDetails.getUsername();
+            log.info("Authenticated librarians name: {}", fullName);
+        }
+
+        else {
+            log.info("Authentication principal is not an instance of ReaderDetails or is null");
+        }
         log.info("Req to /book/get-book-by-isbn?isbn={}", isbn);
         var res = isbn.flatMap(bookService::findBookByIsbn)
                 .map(bookMapper::mapToBookInfoDTO)

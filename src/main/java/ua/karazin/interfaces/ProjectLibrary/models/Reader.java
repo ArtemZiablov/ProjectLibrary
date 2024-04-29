@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -23,6 +24,11 @@ public class Reader {
     @Size(min = 1, max = 100, message = "Full name should be between 1 and 100 characters")
     @NonNull
     private String fullName;
+
+    @Column(name = "birth_date")
+    @Temporal(TemporalType.DATE)
+    @NonNull
+    private Date dateOfBirth;
 
     @Column(name = "password", nullable = false, length = 100)
     @NotBlank(message = "Password is required")
@@ -44,8 +50,7 @@ public class Reader {
     private String email;
 
     @Column(name = "profile_photo", length = 300)
-    @NotBlank(message = "Profile photo URL is required")
-    @Size(max = 300, message = "Profile photo URL must be less than 300 characters")
+    @NonNull
     private String profilePhoto;
 
     @Column(name = "debtor")
@@ -54,6 +59,6 @@ public class Reader {
     @OneToMany(mappedBy = "reader")
     private List<BookCopy> bookCopies;
 
-    @OneToMany(mappedBy = "reader")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "reader")
     private List<BookReservation> bookReservations;
 }

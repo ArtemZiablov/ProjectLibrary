@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface ReaderRepo extends JpaRepository<Reader, Integer> {
     Optional<Reader> findById(Integer readerId);
 
+    Optional<Reader> findByFullName(String name);
+
     Optional<List<Reader>> findReadersByFullNameStartingWith(String fullName);
 
     Optional<List<Reader>> findReaderById(Integer id);

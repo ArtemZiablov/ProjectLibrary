@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Slf4j(topic = "BookReservationController")
 @RequiredArgsConstructor
-@RequestMapping("/bookReservation")
+@RequestMapping("/book-reservation")
 @RestController
 public class BookReservationController {
     private final BookReservationService bookReservationService;

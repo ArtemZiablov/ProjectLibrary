@@ -26,13 +26,14 @@ public class ReaderController {
     private final ReaderService readerService;
     private final BookCopyService bookCopyService;
 
-    @GetMapping("/view-info")
+    @GetMapping("/info")
     public ReadersInfoDTO viewReadersInfo(@RequestParam("id") Integer id){
 
         return readerService.findReaderById(id).map(reader ->
             new ReadersInfoDTO(
                     reader.getId(),
                     reader.getFullName(),
+                    reader.getDateOfBirth(),
                     reader.getPhoneNumber(),
                     reader.getEmail(),
                     bookCopyService.getReadersBookCopies(id)
