@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.karazin.interfaces.ProjectLibrary.dto.BookDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.BooksInfoDTO;
+import ua.karazin.interfaces.ProjectLibrary.dto.PhotoDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.SearchedBooksDTO;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.NoRequestedParametersWereProvidedException;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.ReaderIsDebtorException;
@@ -33,7 +34,7 @@ public class BookController {
     private final BookService bookService;
     private final BookMapper bookMapper;
 
-    @PostMapping("/add-book")
+    @PostMapping("/add-book") // putMapping
     public ResponseEntity<HttpStatus> addBook(@RequestBody @Valid BookDTO bookToAddDTO,
                                               BindingResult bindingResult) {
         log.info("Req to /book/add_book : {}", bookToAddDTO);
@@ -69,13 +70,26 @@ public class BookController {
         return bookMapper.mapToSearchedBookDTO(res);
     }
 
-    @GetMapping("/view-info")
+    @CrossOrigin(origins = "http://localhost:3001")
+    @GetMapping("/info")
     public BooksInfoDTO viewBookInfo(@RequestParam(value = "isbn") Optional<Integer> isbn) {
         log.info("Req to /book/get-book-by-isbn?isbn={}", isbn);
-        return isbn.flatMap(bookService::findBookByIsbn)
+        var res = isbn.flatMap(bookService::findBookByIsbn)
                 .map(bookMapper::mapToBookInfoDTO)
                 .orElseThrow(NoRequestedParametersWereProvidedException::new);
+        log.info("Res: {}", res);
+        return res;
     }
-
+    /*
+    @GetMapping("/picture")
+    public PhotoDTO viewBookPicture(@RequestParam(value = "isbn") Optional<Integer> isbn) {
+        log.info("Req to /book/picture?isbn={}", isbn);
+        var res = isbn.flatMap(bookService::findBookByIsbn)
+                .map(book -> book.getBookPhoto())
+                .orElseThrow(NoRequestedParametersWereProvidedException::new);
+        PhotoDTO resDTO = new PhotoDTO(res);
+        log.info("Res: {}", resDTO);
+        return resDTO;
+    }*/
 
 }

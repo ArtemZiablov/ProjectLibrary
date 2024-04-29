@@ -22,7 +22,7 @@ public record BookDTO(
         Integer numberOfPages,
 
         @NotBlank(message = "Annotation is required")
-        @Size(min = 10, max = 1000, message = "Annotation should be between 10 and 1000 characters")
+        @Size(min = 10, max = 30000, message = "Annotation should be between 10 and 30000 characters")
         String annotation,
 
         @NotBlank(message = "Language is required")

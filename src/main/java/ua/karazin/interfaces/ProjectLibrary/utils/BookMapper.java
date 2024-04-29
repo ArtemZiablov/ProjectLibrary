@@ -49,19 +49,14 @@ public class BookMapper {
                 book.getLanguage(),
                 book.getBookPhoto(),
                 book.getAuthors().stream()
-                        .map(author -> new AuthorDTO(
-                                author.getFullName(),
-                                author.getDateOfBirth(),
-                                author.getNationality()
-                        )).toList(),
+                        .map(author -> author.getFullName()
+                        ).toList(),
                 book.getTranslators().stream()
-                        .map(translator -> new TranslatorDTO(
-                                translator.getFullName()
-                        )).toList(),
+                        .map(translator -> translator.getFullName()
+                        ).toList(),
                 book.getGenres().stream()
-                        .map(genre -> new GenreDTO(
-                                genre.getGenreName()
-                        )).toList()
+                        .map(genre -> genre.getGenreName()
+                        ).toList()
         );
     }
 
