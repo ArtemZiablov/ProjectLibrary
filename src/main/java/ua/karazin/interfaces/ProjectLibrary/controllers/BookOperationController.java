@@ -15,4 +15,8 @@ public class BookOperationController {
     private final BookOperationService bookOperationService;
 
     // TODO add endpoints for statistics functional...
+    /*@GetMapping("/statistics")
+    public StatisticsDTO getStatistics(){ // кількисть книг всього, кількість всього взятих книг
+
+    }*/
 }

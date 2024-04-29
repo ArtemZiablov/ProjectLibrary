@@ -31,11 +31,11 @@ public record BooksInfoDTO(
         @NotBlank(message = "Book photo is required")
         String bookPhoto,
 
-        List<AuthorDTO> authors,
+        List<String> authors,
 
-        List<TranslatorDTO> translators,
+        List<String> translators,
 
         @NotNull
-        List<GenreDTO> genres
+        List<String> genres
 ) {
 }

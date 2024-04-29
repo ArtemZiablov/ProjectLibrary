@@ -40,7 +40,7 @@ public class Book {
 
     @Column(name = "annotation")
     @NotBlank(message = "Annotation is required")
-    @Size(min = 10, max = 1000, message = "Annotation should be between 10 and 1000 characters")
+    @Size(min = 10, max = 30000, message = "Annotation should be between 10 and 10000 characters")
     @NonNull
     private String annotation;
 
