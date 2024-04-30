@@ -16,6 +16,8 @@ import ua.karazin.interfaces.ProjectLibrary.services.BookService;
 import ua.karazin.interfaces.ProjectLibrary.services.LibrarianService;
 import ua.karazin.interfaces.ProjectLibrary.services.ReaderService;
 
+import java.util.Optional;
+
 import static ua.karazin.interfaces.ProjectLibrary.utils.ErrorsUtil.returnErrorsToClient;
 
 @Slf4j(topic = "BookCopyController")
@@ -50,16 +52,13 @@ public class BookCopyController {
     }
 
     @PostMapping("/delete-book-copy")
-    public ResponseEntity<HttpStatus> deleteBookCopy(@RequestBody @Valid BookCopyToDeleteDTO bookCopyToDeleteDTO,
-                                                     BindingResult bindingResult){
-        log.info("Req to /book-copy/delete_book_copy : {}", bookCopyToDeleteDTO);
+    public ResponseEntity<HttpStatus> deleteBookCopy(@RequestParam("copyId") Optional<Integer> copyId){
+        log.info("Req to /book-copy/delete_book_copy : {}", copyId);
 
-        // TODO validate
-
-        if (bindingResult.hasErrors())
-            returnErrorsToClient(bindingResult);
-
-        bookCopyService.deleteBookCopy(bookCopyToDeleteDTO.copyId());
+        if(copyId.isPresent())
+            bookCopyService.deleteBookCopy(copyId.get());
+        else
+            throw new NoRequestedParametersWereProvidedException();
 
         return ResponseEntity.ok(HttpStatus.OK);
     }

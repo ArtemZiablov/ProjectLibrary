@@ -1,13 +1,16 @@
 package ua.karazin.interfaces.ProjectLibrary.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ua.karazin.interfaces.ProjectLibrary.dto.GetListBookDTO;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.BookAlreadyRegisteredException;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.ReaderNotExistException;
 import ua.karazin.interfaces.ProjectLibrary.models.*;
 import ua.karazin.interfaces.ProjectLibrary.repositories.BookRepo;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +29,7 @@ public class BookService {
         if (bookRepo.findByIsbn(book.getIsbn()).isPresent()){
             throw new BookAlreadyRegisteredException();
         }
+        book.setDateOfAdd(new Date());
         bookRepo.save(book);
         assignBookToAuthors(book);
         assignBookToTranslators(book);
@@ -69,15 +73,8 @@ public class BookService {
         return bookRepo.findBooksByGenreStartingWith(genrePrefix);
     }
 
-    /*public void reserveBook(Reader reader, Integer isbn) {
+    public List<Book> getNovelties(Integer amount) {
+        return bookRepo.findNovelties(PageRequest.of(0, amount)).getContent();
+    }
 
-        List<BookCopy> bookCopies = bookCopyService.findBookCopiesByIsbnAndStatus(isbn, "free");
-        if(!bookCopies.isEmpty()){
-            var bookCopy = bookCopies.stream().findFirst().get();
-            bookCopy.setReader(reader);
-            bookCopy.setStatus("reserved");
-        } else {
-            // TODO
-        }
-    }*/
 }

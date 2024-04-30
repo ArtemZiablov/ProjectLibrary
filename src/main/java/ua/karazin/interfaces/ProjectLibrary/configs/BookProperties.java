@@ -4,6 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("book")
 public record BookProperties(
-        int bookAssignAmount
+        int bookAssignAmount,
+        int noveltiesAmount
 ) {
 }

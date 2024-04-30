@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -53,6 +54,10 @@ public class Book {
     @NotBlank(message = "Book photo is required")
     @NonNull
     private String bookPhoto;
+
+    @Column(name = "date_of_add")
+    @Temporal(TemporalType.DATE)
+    private Date dateOfAdd;
 
     @NonNull
     @ManyToMany(fetch = FetchType.LAZY)

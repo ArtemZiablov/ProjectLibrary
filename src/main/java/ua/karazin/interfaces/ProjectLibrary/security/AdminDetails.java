@@ -4,26 +4,26 @@ import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ua.karazin.interfaces.ProjectLibrary.models.Librarian;
+import ua.karazin.interfaces.ProjectLibrary.models.Admin;
 
 import java.util.Collection;
 import java.util.Collections;
 
-public record LibrarianDetails(Librarian librarian) implements UserDetails {
+public record AdminDetails(Admin admin) implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_LIBRARIAN"));
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
     @Override
     public String getPassword() {
-        return librarian.getPassword();
+        return admin.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return librarian.getFullName();
+        return admin.getFullName();
     }
 
     @Override
@@ -45,5 +45,4 @@ public record LibrarianDetails(Librarian librarian) implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

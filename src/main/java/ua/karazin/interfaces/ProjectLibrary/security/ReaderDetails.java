@@ -1,5 +1,6 @@
 package ua.karazin.interfaces.ProjectLibrary.security;
 
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,12 +9,7 @@ import ua.karazin.interfaces.ProjectLibrary.models.Reader;
 import java.util.Collection;
 import java.util.Collections;
 
-public class ReaderDetails implements UserDetails {
-    private final Reader reader;
-
-    public ReaderDetails(Reader reader) {
-        this.reader = reader;
-    }
+public record ReaderDetails(Reader reader) implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -50,7 +46,4 @@ public class ReaderDetails implements UserDetails {
         return true;
     }
 
-    public Reader getReader() {
-        return reader;
-    }
 }
