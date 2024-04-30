@@ -34,7 +34,11 @@ public class ErrorControllerAdvice {
             BookNotRegisteredException.class,
             BookCopyNotExistException.class,
             ReaderNotExistException.class,
-            BookOperationDoesntExistException.class
+            BookOperationDoesntExistException.class,
+            AdminNotExistException.class,
+            LibrarianNotExistException.class,
+            ReaderNotExistException.class,
+            NoNoveltiesWereFoundException.class
     })
     ErrorDTO badReqExceptionHandler(BusinessException ex){
         return new ErrorDTO(ex.getMessage());

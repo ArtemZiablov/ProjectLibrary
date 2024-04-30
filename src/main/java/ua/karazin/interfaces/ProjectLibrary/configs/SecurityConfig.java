@@ -41,13 +41,14 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/book/search**", "/book/info**"/*novelties*/).permitAll()
-                        .requestMatchers("/book-copy/get-readers-books**"/*<-hasAnyRole*/, "book-reservation/reserve-book**", "reader/info**"/*<-hasAnyRole*/).hasRole("READER")
+                                .anyRequest().permitAll() // TODO: temporally
+                        /*.requestMatchers("/book/search**", "/book/info**"*//*novelties*//*).permitAll()
+                        .requestMatchers("/book-copy/get-readers-books**"*//*<-hasAnyRole*//*, "book-reservation/reserve-book**", "reader/info**"*//*<-hasAnyRole*//*).hasRole("READER")
                         .requestMatchers("/book/add-book**", "/book-copy/add-book-copies**", "/book-copy/delete-book-copy", "/book-copy/assign-book-copy", "/book-copy/release-book-copy**", "/reader/search**").hasRole("LIBRARIAN")
 
                         //TODO: .requestMatchers("/auth/registration/reader**", "/auth/registration/librarian**").hasRole("ADMIN")
 
-                        .anyRequest().hasAnyRole("READER", "LIBRARIAN"/*, "ADMIN"*/)// Require authentication for all other requests
+                        .anyRequest().hasAnyRole("READER", "LIBRARIAN"*//*, "ADMIN"*//*)// Require authentication for all other requests*/
                 )
                 .formLogin(form -> form
                         .permitAll() // Allow access to any user for default login page

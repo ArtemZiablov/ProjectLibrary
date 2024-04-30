@@ -8,9 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ua.karazin.interfaces.ProjectLibrary.configs.BookProperties;
 import ua.karazin.interfaces.ProjectLibrary.dto.BookDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.BooksInfoDTO;
-import ua.karazin.interfaces.ProjectLibrary.dto.SearchedBooksDTO;
+import ua.karazin.interfaces.ProjectLibrary.dto.GetListBookDTO;
+import ua.karazin.interfaces.ProjectLibrary.exceptions.NoNoveltiesWereFoundException;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.NoRequestedParametersWereProvidedException;
 import ua.karazin.interfaces.ProjectLibrary.models.Book;
 import ua.karazin.interfaces.ProjectLibrary.security.LibrarianDetails;
@@ -31,6 +33,8 @@ public class BookController {
 
     private final BookService bookService;
     private final BookMapper bookMapper;
+    private final BookProperties bookProperties;
+
 
     @PostMapping("/add-book") // putMapping
     public ResponseEntity<HttpStatus> addBook(@RequestBody @Valid BookDTO bookToAddDTO,
@@ -47,9 +51,9 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public SearchedBooksDTO searchBooks(@RequestParam(value = "title") Optional<String> title,
-                                        @RequestParam(value = "author") Optional<String> author,
-                                        @RequestParam(value = "genre") Optional<String> genre){
+    public GetListBookDTO searchBooks(@RequestParam(value = "title") Optional<String> title,
+                                      @RequestParam(value = "author") Optional<String> author,
+                                      @RequestParam(value = "genre") Optional<String> genre){
 
 
         List<Book> res;
@@ -66,7 +70,7 @@ public class BookController {
             throw new NoRequestedParametersWereProvidedException();
         }
 
-        return bookMapper.mapToSearchedBookDTO(res);
+        return bookMapper.mapToGetListBookDTO(res);
     }
 
     //@CrossOrigin(origins = "http://localhost:3001")
@@ -90,6 +94,17 @@ public class BookController {
                 .orElseThrow(NoRequestedParametersWereProvidedException::new);
         log.info("Res: {}", res);
         return res;
+    }
+
+    @GetMapping("/novelties")
+    public GetListBookDTO getNovelties(){
+        var novelties = bookService.getNovelties(bookProperties.noveltiesAmount());
+
+        if (novelties.isEmpty())
+            throw new NoNoveltiesWereFoundException();
+        else
+            return bookMapper.mapToGetListBookDTO(novelties);
+
     }
     /*
     @GetMapping("/picture")

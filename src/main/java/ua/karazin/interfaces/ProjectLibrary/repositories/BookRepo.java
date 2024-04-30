@@ -1,5 +1,7 @@
 package ua.karazin.interfaces.ProjectLibrary.repositories;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -20,4 +22,6 @@ public interface BookRepo extends JpaRepository<Book, Integer> {
     @Query("SELECT b FROM Book b JOIN b.genres g WHERE g.genreName LIKE CONCAT(:genrePrefix, '%')")
     List<Book> findBooksByGenreStartingWith(String genrePrefix);
 
+    @Query("SELECT b FROM Book b ORDER BY b.dateOfAdd DESC")
+    Page<Book> findNovelties(Pageable pageable);
 }

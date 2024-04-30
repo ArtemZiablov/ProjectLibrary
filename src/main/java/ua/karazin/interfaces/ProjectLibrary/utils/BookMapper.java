@@ -24,9 +24,9 @@ public class BookMapper {
     private final GenreService genreService;
 
 
-    public SearchedBooksDTO mapToSearchedBookDTO(List<Book> searchedBooks){
-        return new SearchedBooksDTO(searchedBooks.stream()
-                .map(book -> new SearchBookDTO(
+    public GetListBookDTO mapToGetListBookDTO(List<Book> searchedBooks){
+        return new GetListBookDTO(searchedBooks.stream()
+                .map(book -> new GetBookDTO(
                         book.getIsbn(),
                         book.getTitle(),
                         book.getAuthors().stream().
