@@ -16,7 +16,6 @@ import ua.karazin.interfaces.ProjectLibrary.repositories.BookCopyRepo;
 import java.util.List;
 import java.util.Optional;
 
-
 @Service
 @Slf4j(topic = "BookCopyService")
 @RequiredArgsConstructor
