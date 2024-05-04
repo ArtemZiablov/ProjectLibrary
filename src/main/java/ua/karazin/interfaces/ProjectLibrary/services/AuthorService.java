@@ -2,7 +2,6 @@ package ua.karazin.interfaces.ProjectLibrary.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ua.karazin.interfaces.ProjectLibrary.models.Author;
 import ua.karazin.interfaces.ProjectLibrary.repositories.AuthorRepo;
 

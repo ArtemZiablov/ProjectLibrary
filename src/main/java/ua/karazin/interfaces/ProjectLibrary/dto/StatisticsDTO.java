@@ -1,6 +1,5 @@
 package ua.karazin.interfaces.ProjectLibrary.dto;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public record StatisticsDTO(
