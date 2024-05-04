@@ -1,12 +1,14 @@
 CREATE TABLE Book
 (
     isbn               INT PRIMARY KEY,
-    title              VARCHAR(100)  NOT NULL,
-    year_of_publishing INT           NOT NULL,
-    number_of_pages    INT           NOT NULL,
-    annotation         VARCHAR(1000) NOT NULL,
-    book_photo         varchar(100)  NOT NULL,
-    date_of_add        date
+    title              VARCHAR(100)   NOT NULL,
+    year_of_publishing INT            NOT NULL,
+    number_of_pages    INT            NOT NULL,
+    annotation         VARCHAR(30000) NOT NULL,
+    book_photo         varchar(100)   NOT NULL,
+    date_of_add        date,
+    language           varchar(50)
+
 );
 
 CREATE TABLE Author

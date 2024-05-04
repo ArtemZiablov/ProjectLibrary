@@ -24,4 +24,5 @@ public interface BookRepo extends JpaRepository<Book, Integer> {
 
     @Query("SELECT b FROM Book b ORDER BY b.dateOfAdd DESC")
     Page<Book> findNovelties(Pageable pageable);
+
 }

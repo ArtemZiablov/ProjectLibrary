@@ -11,6 +11,7 @@ import ua.karazin.interfaces.ProjectLibrary.models.*;
 import ua.karazin.interfaces.ProjectLibrary.repositories.BookRepo;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public class BookService {
     private final BookRepo bookRepo;
     private final BookCopyService bookCopyService;
     private final BookOperationService bookOperationService;
-    private final ReaderService readerService;
+    private final RegistrationService registrationService;
 
     @Transactional
     public void addBook(Book book, int copiesAmount) {
@@ -77,4 +78,19 @@ public class BookService {
         return bookRepo.findNovelties(PageRequest.of(0, amount)).getContent();
     }
 
+    public Long countAllBooks(){
+        return bookRepo.count();
+    }
+
+    public HashMap<String, Integer> getBooksStatistics(){
+        HashMap<String, Integer> bookStatistics = new HashMap<>();
+
+        bookStatistics.put("books", countAllBooks().intValue());
+        bookStatistics.put("copies", bookCopyService.countAllBookCopies().intValue());
+        bookStatistics.put("assignedBookCopies", bookCopyService.countAssignedBookCopies());
+        bookStatistics.put("owedBooks", bookOperationService.countOwedBooks());
+        bookStatistics.put("reservedBooks", registrationService.reservedBooksCount().intValue());
+
+        return bookStatistics;
+    }
 }

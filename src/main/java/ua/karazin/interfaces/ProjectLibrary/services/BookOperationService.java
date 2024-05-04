@@ -8,11 +8,9 @@ import ua.karazin.interfaces.ProjectLibrary.exceptions.BookOperationDoesntExistE
 import ua.karazin.interfaces.ProjectLibrary.models.*;
 import ua.karazin.interfaces.ProjectLibrary.repositories.BookOperationRepo;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
-@Slf4j
+@Slf4j(topic = "BookOperationService")
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -48,7 +46,6 @@ public class BookOperationService {
         bookOperationRepo.save(bookOperation);
     }
 
-
     public Optional<BookOperation> findBookOperationByBookCopyAndReaderAndDateOfReturnIsNull(BookCopy bookCopy, Reader reader){
         return bookOperationRepo.findBookOperationByBookCopyAndReaderAndDateOfReturnIsNull(bookCopy, reader);
     }
@@ -61,4 +58,15 @@ public class BookOperationService {
         operation.get().setDateOfReturn(new Date());
     }
 
+    public List<BookOperation> findBookOperationsByDateOfReturnIsNull(){
+        return bookOperationRepo.findBookOperationsByDateOfReturnIsNull();
+    }
+
+    public int countOwedBooks(){
+        return bookOperationRepo.countOwedBooks();
+    }
+
+    public int countOngoingReaders(){
+        return bookOperationRepo.countOngoingReaders();
+    }
 }

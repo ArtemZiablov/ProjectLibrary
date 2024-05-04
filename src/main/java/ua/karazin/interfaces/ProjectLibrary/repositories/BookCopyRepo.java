@@ -31,4 +31,7 @@ public interface BookCopyRepo extends JpaRepository<BookCopy, Integer> {
 
     @Query("SELECT COUNT(bc) FROM BookCopy bc WHERE bc.book.isbn = :isbn AND bc.status = 'free'")
     int countFreeBookCopiesByIsbn(@Param("isbn") Integer isbn);
+
+    @Query("SELECT COUNT(bc) FROM BookCopy bc WHERE bc.status = 'taken'")
+    int getAssignedBookCopiesCount();
 }

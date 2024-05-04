@@ -6,11 +6,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.karazin.interfaces.ProjectLibrary.models.Librarian;
 import ua.karazin.interfaces.ProjectLibrary.models.Reader;
+import ua.karazin.interfaces.ProjectLibrary.repositories.BookReservationRepo;
 
 
 @Service
 @RequiredArgsConstructor
 public class RegistrationService {
+    private final BookReservationRepo bookReservationRepo;
     private final ReaderService readerService;
     private final LibrarianService librarianService;
     private final PasswordEncoder passwordEncoder;
@@ -28,5 +30,9 @@ public class RegistrationService {
         String encodedPassword = passwordEncoder.encode(librarian.getPassword());
         librarian.setPassword(encodedPassword);
         librarianService.save(librarian);
+    }
+
+    public Long reservedBooksCount(){
+        return bookReservationRepo.count();
     }
 }

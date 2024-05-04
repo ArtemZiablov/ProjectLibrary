@@ -1,6 +1,5 @@
 package ua.karazin.interfaces.ProjectLibrary.models;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,10 +15,6 @@ public class BookCopy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "copyId")
     private int copyId;
-
-    /*@Column(name = "isbn", nullable = false)
-    @NonNull
-    private Integer isbn;*/
 
     @ManyToOne
     @JoinColumn(name = "isbn", referencedColumnName = "isbn")

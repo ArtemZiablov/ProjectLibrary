@@ -42,4 +42,7 @@ public class BookReservationService {
         return bookReservationRepo.findReadersByBookReservationOrderByReservationDate(isbn);
     }
 
+    public int countReadersWhoReservedBooks(){
+        return bookReservationRepo.countReadersWhoReservedBooks();
+    }
 }
