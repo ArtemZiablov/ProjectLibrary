@@ -8,6 +8,7 @@ public record ReadersInfoDTO(
         Date dateOfBirth,
         String phoneNumber,
         String email,
+        String profilePhoto,
         ReadersBookCopiesDTO readersBooks
 ) {
 }

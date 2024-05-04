@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ua.karazin.interfaces.ProjectLibrary.models.Reader;
 import ua.karazin.interfaces.ProjectLibrary.repositories.ReaderRepo;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ReaderService {
     private final ReaderRepo readerRepo;
+    private final BookOperationService bookOperationService;
+    private final BookReservationService bookReservationService;
 
     public void save(Reader reader) {
         readerRepo.save(reader);
@@ -39,4 +42,22 @@ public class ReaderService {
         return readerRepo.findReadersByPhoneNumber(phoneNumber);
     }
 
+    public Long countReaders(){
+        return readerRepo.count();
+    }
+
+    public int countDebtors(){
+        return readerRepo.countDebtors();
+    }
+
+    public HashMap<String, Integer> getReadersStatistics() {
+        HashMap<String, Integer> readersStatistics = new HashMap<>();
+
+        readersStatistics.put("registeredReaders", countReaders().intValue());
+        readersStatistics.put("debtors", countDebtors());
+        readersStatistics.put("ongoingReaders", bookOperationService.countOngoingReaders());
+        readersStatistics.put("readersWhoReservedBooks", bookReservationService.countReadersWhoReservedBooks());
+
+        return readersStatistics;
+    }
 }

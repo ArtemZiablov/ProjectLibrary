@@ -1,9 +1,6 @@
 package ua.karazin.interfaces.ProjectLibrary.services;
 
-
 import lombok.RequiredArgsConstructor;
-
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -104,4 +101,11 @@ public class BookCopyService {
         return bookCopyRepo.countFreeBookCopiesByIsbn(isbn);
     }
 
+    public Long countAllBookCopies(){
+        return bookCopyRepo.count();
+    }
+
+    public Integer countAssignedBookCopies(){
+        return bookCopyRepo.getAssignedBookCopiesCount();
+    }
 }

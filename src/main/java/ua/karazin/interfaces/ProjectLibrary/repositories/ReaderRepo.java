@@ -1,6 +1,7 @@
 package ua.karazin.interfaces.ProjectLibrary.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ua.karazin.interfaces.ProjectLibrary.models.Reader;
 
@@ -18,4 +19,7 @@ public interface ReaderRepo extends JpaRepository<Reader, Integer> {
     Optional<List<Reader>> findReaderById(Integer id);
 
     Optional<List<Reader>> findReadersByPhoneNumber(String phoneNumber);
+
+    @Query("SELECT COUNT(r) FROM Reader r WHERE r.debtor = true ")
+    int countDebtors();
 }
