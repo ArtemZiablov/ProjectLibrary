@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.karazin.interfaces.ProjectLibrary.dto.ReadersBookCopiesDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.ReadersBookCopyDTO;
-import ua.karazin.interfaces.ProjectLibrary.exceptions.BookCopyNotExistException;
-import ua.karazin.interfaces.ProjectLibrary.exceptions.BookIsReservedException;
-import ua.karazin.interfaces.ProjectLibrary.exceptions.BookNotReturnedFromReaderException;
-import ua.karazin.interfaces.ProjectLibrary.exceptions.OpenBookOperationAlreadyExists;
+import ua.karazin.interfaces.ProjectLibrary.exceptions.*;
 import ua.karazin.interfaces.ProjectLibrary.models.*;
 import ua.karazin.interfaces.ProjectLibrary.repositories.BookCopyRepo;
 
@@ -70,7 +67,7 @@ public class BookCopyService {
             log.info("book: {}", book.getIsbn());
             log.info("freeBookCopiesCount: {}", freeBookCopiesCount);
 
-            bookReservationService.deleteReservation(bookReservationService.findBookReservationByBookAndReader(book, reader));
+            bookReservationService.deleteReservation(bookReservationService.findBookReservationByBookAndReader(book, reader).orElseThrow(BookReservationNotExistException::new));
             proceedAssigning(bookCopy, reader, librarian);
         } else
             throw new BookIsReservedException();

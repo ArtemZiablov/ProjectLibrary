@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ua.karazin.interfaces.ProjectLibrary.configs.StatisticsProperties;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.BookAlreadyRegisteredException;
 import ua.karazin.interfaces.ProjectLibrary.models.*;
 import ua.karazin.interfaces.ProjectLibrary.repositories.BookRepo;
@@ -22,6 +23,7 @@ public class BookService {
     private final BookCopyService bookCopyService;
     private final BookOperationService bookOperationService;
     private final RegistrationService registrationService;
+    private final StatisticsProperties statisticsProperties;
 
     @Transactional
     public void addBook(Book book, int copiesAmount) {
@@ -83,11 +85,11 @@ public class BookService {
     public HashMap<String, Integer> getBooksStatistics(){
         HashMap<String, Integer> bookStatistics = new HashMap<>();
 
-        bookStatistics.put("books", countAllBooks().intValue());
-        bookStatistics.put("copies", bookCopyService.countAllBookCopies().intValue());
-        bookStatistics.put("assignedBookCopies", bookCopyService.countAssignedBookCopies());
-        bookStatistics.put("owedBooks", bookOperationService.countOwedBooks());
-        bookStatistics.put("reservedBooks", registrationService.reservedBooksCount().intValue());
+        bookStatistics.put(statisticsProperties.books(), countAllBooks().intValue());
+        bookStatistics.put(statisticsProperties.copies(), bookCopyService.countAllBookCopies().intValue());
+        bookStatistics.put(statisticsProperties.assignedBookCopies(), bookCopyService.countAssignedBookCopies());
+        bookStatistics.put(statisticsProperties.owedBooks(), bookOperationService.countOwedBooks());
+        bookStatistics.put(statisticsProperties.reservedBooks(), registrationService.reservedBooksCount().intValue());
 
         return bookStatistics;
     }

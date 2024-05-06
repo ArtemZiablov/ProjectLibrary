@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ua.karazin.interfaces.ProjectLibrary.exceptions.BookNotRegisteredException;
-import ua.karazin.interfaces.ProjectLibrary.exceptions.NoRequestedParametersWereProvidedException;
-import ua.karazin.interfaces.ProjectLibrary.exceptions.ReaderIsDebtorException;
-import ua.karazin.interfaces.ProjectLibrary.exceptions.ReaderNotExistException;
+import ua.karazin.interfaces.ProjectLibrary.exceptions.*;
 import ua.karazin.interfaces.ProjectLibrary.services.BookReservationService;
 import ua.karazin.interfaces.ProjectLibrary.services.BookService;
 import ua.karazin.interfaces.ProjectLibrary.services.ReaderService;
@@ -34,15 +31,14 @@ public class BookReservationController {
             throw new NoRequestedParametersWereProvidedException();
         } else {
             var reader = readerService.findReaderById(readerId.get()).orElseThrow(ReaderNotExistException::new);
-
             if(reader.isDebtor())
                 throw new ReaderIsDebtorException();
-
             var book   = bookService.findBookByIsbn(isbn.get()).orElseThrow(BookNotRegisteredException::new);
+            if (bookReservationService.findBookReservationByBookAndReader(book, reader).isPresent())
+                throw new BookReservationAlreadyExistException();
 
-            bookReservationService.addReservation(reader, book);
+            bookReservationService.addReservation(book, reader);
         }
-
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

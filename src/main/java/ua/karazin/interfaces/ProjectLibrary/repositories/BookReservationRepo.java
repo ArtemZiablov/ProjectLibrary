@@ -8,11 +8,12 @@ import ua.karazin.interfaces.ProjectLibrary.models.BookReservation;
 import ua.karazin.interfaces.ProjectLibrary.models.Reader;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BookReservationRepo extends JpaRepository<BookReservation, Integer> {
 
-    BookReservation findBookReservationByBookAndReader(Book book, Reader reader);
+    Optional<BookReservation> findBookReservationByBookAndReader(Book book, Reader reader);
 
     @Query("SELECT r FROM Reader r " +
             "JOIN BookReservation br ON r.id = br.reader.id " +

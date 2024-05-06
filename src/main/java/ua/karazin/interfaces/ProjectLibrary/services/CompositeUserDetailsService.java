@@ -14,7 +14,6 @@ import ua.karazin.interfaces.ProjectLibrary.exceptions.ReaderNotExistException;
 @RequiredArgsConstructor
 public class CompositeUserDetailsService implements UserDetailsService {
 
-
     private final ReaderDetailsService readerDetailsService;
 
     private final LibrarianDetailsService librarianDetailsService;
