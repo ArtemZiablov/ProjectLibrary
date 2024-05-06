@@ -36,6 +36,7 @@ public class ReaderController {
                     reader.getDateOfBirth(),
                     reader.getPhoneNumber(),
                     reader.getEmail(),
+                    reader.isDebtor(),
                     reader.getProfilePhoto(),
                     bookCopyService.getReadersBookCopies(id)
             )

@@ -45,4 +45,8 @@ public class BookReservationService {
     public int countReadersWhoReservedBooks(){
         return bookReservationRepo.countReadersWhoReservedBooks();
     }
+
+    public int countBookReservationsByIsbn(Integer isbn){
+        return bookReservationRepo.countBookReservationsByIsbn(isbn);
+    }
 }

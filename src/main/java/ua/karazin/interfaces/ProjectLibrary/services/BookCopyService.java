@@ -107,4 +107,10 @@ public class BookCopyService {
     public Integer countAssignedBookCopies(){
         return bookCopyRepo.getAssignedBookCopiesCount();
     }
+
+    public Integer countAvailableBookCopies(int isbn){
+        int res = bookCopyRepo.countAvailableBookCopies(isbn) -
+                bookReservationService.countBookReservationsByIsbn(isbn);
+        return Math.max(res, 0);
+    }
 }
