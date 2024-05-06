@@ -14,6 +14,7 @@ public interface ReaderRepo extends JpaRepository<Reader, Integer> {
 
     Optional<Reader> findByFullName(String name);
 
+    @Query("SELECT r FROM Reader r WHERE LOWER(r.fullName) LIKE LOWER(CONCAT('%', :fullName, '%'))")
     Optional<List<Reader>> findReadersByFullNameStartingWith(String fullName);
 
     Optional<List<Reader>> findReaderById(Integer id);

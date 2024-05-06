@@ -39,7 +39,7 @@ public class BookMapper {
         );
     }
 
-    public BooksInfoDTO mapToBookInfoDTO(Book book){
+    public BooksInfoDTO mapToBookInfoDTO(Book book, int copiesAmount){
         return new BooksInfoDTO(
                 book.getIsbn(),
                 book.getTitle(),
@@ -48,6 +48,7 @@ public class BookMapper {
                 book.getAnnotation(),
                 book.getLanguage(),
                 book.getBookPhoto(),
+                copiesAmount,
                 book.getAuthors().stream()
                         .map(author -> author.getFullName()
                         ).toList(),

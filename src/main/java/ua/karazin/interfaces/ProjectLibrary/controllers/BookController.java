@@ -17,6 +17,7 @@ import ua.karazin.interfaces.ProjectLibrary.exceptions.NoRequestedParametersWere
 import ua.karazin.interfaces.ProjectLibrary.models.Book;
 import ua.karazin.interfaces.ProjectLibrary.security.LibrarianDetails;
 import ua.karazin.interfaces.ProjectLibrary.security.ReaderDetails;
+import ua.karazin.interfaces.ProjectLibrary.services.BookCopyService;
 import ua.karazin.interfaces.ProjectLibrary.services.BookService;
 import ua.karazin.interfaces.ProjectLibrary.utils.BookMapper;
 
@@ -34,6 +35,7 @@ public class BookController {
     private final BookService bookService;
     private final BookMapper bookMapper;
     private final BookProperties bookProperties;
+    private final BookCopyService bookCopyService;
 
 
     @PostMapping("/add-book") // putMapping
@@ -54,8 +56,6 @@ public class BookController {
     public GetListBookDTO searchBooks(@RequestParam(value = "title") Optional<String> title,
                                       @RequestParam(value = "author") Optional<String> author,
                                       @RequestParam(value = "genre") Optional<String> genre){
-
-
         List<Book> res;
         if (title.isPresent() && title.get().trim().length() >= 4) {
             log.info("Req to /book/search?title={}", title);
@@ -90,7 +90,10 @@ public class BookController {
         }
         log.info("Req to /book/get-book-by-isbn?isbn={}", isbn);
         var res = isbn.flatMap(bookService::findBookByIsbn)
-                .map(bookMapper::mapToBookInfoDTO)
+                .map(book -> bookMapper
+                        .mapToBookInfoDTO(book,
+                                bookCopyService.countAvailableBookCopies(book.getIsbn())
+                        ))
                 .orElseThrow(NoRequestedParametersWereProvidedException::new);
         log.info("Res: {}", res);
         return res;
