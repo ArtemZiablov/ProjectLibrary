@@ -3,6 +3,7 @@ package ua.karazin.interfaces.ProjectLibrary.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ua.karazin.interfaces.ProjectLibrary.configs.StatisticsProperties;
 import ua.karazin.interfaces.ProjectLibrary.models.Reader;
 import ua.karazin.interfaces.ProjectLibrary.repositories.ReaderRepo;
 
@@ -16,6 +17,8 @@ public class ReaderService {
     private final ReaderRepo readerRepo;
     private final BookOperationService bookOperationService;
     private final BookReservationService bookReservationService;
+    private final StatisticsProperties statisticsProperties;
+
 
     public void save(Reader reader) {
         readerRepo.save(reader);
@@ -53,10 +56,10 @@ public class ReaderService {
     public HashMap<String, Integer> getReadersStatistics() {
         HashMap<String, Integer> readersStatistics = new HashMap<>();
 
-        readersStatistics.put("registeredReaders", countReaders().intValue());
-        readersStatistics.put("debtors", countDebtors());
-        readersStatistics.put("ongoingReaders", bookOperationService.countOngoingReaders());
-        readersStatistics.put("readersWhoReservedBooks", bookReservationService.countReadersWhoReservedBooks());
+        readersStatistics.put(statisticsProperties.registeredReaders(), countReaders().intValue());
+        readersStatistics.put(statisticsProperties.debtors(), countDebtors());
+        readersStatistics.put(statisticsProperties.ongoingReaders(), bookOperationService.countOngoingReaders());
+        readersStatistics.put(statisticsProperties.readersWhoReservedBooks(), bookReservationService.countReadersWhoReservedBooks());
 
         return readersStatistics;
     }

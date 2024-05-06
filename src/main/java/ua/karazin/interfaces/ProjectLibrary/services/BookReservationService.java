@@ -11,6 +11,7 @@ import ua.karazin.interfaces.ProjectLibrary.repositories.BookReservationRepo;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -20,7 +21,7 @@ public class BookReservationService {
     private final BookReservationRepo bookReservationRepo;
 
     @Transactional
-    public void addReservation(Reader reader, Book book) {
+    public void addReservation(Book book, Reader reader) {
         BookReservation bookReservation = new BookReservation(
                 new Date(),
                 reader,
@@ -34,7 +35,7 @@ public class BookReservationService {
         bookReservationRepo.delete(bookReservation);
     }
 
-    public BookReservation findBookReservationByBookAndReader(Book book, Reader reader){
+    public Optional<BookReservation> findBookReservationByBookAndReader(Book book, Reader reader){
         return bookReservationRepo.findBookReservationByBookAndReader(book, reader);
     }
 

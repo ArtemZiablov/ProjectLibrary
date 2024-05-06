@@ -22,7 +22,8 @@ public class ErrorControllerAdvice {
             NoRequestedParametersWereProvidedException.class,
             ReadersNotFoundException.class,
             BookIsReservedException.class,
-            OpenBookOperationAlreadyExists.class
+            OpenBookOperationAlreadyExists.class,
+            BookReservationAlreadyExistException.class
     })
     ErrorDTO notAcceptableExceptionHandler(BusinessException ex){
         return new ErrorDTO(ex.getMessage());
@@ -38,7 +39,8 @@ public class ErrorControllerAdvice {
             AdminNotExistException.class,
             LibrarianNotExistException.class,
             ReaderNotExistException.class,
-            NoNoveltiesWereFoundException.class
+            NoNoveltiesWereFoundException.class,
+            BookReservationNotExistException.class
     })
     ErrorDTO badReqExceptionHandler(BusinessException ex){
         return new ErrorDTO(ex.getMessage());
