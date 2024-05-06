@@ -31,6 +31,8 @@ public record BooksInfoDTO(
         @NotBlank(message = "Book photo is required")
         String bookPhoto,
 
+        Integer availableBookCopies,
+
         List<String> authors,
 
         List<String> translators,
