@@ -109,14 +109,14 @@ public class BookMapper {
         }
         return translatorDTOs.stream()
                 .map(translatorDTO -> {
-                    var optionalTranslator = translatorService.findTranslatorByFullName(translatorDTO.fullName());
+                    var optionalTranslator = translatorService.findTranslatorByFullName(translatorDTO.translator());
 
                     if (optionalTranslator.isPresent()){
                         return optionalTranslator.get();
                     } else {
                         Translator translator = new Translator();
 
-                        translator.setFullName(translatorDTO.fullName());
+                        translator.setFullName(translatorDTO.translator());
                         translator.setBooks(new ArrayList<>());
                         translatorService.addTranslator(translator);
 

@@ -22,11 +22,8 @@ public class BookOperationController {
     // TODO add endpoints for statistics functional...
     @GetMapping("/statistics")
     public StatisticsDTO getStatistics() { // кількисть книг всього, кількість всього взятих книг
-        Map<String, Map<String,Integer>> booksStatistics = new HashMap<>();
-        Map<String, Map<String,Integer>> readersStatistics = new HashMap<>();;
-
-        booksStatistics.put("booksStatistics", bookService.getBooksStatistics());
-        readersStatistics.put("readersStatistics", readerService.getReadersStatistics());
+        Map<String,Integer> booksStatistics = bookService.getBooksStatistics();
+        Map<String,Integer> readersStatistics = readerService.getReadersStatistics();
 
         return new StatisticsDTO(booksStatistics, readersStatistics);
     }

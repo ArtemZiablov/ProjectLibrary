@@ -68,7 +68,7 @@ public class ReaderController {
     protected SearchedReadersDTO mapToSearchedReadersDTO(Optional<List<Reader>> optionalReaders) {
         return optionalReaders.map(readers -> readers.stream()
                         .map(reader -> new SearchReaderDTO(
-                                reader.getId(), reader.getFullName(), reader.getPhoneNumber()
+                                reader.getId(), reader.getFullName(), reader.getPhoneNumber(), reader.getProfilePhoto()
                         )).toList())
                 .map(SearchedReadersDTO::new)
                 .orElseThrow(ReadersNotFoundException::new);

@@ -10,6 +10,7 @@ import ua.karazin.interfaces.ProjectLibrary.exceptions.*;
 import ua.karazin.interfaces.ProjectLibrary.models.*;
 import ua.karazin.interfaces.ProjectLibrary.repositories.BookCopyRepo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +39,15 @@ public class BookCopyService {
         return bookCopyRepo.findByCopyId(copyId);
     }
 
+    public List<BookCopy> findBookCopiesByListOfCopiesId(List<Integer> copiesId){
+        /*List<BookCopy> resultList = new ArrayList<>();
+        for(Integer copyId : copiesId){
+            resultList.add(findBookCopyByCopyId(copyId).orElseThrow(BookCopyNotExistException::new));
+        }
+        return resultList;*/
+        return bookCopyRepo.findBookCopiesByCopyIdIn(copiesId);
+    }
+
     @Transactional
     public void deleteBookCopy(int copyId) {
         var bookCopyToDelete = findBookCopyByCopyId(copyId);
@@ -57,7 +67,7 @@ public class BookCopyService {
         List<Reader> readersWhoReservedBook = bookReservationService.
                 findReadersByBookReservationOrderByReservationDate(book.getIsbn());
         if (bookOperationService.findBookOperationByBookCopyAndReaderAndDateOfReturnIsNull(bookCopy, reader).isPresent())
-            throw new OpenBookOperationAlreadyExists();
+            throw new OpenBookOperationAlreadyExistException();
 
         if (readersWhoReservedBook.isEmpty() || (freeBookCopiesCount > readersWhoReservedBook.size() && !readersWhoReservedBook.contains(reader))){
             log.debug("!readersWhoReservedBook.contains(reader) {}", !readersWhoReservedBook.contains(reader));
@@ -93,7 +103,7 @@ public class BookCopyService {
         return new ReadersBookCopiesDTO(readersBooks);
     }
 
-    public int countFreeBookCopiesByIsbn(Integer isbn) {
+    public int countFreeBookCopiesByIsbn(Long isbn) {
         return bookCopyRepo.countFreeBookCopiesByIsbn(isbn);
     }
 
@@ -105,7 +115,7 @@ public class BookCopyService {
         return bookCopyRepo.getAssignedBookCopiesCount();
     }
 
-    public Integer countAvailableBookCopies(int isbn){
+    public Integer countAvailableBookCopies(Long isbn){
         int res = bookCopyRepo.countAvailableBookCopies(isbn) -
                 bookReservationService.countBookReservationsByIsbn(isbn);
         return Math.max(res, 0);

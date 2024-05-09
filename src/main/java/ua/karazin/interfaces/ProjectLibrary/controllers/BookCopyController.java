@@ -16,6 +16,7 @@ import ua.karazin.interfaces.ProjectLibrary.services.BookService;
 import ua.karazin.interfaces.ProjectLibrary.services.LibrarianService;
 import ua.karazin.interfaces.ProjectLibrary.services.ReaderService;
 
+import java.util.List;
 import java.util.Optional;
 
 import static ua.karazin.interfaces.ProjectLibrary.utils.ErrorsUtil.returnErrorsToClient;
@@ -37,13 +38,11 @@ public class BookCopyController {
 
         log.info("Req to /book-copy/add_book_copies : {}", bookCopiesToAddDTO);
 
-        // TODO validate
-
         if (bindingResult.hasErrors())
             returnErrorsToClient(bindingResult);
 
         var book = bookService.findBookByIsbn(bookCopiesToAddDTO.isbn());
-        if(book.isEmpty())  // TODO Should it be on a service layer or in validator class?
+        if(book.isEmpty())
             throw new BookNotRegisteredException();
 
         bookCopyService.addBookCopies(new BookCopy(book.get(), "free"), bookCopiesToAddDTO.copiesAmount());
@@ -63,12 +62,33 @@ public class BookCopyController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("/assign-book-copy")
+    @PostMapping("/assign-book-copies")
+    public ResponseEntity<HttpStatus> assignBookCopies(@RequestBody @Valid OperationWithBookCopyDTO assignBookCopiesDTO){
+        log.info("Req to /book-copy/assign-book-copies : {}", assignBookCopiesDTO);
+
+        var reader = readerService.findReaderById(assignBookCopiesDTO.readerId()).orElseThrow(ReaderNotExistException::new);
+        List<BookCopy> bookCopies = bookCopyService.findBookCopiesByListOfCopiesId(assignBookCopiesDTO.bookCopiesId());
+
+        var readersBookAmount = (long) reader.getBookCopies().size() + assignBookCopiesDTO.bookCopiesId().size();
+        if (readersBookAmount > bookProperties.bookAssignAmount()) {
+            System.out.println(readersBookAmount);
+            throw new AssignBookLimitOutOfBoundsException();
+        } else {
+            // TODO: add librarian using Spring Security
+            var librarian = librarianService.findLibrarianById(1);
+            for(BookCopy bookCopy : bookCopies) {
+                bookCopyService.assignBookCopy(bookCopy, reader, librarian.get());
+            }
+        }
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    /*@PostMapping("/assign-book-copy") TODO: deprecate
     public ResponseEntity<HttpStatus> assignBookCopy(@RequestBody @Valid OperationWithBookCopyDTO assignBookCopyDTO){
         log.info("Req to /book-copy/assign_book_copy : {}", assignBookCopyDTO);
 
         var reader = readerService.findReaderById(assignBookCopyDTO.readerId());
-        var bookCopy = bookCopyService.findBookCopyByCopyId(assignBookCopyDTO.bookCopyId());
+        var bookCopy = bookCopyService.findBookCopyByCopyId(assignBookCopyDTO.bookCopiesId());
 
         if ((long) reader.get().getBookCopies().size() >= bookProperties.bookAssignAmount())
             throw new AssignBookLimitOutOfBoundsException();
@@ -78,15 +98,15 @@ public class BookCopyController {
             bookCopyService.assignBookCopy(bookCopy.get(), reader.get(), librarian.get());
         }
         return ResponseEntity.ok(HttpStatus.OK);
-    }
+    }*/
 
-    @PostMapping("/release-book-copy")
+    @PostMapping("/release-book-copy") // TODO: refactor
     public ResponseEntity<HttpStatus> releaseBook(@RequestBody @Valid OperationWithBookCopyDTO releaseBookCopyDTO){
 
         log.info("Req to /book-copy/release_book_copy : {}", releaseBookCopyDTO);
 
         var reader = readerService.findReaderById(releaseBookCopyDTO.readerId());
-        var bookCopy = bookCopyService.findBookCopyByCopyId(releaseBookCopyDTO.bookCopyId());
+        var bookCopy = bookCopyService.findBookCopyByCopyId(releaseBookCopyDTO.bookCopiesId().get(0));
 
         // подразумеваем, что мы уже нашли ридера в конроллера Reader и получили список всех его книг
 

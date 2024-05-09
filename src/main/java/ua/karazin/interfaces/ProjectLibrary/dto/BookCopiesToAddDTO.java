@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record BookCopiesToAddDTO(
         @NotNull
-        Integer isbn,
+        Long isbn,
 
         @NotNull
         Integer copiesAmount

@@ -6,7 +6,7 @@ import java.util.List;
 
 public record BookDTO(
         @NotNull
-        Integer isbn,
+        Long isbn,
 
         @NotBlank(message = "Title is required")
         String title,
