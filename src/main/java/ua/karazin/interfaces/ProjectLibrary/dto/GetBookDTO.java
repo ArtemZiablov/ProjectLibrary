@@ -1,7 +1,7 @@
 package ua.karazin.interfaces.ProjectLibrary.dto;
 
 public record GetBookDTO(
-        Integer isbn,
+        Long isbn,
         String title,
         String authors,
         String genres,

@@ -22,7 +22,7 @@ public class ErrorControllerAdvice {
             NoRequestedParametersWereProvidedException.class,
             ReadersNotFoundException.class,
             BookIsReservedException.class,
-            OpenBookOperationAlreadyExists.class,
+            OpenBookOperationAlreadyExistException.class,
             BookReservationAlreadyExistException.class
     })
     ErrorDTO notAcceptableExceptionHandler(BusinessException ex){

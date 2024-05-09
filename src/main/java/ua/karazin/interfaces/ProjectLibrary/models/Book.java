@@ -17,7 +17,7 @@ public class Book {
     @Id
     @Column(name = "isbn")
     @NonNull
-    private Integer isbn;
+    private Long isbn;
 
     @Column(name = "title")
     @NotBlank(message = "Title is required")

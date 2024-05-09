@@ -57,7 +57,7 @@ public class BookService {
         }
     }
 
-    public Optional<Book> findBookByIsbn(Integer isbn){
+    public Optional<Book> findBookByIsbn(Long isbn){
         return bookRepo.findByIsbn(isbn);
     }
 

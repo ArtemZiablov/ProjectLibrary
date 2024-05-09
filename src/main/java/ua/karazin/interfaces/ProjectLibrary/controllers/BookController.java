@@ -21,8 +21,10 @@ import ua.karazin.interfaces.ProjectLibrary.services.BookCopyService;
 import ua.karazin.interfaces.ProjectLibrary.services.BookService;
 import ua.karazin.interfaces.ProjectLibrary.utils.BookMapper;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static ua.karazin.interfaces.ProjectLibrary.utils.ErrorsUtil.returnErrorsToClient;
 
@@ -37,6 +39,23 @@ public class BookController {
     private final BookProperties bookProperties;
     private final BookCopyService bookCopyService;
 
+
+
+    @PostMapping("/multiple-add-book") // putMapping
+    public ResponseEntity<HttpStatus> multipleAddBook(@RequestBody List<BookDTO> books,
+                                                      BindingResult bindingResult) {
+        log.info("Req to /book/multiple/add_book");
+
+        if (bindingResult.hasErrors())
+            returnErrorsToClient(bindingResult);
+
+        for (BookDTO book : books) {
+            Book bookToAdd = bookMapper.mapToBook(book);
+            bookService.addBook(bookToAdd, book.copiesAmount());
+        }
+
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 
     @PostMapping("/add-book") // putMapping
     public ResponseEntity<HttpStatus> addBook(@RequestBody @Valid BookDTO bookToAddDTO,
@@ -65,6 +84,10 @@ public class BookController {
             res = bookService.findBooksByAuthorsNameStartingWith(author.get().trim());
         } else if (genre.isPresent() && genre.get().trim().length() >= 4) {
             log.info("Req to /book/search?genre={}", genre);
+            List<String> genres = Arrays.stream(genre.get().split(","))
+                    .map(String::trim) // обрезка пробелов у каждого жанра
+                    .collect(Collectors.toList());
+            System.out.println(genres);
             res = bookService.findBooksByGenreStartingWith(genre.get().trim());
         } else {
             throw new NoRequestedParametersWereProvidedException();
@@ -75,7 +98,7 @@ public class BookController {
 
     //@CrossOrigin(origins = "http://localhost:3001")
     @GetMapping("/info")
-    public BooksInfoDTO viewBookInfo(@RequestParam(value = "isbn") Optional<Integer> isbn, Authentication authentication) {
+    public BooksInfoDTO viewBookInfo(@RequestParam(value = "isbn") Optional<Long> isbn, Authentication authentication) {
 
         if (authentication != null && authentication.getPrincipal() instanceof ReaderDetails readerDetails) {
             String fullName = readerDetails.getUsername();/*.concat(readerDetails.getAuthorities().toString());//readerDetails.getReader().toString().concat("; role: ").concat(readerDetails.getAuthorities().toString());*/
@@ -109,16 +132,4 @@ public class BookController {
             return bookMapper.mapToGetListBookDTO(novelties);
 
     }
-    /*
-    @GetMapping("/picture")
-    public PhotoDTO viewBookPicture(@RequestParam(value = "isbn") Optional<Integer> isbn) {
-        log.info("Req to /book/picture?isbn={}", isbn);
-        var res = isbn.flatMap(bookService::findBookByIsbn)
-                .map(book -> book.getBookPhoto())
-                .orElseThrow(NoRequestedParametersWereProvidedException::new);
-        PhotoDTO resDTO = new PhotoDTO(res);
-        log.info("Res: {}", resDTO);
-        return resDTO;
-    }*/
-
 }

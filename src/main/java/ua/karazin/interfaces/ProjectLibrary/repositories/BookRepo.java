@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BookRepo extends JpaRepository<Book, Integer> {
-    Optional<Book> findByIsbn(Integer isbn);
+public interface BookRepo extends JpaRepository<Book, Long> {
+    Optional<Book> findByIsbn(Long isbn);
 
     @Query("SELECT b FROM Book b WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%'))")
     List<Book> findBooksByTitleStartingWith(String title);
