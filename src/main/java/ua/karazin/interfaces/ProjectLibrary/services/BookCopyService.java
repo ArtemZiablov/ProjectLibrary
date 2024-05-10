@@ -39,6 +39,8 @@ public class BookCopyService {
         return bookCopyRepo.findByCopyId(copyId);
     }
 
+    //public List<BookCopy> getReadersBookCopies()
+
     public List<BookCopy> findBookCopiesByListOfCopiesId(List<Integer> copiesId){
         /*List<BookCopy> resultList = new ArrayList<>();
         for(Integer copyId : copiesId){

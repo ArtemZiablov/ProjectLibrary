@@ -11,10 +11,7 @@ import ua.karazin.interfaces.ProjectLibrary.configs.BookProperties;
 import ua.karazin.interfaces.ProjectLibrary.dto.*;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.*;
 import ua.karazin.interfaces.ProjectLibrary.models.BookCopy;
-import ua.karazin.interfaces.ProjectLibrary.services.BookCopyService;
-import ua.karazin.interfaces.ProjectLibrary.services.BookService;
-import ua.karazin.interfaces.ProjectLibrary.services.LibrarianService;
-import ua.karazin.interfaces.ProjectLibrary.services.ReaderService;
+import ua.karazin.interfaces.ProjectLibrary.services.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +27,7 @@ public class BookCopyController {
     private final BookService bookService;
     private final ReaderService readerService;
     private final BookProperties bookProperties;
+    private final BookOperationService bookOperationService;
     private final LibrarianService librarianService;
 
     @PostMapping("/add-book-copies")
@@ -77,7 +75,10 @@ public class BookCopyController {
             // TODO: add librarian using Spring Security
             var librarian = librarianService.findLibrarianById(1);
             for(BookCopy bookCopy : bookCopies) {
-                bookCopyService.assignBookCopy(bookCopy, reader, librarian.get());
+                if(bookOperationService.findOpenBookOperationByReaderIdAndBookIsbn(assignBookCopiesDTO.readerId(), bookCopy.getBook().getIsbn()).isEmpty())
+                    bookCopyService.assignBookCopy(bookCopy, reader, librarian.get());
+                else
+                    throw new BookIsAlreadyTakenByReaderException();
             }
         }
         return ResponseEntity.ok(HttpStatus.OK);

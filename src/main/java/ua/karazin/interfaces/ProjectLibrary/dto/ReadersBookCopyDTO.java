@@ -3,7 +3,7 @@ package ua.karazin.interfaces.ProjectLibrary.dto;
 import java.util.Date;
 
 public record ReadersBookCopyDTO(
-        Integer isbn,
+        Long isbn,
         Integer copyId,
         String title,
         Object authors,

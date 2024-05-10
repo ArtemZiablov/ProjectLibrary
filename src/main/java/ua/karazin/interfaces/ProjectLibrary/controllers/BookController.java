@@ -39,8 +39,6 @@ public class BookController {
     private final BookProperties bookProperties;
     private final BookCopyService bookCopyService;
 
-
-
     @PostMapping("/multiple-add-book") // putMapping
     public ResponseEntity<HttpStatus> multipleAddBook(@RequestBody List<BookDTO> books,
                                                       BindingResult bindingResult) {
@@ -88,7 +86,12 @@ public class BookController {
                     .map(String::trim) // обрезка пробелов у каждого жанра
                     .collect(Collectors.toList());
             System.out.println(genres);
-            res = bookService.findBooksByGenreStartingWith(genre.get().trim());
+            if(genres.size() > 1) {
+                System.out.println("1");
+                res = bookService.getBooksByGenres(genres);
+            }
+            else
+                res = bookService.findBooksByGenreStartingWith(genre.get().trim());
         } else {
             throw new NoRequestedParametersWereProvidedException();
         }
