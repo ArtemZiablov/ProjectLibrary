@@ -18,12 +18,14 @@ public class ErrorControllerAdvice {
             BookAlreadyRegisteredException.class,
             ReaderIsDebtorException.class,
             AssignBookLimitOutOfBoundsException.class,
+            ReservationBookLimitOutOfBoundsException.class,
             BookNotReturnedFromReaderException.class,
             NoRequestedParametersWereProvidedException.class,
             ReadersNotFoundException.class,
             BookIsReservedException.class,
             OpenBookOperationAlreadyExistException.class,
-            BookReservationAlreadyExistException.class
+            BookReservationAlreadyExistException.class,
+            BookIsAlreadyTakenByReaderException.class
     })
     ErrorDTO notAcceptableExceptionHandler(BusinessException ex){
         return new ErrorDTO(ex.getMessage());

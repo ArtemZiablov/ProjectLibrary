@@ -3,6 +3,7 @@ package ua.karazin.interfaces.ProjectLibrary.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import ua.karazin.interfaces.ProjectLibrary.models.Book;
 import ua.karazin.interfaces.ProjectLibrary.models.BookCopy;
 import ua.karazin.interfaces.ProjectLibrary.models.BookOperation;
 import ua.karazin.interfaces.ProjectLibrary.models.Reader;
@@ -17,9 +18,13 @@ public interface BookOperationRepo extends JpaRepository<BookOperation, Integer>
 
     List<BookOperation> findBookOperationsByDateOfReturnIsNull();
 
-    @Query("SELECT COUNT(b) FROM BookOperation b WHERE b.dateOfReturn IS NULL AND b.returnDeadline < CURRENT_DATE")
+    @Query("SELECT COUNT(bo) FROM BookOperation bo WHERE bo.dateOfReturn IS NULL AND bo.returnDeadline < CURRENT_DATE")
     int countOwedBooks();
 
-    @Query("SELECT COUNT(DISTINCT b.reader) FROM BookOperation b WHERE b.dateOfReturn IS NULL")
+    @Query("SELECT COUNT(DISTINCT bo.reader) FROM BookOperation bo WHERE bo.dateOfReturn IS NULL")
     int countOngoingReaders();
+
+    @Query("SELECT bo.bookCopy.book FROM BookOperation bo WHERE bo.dateOfReturn IS NULL AND bo.reader.id = :readerId AND bo.bookCopy.book.isbn = :isbn")
+    Optional<Book> findOpenBookOperationByReaderIdAndBookIsbn(Integer readerId, Long isbn);
+
 }

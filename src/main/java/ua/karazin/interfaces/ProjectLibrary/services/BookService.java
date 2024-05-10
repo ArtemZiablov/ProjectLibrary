@@ -9,10 +9,7 @@ import ua.karazin.interfaces.ProjectLibrary.exceptions.BookAlreadyRegisteredExce
 import ua.karazin.interfaces.ProjectLibrary.models.*;
 import ua.karazin.interfaces.ProjectLibrary.repositories.BookRepo;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -92,5 +89,27 @@ public class BookService {
         bookStatistics.put(statisticsProperties.reservedBooks(), registrationService.reservedBooksCount().intValue());
 
         return bookStatistics;
+    }
+
+    public List<Book> getBooksByGenres(List<String> genres) {
+        var books = bookRepo.findBooksByGenreStartingWith(genres.get(0));
+
+        for (int i = 1; i < genres.size(); i++) {
+            System.out.println(i + " " + books);
+            books = sortByNextGenre(books, genres.get(i));
+        }
+        System.out.println("Searched books: " + books);
+        return books;
+    }
+
+    private List<Book> sortByNextGenre(List<Book> books, String genre) {
+        List<Book> sortedBooks = new ArrayList<>();
+        for(Book book : books){
+            for(Genre genreBook : book.getGenres()){
+                if (genreBook.getGenreName().toLowerCase().contains(genre.toLowerCase()))
+                    sortedBooks.add(book);
+            }
+        }
+        return sortedBooks;
     }
 }

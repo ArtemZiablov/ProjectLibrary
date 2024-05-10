@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ua.karazin.interfaces.ProjectLibrary.configs.BookProperties;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.*;
 import ua.karazin.interfaces.ProjectLibrary.services.BookReservationService;
 import ua.karazin.interfaces.ProjectLibrary.services.BookService;
@@ -23,6 +24,7 @@ public class BookReservationController {
     private final BookReservationService bookReservationService;
     private final ReaderService readerService;
     private final BookService bookService;
+    private final BookProperties bookProperties;
 
     @PostMapping("/reserve-book")
     public ResponseEntity<HttpStatus> reserveBook(@RequestParam(value = "readerId") Optional<Integer> readerId, // TODO: use only isbn parameter
@@ -36,6 +38,11 @@ public class BookReservationController {
             var book   = bookService.findBookByIsbn(isbn.get()).orElseThrow(BookNotRegisteredException::new);
             if (bookReservationService.findBookReservationByBookAndReader(book, reader).isPresent())
                 throw new BookReservationAlreadyExistException();
+
+            var count = bookReservationService.countBookReservationsByReaderId(reader.getId());
+            System.out.println(count + " " + bookProperties.bookReserveAmount());
+            if (count > bookProperties.bookReserveAmount() - 1)
+                throw new ReservationBookLimitOutOfBoundsException();
 
             bookReservationService.addReservation(book, reader);
         }

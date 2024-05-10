@@ -62,6 +62,10 @@ public class BookOperationService {
         return bookOperationRepo.findBookOperationsByDateOfReturnIsNull();
     }
 
+    public Optional<Book> findOpenBookOperationByReaderIdAndBookIsbn(Integer readerId, Long isbn){
+        return bookOperationRepo.findOpenBookOperationByReaderIdAndBookIsbn(readerId, isbn);
+    }
+
     public int countOwedBooks(){
         return bookOperationRepo.countOwedBooks();
     }

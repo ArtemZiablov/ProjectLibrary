@@ -43,11 +43,19 @@ public class BookReservationService {
         return bookReservationRepo.findReadersByBookReservationOrderByReservationDate(isbn);
     }
 
+    public List<Book> findReadersReservedBooks(Integer readerId){
+        return bookReservationRepo.findReadersReservedBooks(readerId);
+    }
+
     public int countReadersWhoReservedBooks(){
         return bookReservationRepo.countReadersWhoReservedBooks();
     }
 
     public int countBookReservationsByIsbn(Long isbn){
         return bookReservationRepo.countBookReservationsByIsbn(isbn);
+    }
+
+    public int countBookReservationsByReaderId(Integer readerId){
+        return bookReservationRepo.countBookReservationsByReaderId(readerId);
     }
 }
