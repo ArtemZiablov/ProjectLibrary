@@ -25,4 +25,9 @@ public class LibrarianService {
         return librarianRepo.findByFullName(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Librarian with username " + username + " not found"));
     }
+
+    public Librarian findByEmail(String username){
+        return librarianRepo.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Librarian with username " + username + " not found"));
+    }
 }

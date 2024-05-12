@@ -7,6 +7,7 @@ import ua.karazin.interfaces.ProjectLibrary.models.Book;
 import ua.karazin.interfaces.ProjectLibrary.models.BookReservation;
 import ua.karazin.interfaces.ProjectLibrary.models.Reader;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,4 +33,6 @@ public interface BookReservationRepo extends JpaRepository<BookReservation, Inte
 
     @Query("SELECT br.book FROM BookReservation br WHERE br.reader.id = :readerId")
     List<Book> findReadersReservedBooks(Integer readerId);
+
+    List<BookReservation> findByDateOfReservationBefore(Date date);
 }

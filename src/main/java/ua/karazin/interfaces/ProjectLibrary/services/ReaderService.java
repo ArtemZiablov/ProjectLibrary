@@ -33,6 +33,11 @@ public class ReaderService {
                 .orElseThrow(() -> new UsernameNotFoundException("Reader with username " + username + " not found"));
     }
 
+    public Reader findByEmail(String username){
+        return readerRepo.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Reader with username " + username + " not found"));
+    }
+
     public Optional<List<Reader>> findReadersByFullNameStartingWith(String fullName){
         return readerRepo.findReadersByFullNameStartingWith(fullName);
     }
@@ -62,5 +67,9 @@ public class ReaderService {
         readersStatistics.put(statisticsProperties.readersWhoReservedBooks(), bookReservationService.countReadersWhoReservedBooks());
 
         return readersStatistics;
+    }
+
+    public String getReadersPhoto(Integer readerId) {
+        return readerRepo.findReadersPhoto(readerId);
     }
 }

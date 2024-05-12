@@ -1,25 +1,19 @@
 package ua.karazin.interfaces.ProjectLibrary.controllers;
 
-import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.karazin.interfaces.ProjectLibrary.dto.AuthenticationDTO;
-import ua.karazin.interfaces.ProjectLibrary.dto.RegisterLibrarianDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.RegisterReaderDTO;
-import ua.karazin.interfaces.ProjectLibrary.models.Librarian;
-import ua.karazin.interfaces.ProjectLibrary.models.Reader;
 import ua.karazin.interfaces.ProjectLibrary.security.JWTUtil;
 import ua.karazin.interfaces.ProjectLibrary.security.ReaderDetails;
 import ua.karazin.interfaces.ProjectLibrary.services.RegistrationService;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Map;
 
@@ -71,7 +65,7 @@ public class AuthController {
         return "auth/registration";
     }
 
-    @PostMapping("/registration")
+    /*@PostMapping("/registration")
     public Map<String, String> performRegistration(@RequestBody @Valid RegisterReaderDTO reader,
                                                    BindingResult bindingResult){
 
@@ -94,7 +88,7 @@ public class AuthController {
         String token = jwtUtil.generateToken(readerToRegister.getFullName());
 
         return Map.of("jwt-token", token);
-    }
+    }*/
 
    /* @GetMapping("/login")
     public String loginPage(){
@@ -110,17 +104,32 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(authenticationDTO.username(),
                         authenticationDTO.password());
 
+        String username = null;
+        String fullName = null;
+        String role = null;
+        Integer userId = null;
+
         try {
             Authentication auth = authenticationManager.authenticate(authInputToken);
-            /*if (auth != null && auth.getPrincipal() instanceof ReaderDetails readerDetails) {
-                String fullName = readerDetails.reader()
-            }*/
+            if (auth != null && auth.getPrincipal() instanceof ReaderDetails readerDetails) {
+                username = readerDetails.getUsername();
+                fullName = readerDetails.reader().getFullName();
+                // Extract the role without the "ROLE_" prefix
+                role = readerDetails.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .map(authRole -> authRole.replace("ROLE_", ""))
+                        .findFirst()
+                        .orElse(null);
+                log.info("role: {}", role);
+                userId = readerDetails.reader().getId();
+
+            }
         } catch (BadCredentialsException e){
             return Map.of("message", "Incorrect credentials");
         }
 
-        String token = jwtUtil.generateToken(authenticationDTO.username());
-        log.info("Authentication token: " + token);
+        String token = jwtUtil.generateToken(username, fullName, role, userId);
+        log.info("Authentication token: {}", token);
         return Map.of("jwt-token", token);
     }
 }

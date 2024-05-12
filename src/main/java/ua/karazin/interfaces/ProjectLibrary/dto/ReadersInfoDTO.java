@@ -10,6 +10,7 @@ public record ReadersInfoDTO(
         String email,
         Boolean debtor,
         String profilePhoto,
-        ReadersBookCopiesDTO readersBooks
+        ReadersBookCopiesDTO readersBooks,
+        GetListBookDTO reservedBooks
 ) {
 }

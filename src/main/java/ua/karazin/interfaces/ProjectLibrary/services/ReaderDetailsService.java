@@ -16,7 +16,7 @@ public class ReaderDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return readerRepo.findByFullName(username)
+        return readerRepo.findByEmail(username)
                 .map(ReaderDetails::new)
                 .orElseThrow(ReaderNotExistException::new);
     }

@@ -16,7 +16,7 @@ public class LibrarianDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return librarianRepo.findByFullName(username)
+        return librarianRepo.findByEmail(username)
                 .map(LibrarianDetails::new)
                 .orElseThrow(LibrarianNotExistException::new);
     }

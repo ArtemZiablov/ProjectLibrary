@@ -16,7 +16,7 @@ public class AdminDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return adminRepo.findByFullName(username)
+        return adminRepo.findByEmail(username)
                 .map(AdminDetails::new)
                 .orElseThrow(AdminNotExistException::new);
     }

@@ -24,6 +24,7 @@ public class CompositeUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
+            log.info("loadUserByUsername, username: {}", username);
             var user =  readerDetailsService.loadUserByUsername(username);
             log.info("loadUserByUsername: {}", user.getUsername());
             return user;

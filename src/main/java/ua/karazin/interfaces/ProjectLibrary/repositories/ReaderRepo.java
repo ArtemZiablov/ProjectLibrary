@@ -14,6 +14,11 @@ public interface ReaderRepo extends JpaRepository<Reader, Integer> {
 
     Optional<Reader> findByFullName(String name);
 
+    Optional<Reader> findByEmail(String email);
+
+    @Query("SELECT r.profilePhoto FROM Reader r WHERE r.id = :readerId")
+    String findReadersPhoto(Integer readerId);
+
     @Query("SELECT r FROM Reader r WHERE LOWER(r.fullName) LIKE LOWER(CONCAT('%', :fullName, '%'))")
     Optional<List<Reader>> findReadersByFullNameStartingWith(String fullName);
 
