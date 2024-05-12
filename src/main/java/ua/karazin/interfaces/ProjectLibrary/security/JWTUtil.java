@@ -17,12 +17,15 @@ public class JWTUtil {
     @Value("jwtSecret")
     private String jwtSecret;
 
-    public String generateToken(String fullName){
+    public String generateToken(String email, String fullName, String role, Integer userId){
         Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(60).toInstant());
 
         return JWT.create()
                 .withSubject("Reader details")
-                .withClaim("username", fullName) // add role, id and change fullName to email
+                .withClaim("username", email) // add role, id and change fullName to email
+                .withClaim("fullName", fullName)
+                .withClaim("role", role)
+                .withClaim("userId", userId)
                 .withIssuedAt(new Date())
                 .withIssuer("ProjectLibrary")
                 .withExpiresAt(expirationDate)

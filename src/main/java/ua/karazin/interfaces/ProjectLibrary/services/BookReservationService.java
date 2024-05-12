@@ -58,4 +58,13 @@ public class BookReservationService {
     public int countBookReservationsByReaderId(Integer readerId){
         return bookReservationRepo.countBookReservationsByReaderId(readerId);
     }
+
+    public List<BookReservation> findExpiredReservations(int days) {
+        Date cutoffDate = new Date(System.currentTimeMillis() - days * 24 * 60 * 60 * 1000);
+        return bookReservationRepo.findByDateOfReservationBefore(cutoffDate);
+    }
+
+    public void removeReservation(BookReservation reservation) {
+        bookReservationRepo.delete(reservation);
+    }
 }

@@ -16,7 +16,9 @@ import ua.karazin.interfaces.ProjectLibrary.services.BookReservationService;
 import ua.karazin.interfaces.ProjectLibrary.services.ReaderService;
 import ua.karazin.interfaces.ProjectLibrary.utils.BookMapper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j(topic = "ReaderController")
@@ -41,7 +43,9 @@ public class ReaderController {
                     reader.getEmail(),
                     reader.isDebtor(),
                     reader.getProfilePhoto(),
-                    bookCopyService.getReadersBookCopies(id)
+                    bookCopyService.getReadersBookCopies(id),
+                    bookMapper.mapToGetListBookDTO(bookReservationService.findReadersReservedBooks(id))
+
             )
         ).orElseThrow(ReaderNotExistException::new);
     }
@@ -77,6 +81,14 @@ public class ReaderController {
     public GetListBookDTO getReadersReservedBooks(@RequestParam("readerId") Optional<Integer> readerId) {
         var res = bookReservationService.findReadersReservedBooks(readerId.orElseThrow(NoRequestedParametersWereProvidedException::new));
         return bookMapper.mapToGetListBookDTO(res);
+    }
+
+    @GetMapping("photo")
+    public Map<String, String> getPhoto(@RequestParam("readerId") Optional<Integer> readerId){
+        Map<String, String> res = new HashMap<>();
+        String photo = readerService.getReadersPhoto(readerId.orElseThrow(NoRequestedParametersWereProvidedException::new));
+        res.put("photo", photo);
+        return res;
     }
 
     protected SearchedReadersDTO mapToSearchedReadersDTO(Optional<List<Reader>> optionalReaders) {

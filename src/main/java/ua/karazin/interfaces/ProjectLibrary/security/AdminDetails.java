@@ -22,7 +22,7 @@ public record AdminDetails(Admin admin) implements UserDetails {
 
     @Override
     public String getUsername() {
-        return admin.getFullName();
+        return admin.getEmail();
     }
 
     @Override

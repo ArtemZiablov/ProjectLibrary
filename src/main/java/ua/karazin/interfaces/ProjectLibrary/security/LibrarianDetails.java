@@ -22,7 +22,7 @@ public record LibrarianDetails(Librarian librarian) implements UserDetails {
 
     @Override
     public String getUsername() {
-        return librarian.getFullName();
+        return librarian.getEmail();
     }
 
     @Override

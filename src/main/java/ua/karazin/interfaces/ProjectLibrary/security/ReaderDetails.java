@@ -22,7 +22,7 @@ public record ReaderDetails(Reader reader) implements UserDetails {
 
     @Override
     public String getUsername() {
-        return reader.getFullName();
+        return reader.getEmail();
     }
 
     @Override
