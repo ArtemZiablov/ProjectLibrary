@@ -30,4 +30,8 @@ public class LibrarianService {
         return librarianRepo.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Librarian with username " + username + " not found"));
     }
+
+    public String getLibrariansPhoto(Integer librarianId) {
+        return librarianRepo.findLibrariansPhoto(librarianId);
+    }
 }
