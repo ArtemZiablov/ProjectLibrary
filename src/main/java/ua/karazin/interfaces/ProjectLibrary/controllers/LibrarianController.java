@@ -11,6 +11,11 @@ import ua.karazin.interfaces.ProjectLibrary.dto.LibrariansInfoDTO;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.NotAuthenticatedException;
 import ua.karazin.interfaces.ProjectLibrary.models.Librarian;
 import ua.karazin.interfaces.ProjectLibrary.security.LibrarianDetails;
+import ua.karazin.interfaces.ProjectLibrary.security.ReaderDetails;
+import ua.karazin.interfaces.ProjectLibrary.services.LibrarianService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j(topic = "LibrarianController")
 @RequiredArgsConstructor
@@ -18,6 +23,7 @@ import ua.karazin.interfaces.ProjectLibrary.security.LibrarianDetails;
 @RequestMapping("/librarian")
 @RestController
 public class LibrarianController {
+    private final LibrarianService librarianService;
 
     @GetMapping("/info")
     public LibrariansInfoDTO getLibrariansInfo(Authentication authentication) {
@@ -33,5 +39,17 @@ public class LibrarianController {
             );
         } else
             throw new NotAuthenticatedException();
+    }
+
+    @GetMapping("photo")
+    public Map<String, String> getPhoto(Authentication authentication) {
+        if (authentication != null && authentication.getPrincipal() instanceof LibrarianDetails librarianDetails) {
+            int librarianId = librarianDetails.librarian().getId();
+            Map<String, String> res = new HashMap<>();
+            String photo = librarianService.getLibrariansPhoto(librarianId);
+            res.put("photo", photo);
+            log.info("res: {}", res);
+            return res;
+        } else throw new NotAuthenticatedException();
     }
 }
