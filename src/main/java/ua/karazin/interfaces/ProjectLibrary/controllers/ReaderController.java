@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ua.karazin.interfaces.ProjectLibrary.dto.*;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.NoRequestedParametersWereProvidedException;
+import ua.karazin.interfaces.ProjectLibrary.exceptions.NotAuthenticatedException;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.ReadersNotFoundException;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.ReaderNotExistException;
 import ua.karazin.interfaces.ProjectLibrary.models.Reader;
@@ -32,7 +33,7 @@ public class ReaderController {
     private final BookMapper bookMapper;
 
     @GetMapping("/info")
-    public ReadersInfoDTO viewReadersInfo(@RequestParam("id") Integer id) {
+    public ReadersInfoDTO getReadersInfo(@RequestParam("id") Integer id) {
 
         return readerService.findReaderById(id).map(reader ->
                 new ReadersInfoDTO(
@@ -90,8 +91,9 @@ public class ReaderController {
             Map<String, String> res = new HashMap<>();
             String photo = readerService.getReadersPhoto(readerId);
             res.put("photo", photo);
+            log.info("res: {}", res);
             return res;
-        } else throw new NoRequestedParametersWereProvidedException();
+        } else throw new NotAuthenticatedException();
     }
 
     protected SearchedReadersDTO mapToSearchedReadersDTO(Optional<List<Reader>> optionalReaders) {
