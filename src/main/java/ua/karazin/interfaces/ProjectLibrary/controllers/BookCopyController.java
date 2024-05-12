@@ -21,6 +21,7 @@ import static ua.karazin.interfaces.ProjectLibrary.utils.ErrorsUtil.returnErrors
 @Slf4j(topic = "BookCopyController")
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/book-copy")
 public class BookCopyController {
     private final BookCopyService bookCopyService;

@@ -2,15 +2,14 @@ package ua.karazin.interfaces.ProjectLibrary.controllers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 import ua.karazin.interfaces.ProjectLibrary.dto.*;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.NoRequestedParametersWereProvidedException;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.ReadersNotFoundException;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.ReaderNotExistException;
 import ua.karazin.interfaces.ProjectLibrary.models.Reader;
+import ua.karazin.interfaces.ProjectLibrary.security.ReaderDetails;
 import ua.karazin.interfaces.ProjectLibrary.services.BookCopyService;
 import ua.karazin.interfaces.ProjectLibrary.services.BookReservationService;
 import ua.karazin.interfaces.ProjectLibrary.services.ReaderService;
@@ -23,6 +22,7 @@ import java.util.Optional;
 
 @Slf4j(topic = "ReaderController")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/reader")
 @RestController
 public class ReaderController {
@@ -32,27 +32,27 @@ public class ReaderController {
     private final BookMapper bookMapper;
 
     @GetMapping("/info")
-    public ReadersInfoDTO viewReadersInfo(@RequestParam("id") Integer id){
+    public ReadersInfoDTO viewReadersInfo(@RequestParam("id") Integer id) {
 
         return readerService.findReaderById(id).map(reader ->
-            new ReadersInfoDTO(
-                    reader.getId(),
-                    reader.getFullName(),
-                    reader.getDateOfBirth(),
-                    reader.getPhoneNumber(),
-                    reader.getEmail(),
-                    reader.isDebtor(),
-                    reader.getProfilePhoto(),
-                    bookCopyService.getReadersBookCopies(id),
-                    bookMapper.mapToGetListBookDTO(bookReservationService.findReadersReservedBooks(id))
+                new ReadersInfoDTO(
+                        reader.getId(),
+                        reader.getFullName(),
+                        reader.getDateOfBirth(),
+                        reader.getPhoneNumber(),
+                        reader.getEmail(),
+                        reader.isDebtor(),
+                        reader.getProfilePhoto(),
+                        bookCopyService.getReadersBookCopies(id),
+                        bookMapper.mapToGetListBookDTO(bookReservationService.findReadersReservedBooks(id))
 
-            )
+                )
         ).orElseThrow(ReaderNotExistException::new);
     }
 
     @GetMapping("/search")
-    public SearchedReadersDTO findReaders(@RequestParam("name")     Optional<String> name,
-                                          @RequestParam("id")       Optional<Integer> id,
+    public SearchedReadersDTO findReaders(@RequestParam("name") Optional<String> name,
+                                          @RequestParam("id") Optional<Integer> id,
                                           @RequestParam("phoneNum") Optional<String> phoneNum) {
 
         Optional<List<Reader>> res;
@@ -84,11 +84,14 @@ public class ReaderController {
     }
 
     @GetMapping("photo")
-    public Map<String, String> getPhoto(@RequestParam("readerId") Optional<Integer> readerId){
-        Map<String, String> res = new HashMap<>();
-        String photo = readerService.getReadersPhoto(readerId.orElseThrow(NoRequestedParametersWereProvidedException::new));
-        res.put("photo", photo);
-        return res;
+    public Map<String, String> getPhoto(Authentication authentication) {
+        if (authentication != null && authentication.getPrincipal() instanceof ReaderDetails readerDetails) {
+            int readerId = readerDetails.reader().getId();
+            Map<String, String> res = new HashMap<>();
+            String photo = readerService.getReadersPhoto(readerId);
+            res.put("photo", photo);
+            return res;
+        } else throw new NoRequestedParametersWereProvidedException();
     }
 
     protected SearchedReadersDTO mapToSearchedReadersDTO(Optional<List<Reader>> optionalReaders) {

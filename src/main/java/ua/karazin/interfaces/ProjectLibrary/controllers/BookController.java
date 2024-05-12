@@ -30,6 +30,7 @@ import static ua.karazin.interfaces.ProjectLibrary.utils.ErrorsUtil.returnErrors
 
 @Slf4j(topic = "BookController")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/book")
 @RestController
 public class BookController {

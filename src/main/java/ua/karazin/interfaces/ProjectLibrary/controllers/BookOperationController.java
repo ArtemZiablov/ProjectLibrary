@@ -13,6 +13,7 @@ import java.util.Map;
 @Slf4j(topic = "BookOperationController")
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/book-operation")
 public class BookOperationController {
 

@@ -21,6 +21,7 @@ import java.util.Map;
 @RestController
 @Slf4j(topic = "AuthController")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/auth")
 public class AuthController {
     private final RegistrationService registrationService;
