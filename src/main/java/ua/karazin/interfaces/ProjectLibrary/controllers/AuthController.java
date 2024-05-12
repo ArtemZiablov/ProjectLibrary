@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ua.karazin.interfaces.ProjectLibrary.dto.AuthenticationDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.RegisterReaderDTO;
 import ua.karazin.interfaces.ProjectLibrary.security.JWTUtil;
+import ua.karazin.interfaces.ProjectLibrary.security.LibrarianDetails;
 import ua.karazin.interfaces.ProjectLibrary.security.ReaderDetails;
 import ua.karazin.interfaces.ProjectLibrary.services.RegistrationService;
 import org.springframework.security.core.GrantedAuthority;
@@ -123,8 +124,19 @@ public class AuthController {
                         .orElse(null);
                 log.info("role: {}", role);
                 userId = readerDetails.reader().getId();
-
+            } else if(auth != null && auth.getPrincipal() instanceof LibrarianDetails librarianDetails){
+                username = librarianDetails.getUsername();
+                fullName = librarianDetails.librarian().getFullName();
+                // Extract the role without the "ROLE_" prefix
+                role = librarianDetails.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .map(authRole -> authRole.replace("ROLE_", ""))
+                        .findFirst()
+                        .orElse(null);
+                log.info("role: {}", role);
+                userId = librarianDetails.librarian().getId();
             }
+
         } catch (BadCredentialsException e){
             return Map.of("message", "Incorrect credentials");
         }

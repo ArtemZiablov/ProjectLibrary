@@ -55,9 +55,10 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login**", "/book/search**", "/book/info**", "/book/novelties**").permitAll()
-                        .requestMatchers("/book-copy/get-readers-books**"/*<-hasAnyRole*/, "book-reservation/reserve-book**", "reader/info**"/*<-hasAnyRole*/).hasRole("READER")
-                        .requestMatchers("/book/add-book**", "/book-copy/add-book-copies**", "/book-copy/delete-book-copy", "/book-copy/assign-book-copy", "/book-copy/release-book-copy**", "/reader/search**").hasRole("LIBRARIAN")
+                        .requestMatchers("/auth/login**", "/book/search**", "/book/info**", "/book/novelties**", "auth/registration/reader**").permitAll()
+                        .requestMatchers("/book-copy/get-readers-books**"/*<-hasAnyRole*/, "/book-reservation/reserve-book**", "/reader/info**", "/reader/photo**"/*<-hasAnyRole*/).hasRole("READER")
+                        .requestMatchers("/book/add-book**", "/book-copy/add-book-copies**", "/book-copy/delete-book-copy", "/book-copy/assign-book-copy", "/book-copy/release-book-copy**", "/reader/search**", "reader/info**", "/librarian/info**").hasRole("LIBRARIAN")
+
 
                         //TODO: .requestMatchers("/auth/registration/reader**", "/auth/registration/librarian**").hasRole("ADMIN")
 

@@ -25,7 +25,8 @@ public class ErrorControllerAdvice {
             BookIsReservedException.class,
             OpenBookOperationAlreadyExistException.class,
             BookReservationAlreadyExistException.class,
-            BookIsAlreadyTakenByReaderException.class
+            BookIsAlreadyTakenByReaderException.class,
+            NotAuthenticatedException.class
     })
     ErrorDTO notAcceptableExceptionHandler(BusinessException ex){
         return new ErrorDTO(ex.getMessage());
