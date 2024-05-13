@@ -27,7 +27,7 @@ public class ReaderService {
     public Optional<Reader> findReaderById(int readerId){
         return readerRepo.findById(readerId);
     }
-
+/*
     public Reader findByFullName(String username){
         return readerRepo.findByFullName(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Reader with username " + username + " not found"));
@@ -36,7 +36,7 @@ public class ReaderService {
     public Reader findByEmail(String username){
         return readerRepo.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Reader with username " + username + " not found"));
-    }
+    }*/
 
     public Optional<List<Reader>> findReadersByFullNameStartingWith(String fullName){
         return readerRepo.findReadersByFullNameStartingWith(fullName);

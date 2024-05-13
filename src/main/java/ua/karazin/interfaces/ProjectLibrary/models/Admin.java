@@ -22,12 +22,6 @@ public class Admin {
     @NonNull
     private String fullName;
 
-    @Column(name = "password", nullable = false, length = 100)
-    @NotBlank(message = "Password is required")
-    @Size(max = 100, message = "Password must be less than 100 characters")
-    @NonNull
-    private String password;
-
     @Column(name = "phone_number", nullable = false, length = 50)
     @NotBlank(message = "Phone number is required")
     @Size(max = 50, message = "Phone number must be less than 50 characters")
@@ -44,4 +38,10 @@ public class Admin {
     @Column(name = "profile_photo", nullable = false, length = 300)
     @NonNull
     private String profilePhoto;
+
+    @Column(name = "password", nullable = false, length = 100)
+    @NotBlank(message = "Password is required")
+    @Size(max = 100, message = "Password must be less than 100 characters")
+    @NonNull
+    private String password;
 }
