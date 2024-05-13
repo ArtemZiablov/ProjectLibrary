@@ -1,7 +1,6 @@
 package ua.karazin.interfaces.ProjectLibrary.configs;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,7 +16,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ua.karazin.interfaces.ProjectLibrary.services.CompositeUserDetailsService;
 
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -32,7 +30,6 @@ public class SecurityConfig {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -55,21 +52,20 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login**", "/book/search**", "/book/info**", "/book/novelties**", "auth/registration/reader**").permitAll()
-                        .requestMatchers("/book-copy/get-readers-books**"/*<-hasAnyRole*/, "/book-reservation/reserve-book**", "/reader/info**", "/reader/photo**"/*<-hasAnyRole*/).hasRole("READER")
-                        .requestMatchers("/book/add-book**", "/book-copy/add-book-copies**", "/book-copy/delete-book-copy", "/book-copy/assign-book-copy", "/book-copy/release-book-copy**", "/reader/search**", "reader/info**", "/librarian/info**").hasRole("LIBRARIAN")
+                        .requestMatchers("/auth/login**", "/book/search**", "/book/info**", "/book/novelties", "auth/registration/admin",
+                                "/auth/registration/multiple-readers**", "/auth/registration/multiple-librarians**").permitAll()
 
+                        .requestMatchers("/book/add-book**", "/book-copy/add-book-copies**", "/book-copy/delete-book-copy",
+                                "/book-copy/assign-book-copy", "/book-copy/release-book-copy**", "/reader/search**",
+                                "/librarian/info**", "/librarian/photo**").hasRole("LIBRARIAN")
 
-                        //TODO: .requestMatchers("/auth/registration/reader**", "/auth/registration/librarian**").hasRole("ADMIN")
+                        .requestMatchers("/book-copy/get-readers-books**", "/book-reservation/reserve-book**", "/reader/photo**").hasRole("READER")
 
-                        .anyRequest().hasAnyRole("READER", "LIBRARIAN"/*, "ADMIN"*/)// Require authentication for all other requests
+                        .requestMatchers("/auth/registration/reader**", "/auth/registration/librarian**").hasRole("ADMIN")
+
+                        .anyRequest().hasAnyRole("READER", "LIBRARIAN", "ADMIN")// Require authentication for all other requests
                 )
-                /*.formLogin(form -> form
-                        .loginPage("/auth/login")
-                        .defaultSuccessUrl("/hello", true)
-                        .failureUrl("/auth/login?error")
-                        .permitAll() // Allow access to any user for default login page
-                )*/
+
                 .rememberMe(rememberMe -> rememberMe.userDetailsService(compositeUserDetailsService))
                 .logout(logout -> logout
                         .logoutUrl("/logout")

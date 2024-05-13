@@ -10,6 +10,7 @@ import ua.karazin.interfaces.ProjectLibrary.exceptions.NotAuthenticatedException
 import ua.karazin.interfaces.ProjectLibrary.exceptions.ReadersNotFoundException;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.ReaderNotExistException;
 import ua.karazin.interfaces.ProjectLibrary.models.Reader;
+import ua.karazin.interfaces.ProjectLibrary.security.LibrarianDetails;
 import ua.karazin.interfaces.ProjectLibrary.security.ReaderDetails;
 import ua.karazin.interfaces.ProjectLibrary.services.BookCopyService;
 import ua.karazin.interfaces.ProjectLibrary.services.BookReservationService;
@@ -33,8 +34,22 @@ public class ReaderController {
     private final BookMapper bookMapper;
 
     @GetMapping("/info")
-    public ReadersInfoDTO getReadersInfo(@RequestParam("id") Integer id) {
+    public ReadersInfoDTO getReadersInfo(@RequestParam("id") Integer id, Authentication authentication) {
 
+        log.info("req to /reader/info?id={}", id);
+        if (authentication != null && authentication.getPrincipal() instanceof ReaderDetails readerDetails) {
+            int readerId = readerDetails.reader().getId();
+            if (readerId == id) {
+                return getInfo(id);
+            } else throw new NotAuthenticatedException();
+        } else if (authentication != null && authentication.getPrincipal() instanceof LibrarianDetails librarianDetails) {
+            return getInfo(id);
+        }
+
+        throw new NotAuthenticatedException();
+    }
+
+    private ReadersInfoDTO getInfo(Integer id) {
         return readerService.findReaderById(id).map(reader ->
                 new ReadersInfoDTO(
                         reader.getId(),

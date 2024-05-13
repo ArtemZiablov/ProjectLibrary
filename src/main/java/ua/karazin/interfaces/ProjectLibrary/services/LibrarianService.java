@@ -20,7 +20,7 @@ public class LibrarianService {
     public Optional<Librarian> findLibrarianById(int librarianId){
         return librarianRepo.findLibrarianById(librarianId);
     }
-
+/*
     public Librarian findByFullName(String username){
         return librarianRepo.findByFullName(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Librarian with username " + username + " not found"));
@@ -29,7 +29,7 @@ public class LibrarianService {
     public Librarian findByEmail(String username){
         return librarianRepo.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Librarian with username " + username + " not found"));
-    }
+    }*/
 
     public String getLibrariansPhoto(Integer librarianId) {
         return librarianRepo.findLibrariansPhoto(librarianId);

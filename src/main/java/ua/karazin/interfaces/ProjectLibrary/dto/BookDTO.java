@@ -12,7 +12,7 @@ public record BookDTO(
         String title,
 
         @NotNull
-        @Min(value = 1950, message = "Year of publishing should be greater than 1950")
+        @Min(value = 1700, message = "Year of publishing should be greater than 1700")
         @Max(value = 2024, message = "Year of publishing should be less than 2024")
         Integer yearOfPublishing,
 
