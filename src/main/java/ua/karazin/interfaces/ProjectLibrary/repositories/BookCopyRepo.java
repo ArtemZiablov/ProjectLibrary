@@ -26,9 +26,6 @@ public interface BookCopyRepo extends JpaRepository<BookCopy, Integer> {
             "GROUP BY bc.book.isbn, bc.copyId, b.title, ob.returnDeadline, bc.status, b.bookPhoto")
     List<ReadersBookCopyDTO> findReadersBookCopiesByReaderId(@Param("readerId") Integer readerId);
 
-    @Query("SELECT bc FROM BookCopy bc WHERE bc.book.isbn = :isbn AND bc.status = :status")
-    List<BookCopy> findBookCopiesByIsbnAndStatus(Integer isbn, String status);
-
     @Query("SELECT COUNT(bc) FROM BookCopy bc WHERE bc.book.isbn = :isbn AND bc.status = 'free'")
     int countFreeBookCopiesByIsbn(@Param("isbn") Long isbn);
 

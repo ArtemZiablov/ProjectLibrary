@@ -10,7 +10,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "Book")
-@Getter @Setter @NoArgsConstructor @RequiredArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
 @ToString(exclude = {"bookReservations"})
 public class Book {
 
@@ -91,6 +94,4 @@ public class Book {
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     private List<BookCopy> bookCopies;
-
-
 }

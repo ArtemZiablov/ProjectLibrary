@@ -12,8 +12,6 @@ import java.util.Optional;
 public interface ReaderRepo extends JpaRepository<Reader, Integer> {
     Optional<Reader> findById(Integer readerId);
 
-    Optional<Reader> findByFullName(String name);
-
     Optional<Reader> findByEmail(String email);
 
     @Query("SELECT r.profilePhoto FROM Reader r WHERE r.id = :readerId")
