@@ -11,7 +11,6 @@ import ua.karazin.interfaces.ProjectLibrary.dto.LibrariansInfoDTO;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.NotAuthenticatedException;
 import ua.karazin.interfaces.ProjectLibrary.models.Librarian;
 import ua.karazin.interfaces.ProjectLibrary.security.LibrarianDetails;
-import ua.karazin.interfaces.ProjectLibrary.security.ReaderDetails;
 import ua.karazin.interfaces.ProjectLibrary.services.LibrarianService;
 
 import java.util.HashMap;

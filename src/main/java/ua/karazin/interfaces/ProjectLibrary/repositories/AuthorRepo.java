@@ -10,5 +10,4 @@ import java.util.Optional;
 @Repository
 public interface AuthorRepo extends JpaRepository<Author, Integer> {
     Optional<Author> findByFullNameAndDateOfBirth(String name, Date dateOfBirth);
-
 }

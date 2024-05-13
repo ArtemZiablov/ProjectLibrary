@@ -11,8 +11,6 @@ import java.util.Optional;
 public interface LibrarianRepo extends JpaRepository<Librarian, Integer> {
     Optional<Librarian> findLibrarianById(int librarianId);
 
-    Optional<Librarian> findByFullName(String name);
-
     Optional<Librarian> findByEmail(String email);
 
     @Query("SELECT l.profilePhoto FROM Librarian l WHERE l.id = :librarianId")

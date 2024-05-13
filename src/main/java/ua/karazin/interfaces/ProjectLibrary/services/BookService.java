@@ -24,50 +24,50 @@ public class BookService {
 
     @Transactional
     public void addBook(Book book, int copiesAmount) {
-        if (bookRepo.findByIsbn(book.getIsbn()).isPresent()){
+        if (bookRepo.findByIsbn(book.getIsbn()).isPresent()) {
             throw new BookAlreadyRegisteredException();
         }
         book.setDateOfAdd(new Date());
         bookRepo.save(book);
+
         assignBookToAuthors(book);
         assignBookToTranslators(book);
         assignBookToGenres(book);
-        bookCopyService.addBookCopies(/*new BookCopy(book.getIsbn(), "free")*/
-                new BookCopy(book, "free"), copiesAmount);
+        bookCopyService.addBookCopies(new BookCopy(book, "free"), copiesAmount);
     }
 
     private void assignBookToAuthors(Book book) {
-        for(Author author : book.getAuthors()){
+        for (Author author : book.getAuthors()) {
             author.getBooks().add(book);
         }
     }
 
     private void assignBookToTranslators(Book book) {
-        for(Translator translator : book.getTranslators()){
+        for (Translator translator : book.getTranslators()) {
             translator.getBooks().add(book);
         }
     }
 
     private void assignBookToGenres(Book book) {
-        for(Genre genre : book.getGenres()){
+        for (Genre genre : book.getGenres()) {
             genre.getBooks().add(book);
         }
     }
 
-    public Optional<Book> findBookByIsbn(Long isbn){
+    public Optional<Book> findBookByIsbn(Long isbn) {
         return bookRepo.findByIsbn(isbn);
     }
 
-    public List<Book> findBooksByTitleStartingWith(String titlePrefix){
+    public List<Book> findBooksByTitleStartingWith(String titlePrefix) {
         return bookRepo.findBooksByTitleStartingWith(titlePrefix);
     }
 
 
-   public List<Book> findBooksByAuthorsNameStartingWith(String authorsPrefix){
+    public List<Book> findBooksByAuthorsNameStartingWith(String authorsPrefix) {
         return bookRepo.findBooksByAuthorsStartingWith(authorsPrefix);
     }
 
-    public List<Book> findBooksByGenreStartingWith(String genrePrefix){
+    public List<Book> findBooksByGenreStartingWith(String genrePrefix) {
         return bookRepo.findBooksByGenreStartingWith(genrePrefix);
     }
 
@@ -75,11 +75,11 @@ public class BookService {
         return bookRepo.findNovelties(PageRequest.of(0, amount)).getContent();
     }
 
-    public Long countAllBooks(){
+    public Long countAllBooks() {
         return bookRepo.count();
     }
 
-    public HashMap<String, Integer> getBooksStatistics(){
+    public HashMap<String, Integer> getBooksStatistics() {
         HashMap<String, Integer> bookStatistics = new HashMap<>();
 
         bookStatistics.put(statisticsProperties.books(), countAllBooks().intValue());
@@ -104,8 +104,8 @@ public class BookService {
 
     private List<Book> sortByNextGenre(List<Book> books, String genre) {
         List<Book> sortedBooks = new ArrayList<>();
-        for(Book book : books){
-            for(Genre genreBook : book.getGenres()){
+        for (Book book : books) {
+            for (Genre genreBook : book.getGenres()) {
                 if (genreBook.getGenreName().toLowerCase().contains(genre.toLowerCase()))
                     sortedBooks.add(book);
             }
