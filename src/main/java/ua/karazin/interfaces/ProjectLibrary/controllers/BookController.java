@@ -40,7 +40,7 @@ public class BookController {
     private final BookProperties bookProperties;
     private final BookCopyService bookCopyService;
 
-    @PostMapping("/multiple-add-book") // putMapping
+    @PostMapping("/multiple-add-book")
     public ResponseEntity<HttpStatus> multipleAddBook(@RequestBody List<BookDTO> books,
                                                       BindingResult bindingResult) {
         log.info("Req to /book/multiple/add_book");
@@ -56,7 +56,7 @@ public class BookController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("/add-book") // putMapping
+    @PostMapping("/add-book")
     public ResponseEntity<HttpStatus> addBook(@RequestBody @Valid BookDTO bookToAddDTO,
                                               BindingResult bindingResult) {
         log.info("Req to /book/add_book : {}", bookToAddDTO);
@@ -73,7 +73,7 @@ public class BookController {
     @GetMapping("/search")
     public GetListBookDTO searchBooks(@RequestParam(value = "title") Optional<String> title,
                                       @RequestParam(value = "author") Optional<String> author,
-                                      @RequestParam(value = "genre") Optional<String> genre){
+                                      @RequestParam(value = "genre") Optional<String> genre) {
         List<Book> res;
         if (title.isPresent() && title.get().trim().length() >= 4) {
             log.info("Req to /book/search?title={}", title);
@@ -84,14 +84,13 @@ public class BookController {
         } else if (genre.isPresent() && genre.get().trim().length() >= 4) {
             log.info("Req to /book/search?genre={}", genre);
             List<String> genres = Arrays.stream(genre.get().split(","))
-                    .map(String::trim) // обрезка пробелов у каждого жанра
+                    .map(String::trim)
                     .collect(Collectors.toList());
             System.out.println(genres);
-            if(genres.size() > 1) {
+            if (genres.size() > 1) {
                 System.out.println("1");
                 res = bookService.getBooksByGenres(genres);
-            }
-            else
+            } else
                 res = bookService.findBooksByGenreStartingWith(genre.get().trim());
         } else {
             throw new NoRequestedParametersWereProvidedException();
@@ -100,19 +99,16 @@ public class BookController {
         return bookMapper.mapToGetListBookDTO(res);
     }
 
-    //@CrossOrigin(origins = "http://localhost:3001")
     @GetMapping("/info")
     public BooksInfoDTO viewBookInfo(@RequestParam(value = "isbn") Optional<Long> isbn, Authentication authentication) {
 
         if (authentication != null && authentication.getPrincipal() instanceof ReaderDetails readerDetails) {
-            String fullName = readerDetails.getUsername();/*.concat(readerDetails.getAuthorities().toString());//readerDetails.getReader().toString().concat("; role: ").concat(readerDetails.getAuthorities().toString());*/
+            String fullName = readerDetails.getUsername();
             log.info("Authenticated readers name: {}", fullName);
-        } else if(authentication != null && authentication.getPrincipal() instanceof LibrarianDetails librarianDetails) {
+        } else if (authentication != null && authentication.getPrincipal() instanceof LibrarianDetails librarianDetails) {
             String fullName = librarianDetails.getUsername();
             log.info("Authenticated librarians name: {}", fullName);
-        }
-
-        else {
+        } else {
             log.info("Authentication principal is not an instance of ReaderDetails or is null");
         }
         log.info("Req to /book/get-book-by-isbn?isbn={}", isbn);
@@ -127,7 +123,7 @@ public class BookController {
     }
 
     @GetMapping("/novelties")
-    public GetListBookDTO getNovelties(){
+    public GetListBookDTO getNovelties() {
         var novelties = bookService.getNovelties(bookProperties.noveltiesAmount());
 
         if (novelties.isEmpty())

@@ -7,20 +7,22 @@ import org.springframework.web.bind.annotation.*;
 import ua.karazin.interfaces.ProjectLibrary.dto.*;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.NoRequestedParametersWereProvidedException;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.NotAuthenticatedException;
-import ua.karazin.interfaces.ProjectLibrary.exceptions.ReadersNotFoundException;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.ReaderNotExistException;
+import ua.karazin.interfaces.ProjectLibrary.exceptions.ReadersNotFoundException;
+import ua.karazin.interfaces.ProjectLibrary.models.Author;
+import ua.karazin.interfaces.ProjectLibrary.models.Genre;
 import ua.karazin.interfaces.ProjectLibrary.models.Reader;
 import ua.karazin.interfaces.ProjectLibrary.security.LibrarianDetails;
 import ua.karazin.interfaces.ProjectLibrary.security.ReaderDetails;
 import ua.karazin.interfaces.ProjectLibrary.services.BookCopyService;
 import ua.karazin.interfaces.ProjectLibrary.services.BookReservationService;
 import ua.karazin.interfaces.ProjectLibrary.services.ReaderService;
-import ua.karazin.interfaces.ProjectLibrary.utils.BookMapper;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j(topic = "ReaderController")
 @RequiredArgsConstructor
@@ -31,7 +33,6 @@ public class ReaderController {
     private final ReaderService readerService;
     private final BookCopyService bookCopyService;
     private final BookReservationService bookReservationService;
-    private final BookMapper bookMapper;
 
     @GetMapping("/info")
     public ReadersInfoDTO getReadersInfo(@RequestParam("id") Integer id, Authentication authentication) {
@@ -60,11 +61,22 @@ public class ReaderController {
                         reader.isDebtor(),
                         reader.getProfilePhoto(),
                         bookCopyService.getReadersBookCopies(id),
-                        bookMapper.mapToGetListBookDTO(bookReservationService.findReadersReservedBooks(id))
+                        bookReservationService.findReadersReservedBooks(id).stream()
+                                .map(book -> new GetBookDTO(
+                                        book.getIsbn(),
+                                        book.getTitle(),
+                                        book.getAuthors().stream().
+                                                map(Author::getFullName).collect(Collectors.joining(", ")),
+                                        book.getGenres().stream().
+                                                map(Genre::getGenreName).collect(Collectors.joining(", ")),
+                                        book.getBookPhoto()
+                                ))
+                                .toList()
 
                 )
         ).orElseThrow(ReaderNotExistException::new);
     }
+
 
     @GetMapping("/search")
     public SearchedReadersDTO findReaders(@RequestParam("name") Optional<String> name,
@@ -89,15 +101,24 @@ public class ReaderController {
     }
 
     @GetMapping("taken-books")
-    public ReadersBookCopiesDTO getReadersTakenBooks(@RequestParam("readerId") Optional<Integer> readerId) {
+    public List<ReadersBookCopyDTO> getReadersTakenBooks(@RequestParam("readerId") Optional<Integer> readerId) {
         return bookCopyService.getReadersBookCopies(readerId.orElseThrow(NoRequestedParametersWereProvidedException::new));
     }
 
     @GetMapping("reserved-books")
-    public GetListBookDTO getReadersReservedBooks(@RequestParam("readerId") Optional<Integer> readerId) {
-        var res = bookReservationService.findReadersReservedBooks(readerId.orElseThrow(NoRequestedParametersWereProvidedException::new));
-        return bookMapper.mapToGetListBookDTO(res);
+    public List<GetBookDTO> getReadersReservedBooks(@RequestParam("readerId") Optional<Integer> readerId) {
+        return bookReservationService.findReadersReservedBooks(readerId.orElseThrow(NoRequestedParametersWereProvidedException::new)).stream().map(book -> new GetBookDTO(
+                        book.getIsbn(),
+                        book.getTitle(),
+                        book.getAuthors().stream().
+                                map(Author::getFullName).collect(Collectors.joining(", ")),
+                        book.getGenres().stream().
+                                map(Genre::getGenreName).collect(Collectors.joining(", ")),
+                        book.getBookPhoto()
+                ))
+                .toList();
     }
+
 
     @GetMapping("photo")
     public Map<String, String> getPhoto(Authentication authentication) {

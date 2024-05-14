@@ -27,10 +27,9 @@ public class BookReservationController {
     private final BookProperties bookProperties;
 
     @PostMapping("/reserve-book")
-    public ResponseEntity<HttpStatus> reserveBook(@RequestParam(value = "readerId") Optional<Integer> readerId, // TODO: use only isbn parameter
-                                                  @RequestParam(value = "isbn") Optional<Long> isbn,
+    public ResponseEntity<HttpStatus> reserveBook(@RequestParam(value = "isbn") Optional<Long> isbn,
                                                   Authentication authentication) {
-        if (/*readerId.isEmpty() || */isbn.isEmpty()) {
+        if (isbn.isEmpty()) {
             throw new NoRequestedParametersWereProvidedException();
         } else {
 

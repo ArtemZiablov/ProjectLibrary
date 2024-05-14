@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.karazin.interfaces.ProjectLibrary.dto.ReadersBookCopiesDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.ReadersBookCopyDTO;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.*;
 import ua.karazin.interfaces.ProjectLibrary.models.BookCopy;
@@ -94,9 +93,9 @@ public class BookCopyService {
         bookCopy.setReader(null);
     }
 
-    public ReadersBookCopiesDTO getReadersBookCopies(Integer readerId) {
-        List<ReadersBookCopyDTO> readersBooks = bookCopyRepo.findReadersBookCopiesByReaderId(readerId);
-        return new ReadersBookCopiesDTO(readersBooks);
+    public List<ReadersBookCopyDTO> getReadersBookCopies(Integer readerId) {
+        return bookCopyRepo.findReadersBookCopiesByReaderId(readerId);
+
     }
 
     public int countFreeBookCopiesByIsbn(Long isbn) {

@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.karazin.interfaces.ProjectLibrary.configs.BookProperties;
-import ua.karazin.interfaces.ProjectLibrary.dto.*;
+import ua.karazin.interfaces.ProjectLibrary.dto.BookCopiesToAddDTO;
+import ua.karazin.interfaces.ProjectLibrary.dto.OperationWithBookCopyDTO;
+import ua.karazin.interfaces.ProjectLibrary.dto.ReadersBookCopyDTO;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.*;
 import ua.karazin.interfaces.ProjectLibrary.models.BookCopy;
 import ua.karazin.interfaces.ProjectLibrary.services.*;
@@ -33,7 +35,7 @@ public class BookCopyController {
 
     @PostMapping("/add-book-copies")
     public ResponseEntity<HttpStatus> addBookCopies(@RequestBody @Valid BookCopiesToAddDTO bookCopiesToAddDTO,
-                                              BindingResult bindingResult) {
+                                                    BindingResult bindingResult) {
 
         log.info("Req to /book-copy/add_book_copies : {}", bookCopiesToAddDTO);
 
@@ -41,7 +43,7 @@ public class BookCopyController {
             returnErrorsToClient(bindingResult);
 
         var book = bookService.findBookByIsbn(bookCopiesToAddDTO.isbn());
-        if(book.isEmpty())
+        if (book.isEmpty())
             throw new BookNotRegisteredException();
 
         bookCopyService.addBookCopies(new BookCopy(book.get(), "free"), bookCopiesToAddDTO.copiesAmount());
@@ -50,10 +52,10 @@ public class BookCopyController {
     }
 
     @PostMapping("/delete-book-copy")
-    public ResponseEntity<HttpStatus> deleteBookCopy(@RequestParam("copyId") Optional<Integer> copyId){
+    public ResponseEntity<HttpStatus> deleteBookCopy(@RequestParam("copyId") Optional<Integer> copyId) {
         log.info("Req to /book-copy/delete_book_copy : {}", copyId);
 
-        if(copyId.isPresent())
+        if (copyId.isPresent())
             bookCopyService.deleteBookCopy(copyId.get());
         else
             throw new NoRequestedParametersWereProvidedException();
@@ -62,7 +64,7 @@ public class BookCopyController {
     }
 
     @PostMapping("/assign-book-copies")
-    public ResponseEntity<HttpStatus> assignBookCopies(@RequestBody @Valid OperationWithBookCopyDTO assignBookCopiesDTO){
+    public ResponseEntity<HttpStatus> assignBookCopies(@RequestBody @Valid OperationWithBookCopyDTO assignBookCopiesDTO) {
         log.info("Req to /book-copy/assign-book-copies : {}", assignBookCopiesDTO);
 
         var reader = readerService.findReaderById(assignBookCopiesDTO.readerId()).orElseThrow(ReaderNotExistException::new);
@@ -75,8 +77,8 @@ public class BookCopyController {
         } else {
             // TODO: add librarian using Spring Security
             var librarian = librarianService.findLibrarianById(1);
-            for(BookCopy bookCopy : bookCopies) {
-                if(bookOperationService.findOpenBookOperationByReaderIdAndBookIsbn(assignBookCopiesDTO.readerId(), bookCopy.getBook().getIsbn()).isEmpty())
+            for (BookCopy bookCopy : bookCopies) {
+                if (bookOperationService.findOpenBookOperationByReaderIdAndBookIsbn(assignBookCopiesDTO.readerId(), bookCopy.getBook().getIsbn()).isEmpty())
                     bookCopyService.assignBookCopy(bookCopy, reader, librarian.get());
                 else
                     throw new BookIsAlreadyTakenByReaderException();
@@ -85,25 +87,8 @@ public class BookCopyController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    /*@PostMapping("/assign-book-copy") TODO: deprecate
-    public ResponseEntity<HttpStatus> assignBookCopy(@RequestBody @Valid OperationWithBookCopyDTO assignBookCopyDTO){
-        log.info("Req to /book-copy/assign_book_copy : {}", assignBookCopyDTO);
-
-        var reader = readerService.findReaderById(assignBookCopyDTO.readerId());
-        var bookCopy = bookCopyService.findBookCopyByCopyId(assignBookCopyDTO.bookCopiesId());
-
-        if ((long) reader.get().getBookCopies().size() >= bookProperties.bookAssignAmount())
-            throw new AssignBookLimitOutOfBoundsException();
-        else {
-            // TODO: add librarian using Spring Security
-            var librarian = librarianService.findLibrarianById(1);
-            bookCopyService.assignBookCopy(bookCopy.get(), reader.get(), librarian.get());
-        }
-        return ResponseEntity.ok(HttpStatus.OK);
-    }*/
-
     @PostMapping("/release-book-copy") // TODO: refactor
-    public ResponseEntity<HttpStatus> releaseBook(@RequestBody @Valid OperationWithBookCopyDTO releaseBookCopyDTO){
+    public ResponseEntity<HttpStatus> releaseBook(@RequestBody @Valid OperationWithBookCopyDTO releaseBookCopyDTO) {
 
         log.info("Req to /book-copy/release_book_copy : {}", releaseBookCopyDTO);
 
@@ -118,7 +103,7 @@ public class BookCopyController {
     }
 
     @GetMapping("/get-readers-books")
-    public ReadersBookCopiesDTO getReadersBooks(@RequestParam(name = "readerId") Integer readerId){
+    public List<ReadersBookCopyDTO> getReadersBooks(@RequestParam(name = "readerId") Integer readerId) { // TODO: deprecate
         log.info("Req to /book-copy/get_readers_books with readerID: {}", readerId);
 
         return bookCopyService.getReadersBookCopies(readerId);
