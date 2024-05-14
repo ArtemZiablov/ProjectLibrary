@@ -1,6 +1,7 @@
 package ua.karazin.interfaces.ProjectLibrary.dto;
 
 import java.util.Date;
+import java.util.List;
 
 public record ReadersInfoDTO(
         Integer readerId,
@@ -10,7 +11,7 @@ public record ReadersInfoDTO(
         String email,
         Boolean debtor,
         String profilePhoto,
-        ReadersBookCopiesDTO readersBooks,
-        GetListBookDTO reservedBooks
+        List<ReadersBookCopyDTO> readersBooks,
+        List<GetBookDTO> reservedBooks
 ) {
 }

@@ -50,7 +50,7 @@ public class SecurityConfig {
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
                 .authenticationProvider(authenticationProvider())
-                .csrf(csrf->csrf.disable())
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login**", "/book/search**", "/book/info**", "/book/novelties", "auth/registration/admin",
                                 "/auth/registration/multiple-readers**", "/auth/registration/multiple-librarians**").permitAll()

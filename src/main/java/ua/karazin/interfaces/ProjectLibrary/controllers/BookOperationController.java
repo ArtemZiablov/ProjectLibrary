@@ -24,7 +24,7 @@ public class BookOperationController {
 
     // TODO add endpoints for statistics functional...
     @GetMapping("/statistics")
-    public StatisticsDTO getStatistics() { // кількисть книг всього, кількість всього взятих книг
+    public StatisticsDTO getStatistics() {
         Map<String, Integer> booksStatistics = bookService.getBooksStatistics();
         Map<String, Integer> readersStatistics = readerService.getReadersStatistics();
 
