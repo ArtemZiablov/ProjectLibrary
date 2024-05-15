@@ -2,6 +2,7 @@ package ua.karazin.interfaces.ProjectLibrary.controllers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import ua.karazin.interfaces.ProjectLibrary.configs.BookProperties;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.*;
 import ua.karazin.interfaces.ProjectLibrary.security.ReaderDetails;
+import ua.karazin.interfaces.ProjectLibrary.services.BookCopyService;
 import ua.karazin.interfaces.ProjectLibrary.services.BookReservationService;
 import ua.karazin.interfaces.ProjectLibrary.services.BookService;
 import ua.karazin.interfaces.ProjectLibrary.services.ReaderService;
@@ -25,6 +27,7 @@ public class BookReservationController {
     private final ReaderService readerService;
     private final BookService bookService;
     private final BookProperties bookProperties;
+    private final BookCopyService bookCopyService;
 
     @PostMapping("/reserve-book")
     public ResponseEntity<HttpStatus> reserveBook(@RequestParam(value = "isbn") Optional<Long> isbn,
@@ -48,8 +51,22 @@ public class BookReservationController {
                 if (count > bookProperties.bookReserveAmount() - 1)
                     throw new ReservationBookLimitOutOfBoundsException();
 
-                bookReservationService.addReservation(book, reader);
+                String status;
+                String message;
+                if (bookCopyService.countAvailableBookCopies(isbn.get()) > 0) {
+                    status = "active";
+                    message = "Book reservation created successfully, you have two days";
+                } else {
+                    status = "await";
+                    message = "You will receive an email when you can get your book";
+                }
+                bookReservationService.addReservation(book, reader, status);
+
+                HttpHeaders header = new HttpHeaders();
+                header.add("Reservation", message);
+                return ResponseEntity.ok(HttpStatus.OK);
             }
+
             return ResponseEntity.ok(HttpStatus.OK);
         }
     }

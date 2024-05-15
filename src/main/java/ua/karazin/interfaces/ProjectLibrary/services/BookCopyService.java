@@ -115,4 +115,6 @@ public class BookCopyService {
                 bookReservationService.countBookReservationsByIsbn(isbn);
         return Math.max(res, 0);
     }
+
+    //public Integer count
 }
