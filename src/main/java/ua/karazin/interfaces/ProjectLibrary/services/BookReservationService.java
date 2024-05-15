@@ -21,42 +21,52 @@ public class BookReservationService {
     private final BookReservationRepo bookReservationRepo;
 
     @Transactional
-    public void addReservation(Book book, Reader reader) {
+    public void addReservation(Book book, Reader reader, String status) {
         BookReservation bookReservation = new BookReservation(
                 new Date(),
                 reader,
+                status,
                 book
         );
         bookReservationRepo.save(bookReservation);
     }
+
 
     @Transactional
     public void deleteReservation(BookReservation bookReservation) {
         bookReservationRepo.delete(bookReservation);
     }
 
-    public Optional<BookReservation> findBookReservationByBookAndReader(Book book, Reader reader){
+    public Optional<BookReservation> findBookReservationByBookAndReader(Book book, Reader reader) {
         return bookReservationRepo.findBookReservationByBookAndReader(book, reader);
     }
 
-    public List<Reader> findReadersByBookReservationOrderByReservationDate(Long isbn){
+    public List<Reader> findReadersByBookReservationOrderByReservationDate(Long isbn) {
         return bookReservationRepo.findReadersByBookReservationOrderByReservationDate(isbn);
     }
 
-    public List<Book> findReadersReservedBooks(Integer readerId){
+    public List<Book> findReadersReservedBooks(Integer readerId) {
         return bookReservationRepo.findReadersReservedBooks(readerId);
     }
 
-    public int countReadersWhoReservedBooks(){
+    public int countReadersWhoReservedBooks() {
         return bookReservationRepo.countReadersWhoReservedBooks();
     }
 
-    public int countBookReservationsByIsbn(Long isbn){
+    public int countBookReservationsByIsbn(Long isbn) {
         return bookReservationRepo.countBookReservationsByIsbn(isbn);
     }
 
-    public int countBookReservationsByReaderId(Integer readerId){
+    public int countBookReservationsByReaderId(Integer readerId) {
         return bookReservationRepo.countBookReservationsByReaderId(readerId);
+    }
+
+    public int countAwaitReservationsByIsbn(Long isbn) {
+        return bookReservationRepo.countAwaitReservationsByIsbn(isbn);
+    }
+
+    public BookReservation getOldestActiveReservationByIsbn(Long isbn) {
+        return bookReservationRepo.getOldestActiveReservationByIsbn(isbn);
     }
 
     public List<BookReservation> findExpiredReservations(int days) {
@@ -66,5 +76,10 @@ public class BookReservationService {
 
     public void removeReservation(BookReservation reservation) {
         bookReservationRepo.delete(reservation);
+    }
+
+    @Transactional
+    public void activateReservation(BookReservation bookReservation) {
+        bookReservation.setStatus("active");
     }
 }

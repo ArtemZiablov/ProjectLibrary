@@ -13,6 +13,7 @@ import ua.karazin.interfaces.ProjectLibrary.dto.OperationWithBookCopyDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.ReadersBookCopyDTO;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.*;
 import ua.karazin.interfaces.ProjectLibrary.models.BookCopy;
+import ua.karazin.interfaces.ProjectLibrary.models.BookReservation;
 import ua.karazin.interfaces.ProjectLibrary.services.*;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class BookCopyController {
     private final BookProperties bookProperties;
     private final BookOperationService bookOperationService;
     private final LibrarianService librarianService;
+    private final BookReservationService bookReservationService;
 
     @PostMapping("/add-book-copies")
     public ResponseEntity<HttpStatus> addBookCopies(@RequestBody @Valid BookCopiesToAddDTO bookCopiesToAddDTO,
@@ -100,12 +102,23 @@ public class BookCopyController {
 
         log.info("Req to /book-copy/release_book_copy : {}", releaseBookCopyDTO);
 
-        var reader = readerService.findReaderById(releaseBookCopyDTO.readerId());
-        var bookCopy = bookCopyService.findBookCopyByCopyId(releaseBookCopyDTO.bookCopiesId().get(0));
+        var reader = readerService.findReaderById(releaseBookCopyDTO.readerId()).orElseThrow(ReaderNotExistException::new);
+        var bookCopy = bookCopyService.findBookCopyByCopyId(releaseBookCopyDTO.bookCopiesId().get(0)).orElseThrow(BookCopyNotExistException::new);
 
-        // подразумеваем, что мы уже нашли ридера в конроллера Reader и получили список всех его книг
+        long isbn = bookCopy.getBook().getIsbn();
 
-        bookCopyService.releaseBookCopy(bookCopy.get(), reader.get());
+        bookCopyService.releaseBookCopy(bookCopy, reader);
+
+        int countAvailableBookCopies = bookCopyService.countAvailableBookCopies(isbn);
+        log.info("countAvailableBookCopies = {}", countAvailableBookCopies);
+        int countAwaitReservations = bookReservationService.countAwaitReservationsByIsbn(isbn);
+        log.info("countAwaitReservations = {}", countAwaitReservations);
+
+        if ( /*еще кто-то ждет резервацию*/ countAwaitReservations > 0) {
+            BookReservation oldestReservation = bookReservationService.getOldestActiveReservationByIsbn(isbn);
+            bookReservationService.activateReservation(oldestReservation);
+            //sendEmail шо у тебя осталось два дня резервации
+        }
 
         return ResponseEntity.ok(HttpStatus.OK);
     }

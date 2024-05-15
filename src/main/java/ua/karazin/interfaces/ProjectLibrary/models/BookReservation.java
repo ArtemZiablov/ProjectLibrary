@@ -7,7 +7,10 @@ import java.util.Date;
 
 @Entity
 @Table(name = "Book_reservation")
-@Getter @Setter @NoArgsConstructor @RequiredArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
 @ToString
 public class BookReservation {
 
@@ -25,6 +28,10 @@ public class BookReservation {
     @JoinColumn(name = "reader_id", referencedColumnName = "reader_id")
     @NonNull
     private Reader reader;
+
+    @Column(name = "status")
+    @NonNull
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "book_isbn", referencedColumnName = "isbn")
