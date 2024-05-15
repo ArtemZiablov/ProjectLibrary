@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ua.karazin.interfaces.ProjectLibrary.dto.ErrorDTO;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.*;
 
-
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 
@@ -26,9 +25,10 @@ public class ErrorControllerAdvice {
             OpenBookOperationAlreadyExistException.class,
             BookReservationAlreadyExistException.class,
             BookIsAlreadyTakenByReaderException.class,
-            NotAuthenticatedException.class
+            NotAuthenticatedException.class,
+            WrongIsbnException.class
     })
-    ErrorDTO notAcceptableExceptionHandler(BusinessException ex){
+    ErrorDTO notAcceptableExceptionHandler(BusinessException ex) {
         return new ErrorDTO(ex.getMessage());
     }
 
@@ -45,7 +45,7 @@ public class ErrorControllerAdvice {
             NoNoveltiesWereFoundException.class,
             BookReservationNotExistException.class
     })
-    ErrorDTO badReqExceptionHandler(BusinessException ex){
+    ErrorDTO badReqExceptionHandler(BusinessException ex) {
         return new ErrorDTO(ex.getMessage());
     }
 }

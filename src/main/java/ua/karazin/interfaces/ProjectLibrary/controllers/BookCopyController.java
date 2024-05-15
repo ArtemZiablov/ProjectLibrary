@@ -52,13 +52,21 @@ public class BookCopyController {
     }
 
     @PostMapping("/delete-book-copy")
-    public ResponseEntity<HttpStatus> deleteBookCopy(@RequestParam("copyId") Optional<Integer> copyId) {
-        log.info("Req to /book-copy/delete_book_copy : {}", copyId);
+    public ResponseEntity<HttpStatus> deleteBookCopy(
+            @RequestParam("isbn") Optional<Long> isbn,
+            @RequestParam("copyId") Optional<Integer> copyId
+    ) {
+        log.info("Req to /book-copy/delete_book_copy isbn= {}; copyId= {}", isbn, copyId);
 
-        if (copyId.isPresent())
-            bookCopyService.deleteBookCopy(copyId.get());
-        else
+        if (copyId.isEmpty() || isbn.isEmpty())
             throw new NoRequestedParametersWereProvidedException();
+        else {
+            var bookCopy = bookCopyService.findBookCopyByCopyId(copyId.get()).orElseThrow(BookCopyNotExistException::new);
+            if (bookCopy.getBook().getIsbn().equals(isbn.get())) {
+                bookCopyService.deleteBookCopy(copyId.get());
+            } else throw new WrongIsbnException();
+            ;
+        }
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
