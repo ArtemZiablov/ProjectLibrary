@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login**", "/book/search**", "/book/info**", "/book/novelties", "auth/registration/admin",
+                        .requestMatchers("/book-copy/delete-book-copy**", "/auth/login**", "/book/search**", "/book/info**", "/book/novelties", "auth/registration/admin",
                                 "/auth/registration/multiple-readers**", "/auth/registration/multiple-librarians**").permitAll()
 
                         .requestMatchers("/book/add-book**", "/book-copy/add-book-copies**", "/book-copy/delete-book-copy",
