@@ -2,9 +2,6 @@ package ua.karazin.interfaces.ProjectLibrary.controllers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ua.karazin.interfaces.ProjectLibrary.configs.BookProperties;
@@ -15,6 +12,8 @@ import ua.karazin.interfaces.ProjectLibrary.services.BookReservationService;
 import ua.karazin.interfaces.ProjectLibrary.services.BookService;
 import ua.karazin.interfaces.ProjectLibrary.services.ReaderService;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j(topic = "BookReservationController")
@@ -30,11 +29,12 @@ public class BookReservationController {
     private final BookCopyService bookCopyService;
 
     @PostMapping("/reserve-book")
-    public ResponseEntity<HttpStatus> reserveBook(@RequestParam(value = "isbn") Optional<Long> isbn,
-                                                  Authentication authentication) {
+    public Map<String, String> reserveBook(@RequestParam(value = "isbn") Optional<Long> isbn,
+                                           Authentication authentication) {
         if (isbn.isEmpty()) {
             throw new NoRequestedParametersWereProvidedException();
         } else {
+            Map<String, String> res = new HashMap<>();
 
             if (authentication != null && authentication.getPrincipal() instanceof ReaderDetails readerDetails) {
                 int readerID = readerDetails.reader().getId();
@@ -52,24 +52,17 @@ public class BookReservationController {
                     throw new ReservationBookLimitOutOfBoundsException();
 
                 String status;
-                String message;
-                if (bookCopyService.countAvailableBookCopies(isbn.get()) > 0) {
+                if (bookCopyService.countAvailableBookCopies(isbn.get()) > 0)
                     status = bookProperties.activeReservationStatus();
-                    message = "Book reservation created successfully, you have two days";
-                } else {
+                else
                     status = bookProperties.awaitReservationStatus();
-                    message = "You will receive an email when you can get your book";
-                }
                 bookReservationService.addReservation(book, reader, status);
 
-                HttpHeaders header = new HttpHeaders();
-                header.add("Reservation", message);
-                return ResponseEntity.ok()
-                        .headers(header)
-                        .build();
+                res.put("response", "ok");
+                return res;
             }
-
-            return ResponseEntity.ok(HttpStatus.OK);
+            res.put("response", "not acceptable");
+            return res;
         }
     }
 }
