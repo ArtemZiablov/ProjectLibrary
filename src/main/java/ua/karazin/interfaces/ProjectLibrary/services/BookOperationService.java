@@ -8,7 +8,10 @@ import ua.karazin.interfaces.ProjectLibrary.exceptions.BookOperationDoesntExistE
 import ua.karazin.interfaces.ProjectLibrary.models.*;
 import ua.karazin.interfaces.ProjectLibrary.repositories.BookOperationRepo;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j(topic = "BookOperationService")
 @Service
@@ -16,7 +19,6 @@ import java.util.*;
 @Transactional(readOnly = true)
 public class BookOperationService {
     private final BookOperationRepo bookOperationRepo;
-
 
     @Transactional
     public void addOperation(BookCopy bookCopy, Reader reader, Librarian librarian) {
@@ -46,31 +48,36 @@ public class BookOperationService {
         bookOperationRepo.save(bookOperation);
     }
 
-    public Optional<BookOperation> findBookOperationByBookCopyAndReaderAndDateOfReturnIsNull(BookCopy bookCopy, Reader reader){
+    public Optional<BookOperation> findBookOperationByBookCopyAndReaderAndDateOfReturnIsNull(BookCopy bookCopy, Reader reader) {
         return bookOperationRepo.findBookOperationByBookCopyAndReaderAndDateOfReturnIsNull(bookCopy, reader);
     }
 
     @Transactional
-    public void releaseOperation(BookCopy bookCopy, Reader reader){
+    public void releaseOperation(BookCopy bookCopy, Reader reader) {
         var operation = findBookOperationByBookCopyAndReaderAndDateOfReturnIsNull(bookCopy, reader);
         if (operation.isEmpty())
             throw new BookOperationDoesntExistException();
         operation.get().setDateOfReturn(new Date());
     }
 
-    public List<BookOperation> findBookOperationsByDateOfReturnIsNull(){
+    public List<BookOperation> findBookOperationsByDateOfReturnIsNull() {
         return bookOperationRepo.findBookOperationsByDateOfReturnIsNull();
     }
 
-    public Optional<Book> findOpenBookOperationByReaderIdAndBookIsbn(Integer readerId, Long isbn){
+    public Optional<Book> findOpenBookOperationByReaderIdAndBookIsbn(Integer readerId, Long isbn) {
         return bookOperationRepo.findOpenBookOperationByReaderIdAndBookIsbn(readerId, isbn);
     }
 
-    public int countOwedBooks(){
+    public int countOwedBooks() {
         return bookOperationRepo.countOwedBooks();
     }
 
-    public int countOngoingReaders(){
+    public int countOngoingReaders() {
         return bookOperationRepo.countOngoingReaders();
     }
+
+    public List<Reader> getOngoingReaders() {
+        return bookOperationRepo.getOngoingReaders();
+    }
+
 }

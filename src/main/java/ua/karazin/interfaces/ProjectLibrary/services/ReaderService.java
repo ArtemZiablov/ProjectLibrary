@@ -58,6 +58,10 @@ public class ReaderService {
         return readersStatistics;
     }
 
+    public List<Reader> getDebtors() {
+        return readerRepo.findDebtors();
+    }
+
     public String getReadersPhoto(Integer readerId) {
         return readerRepo.findReadersPhoto(readerId);
     }

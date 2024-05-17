@@ -6,6 +6,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public record BookProperties(
         int bookAssignAmount,
         int bookReserveAmount,
-        int noveltiesAmount
+        int reservationDays,
+        int noveltiesAmount,
+        String activeReservationStatus,
+        String awaitReservationStatus
+
 ) {
 }

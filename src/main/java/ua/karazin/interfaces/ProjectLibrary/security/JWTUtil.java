@@ -14,10 +14,10 @@ import java.util.Date;
 @Component
 public class JWTUtil {
 
-    @Value("jwtSecret")
+    @Value("${jwtSecret}")
     private String jwtSecret;
 
-    public String generateToken(String email, String fullName, String role, Integer userId){
+    public String generateToken(String email, String fullName, String role, Integer userId) {
         Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(60).toInstant());
 
         return JWT.create()
