@@ -54,17 +54,19 @@ public class BookReservationController {
                 String status;
                 String message;
                 if (bookCopyService.countAvailableBookCopies(isbn.get()) > 0) {
-                    status = "active";
+                    status = bookProperties.activeReservationStatus();
                     message = "Book reservation created successfully, you have two days";
                 } else {
-                    status = "await";
+                    status = bookProperties.awaitReservationStatus();
                     message = "You will receive an email when you can get your book";
                 }
                 bookReservationService.addReservation(book, reader, status);
 
                 HttpHeaders header = new HttpHeaders();
                 header.add("Reservation", message);
-                return ResponseEntity.ok(HttpStatus.OK);
+                return ResponseEntity.ok()
+                        .headers(header)
+                        .build();
             }
 
             return ResponseEntity.ok(HttpStatus.OK);

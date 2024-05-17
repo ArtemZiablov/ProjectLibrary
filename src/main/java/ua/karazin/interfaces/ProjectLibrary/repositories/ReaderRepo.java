@@ -26,4 +26,7 @@ public interface ReaderRepo extends JpaRepository<Reader, Integer> {
 
     @Query("SELECT COUNT(r) FROM Reader r WHERE r.debtor = true ")
     int countDebtors();
+
+    @Query("SELECT r FROM Reader r WHERE r.debtor = true ")
+    List<Reader> findDebtors();
 }

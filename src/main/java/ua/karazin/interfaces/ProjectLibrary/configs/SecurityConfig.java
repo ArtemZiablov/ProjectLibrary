@@ -57,7 +57,7 @@ public class SecurityConfig {
 
                         .requestMatchers("/book/add-book**", "/book-copy/add-book-copies**", "/book-copy/delete-book-copy",
                                 "/book-copy/assign-book-copy", "/book-copy/release-book-copy**", "/reader/search**",
-                                "/librarian/info**", "/librarian/photo**").hasRole("LIBRARIAN")
+                                "/librarian/info**", "/librarian/photo**", "/book-operation**").hasRole("LIBRARIAN")
 
                         .requestMatchers("/book-copy/get-readers-books**", "/book-reservation/reserve-book**", "/reader/photo**").hasRole("READER")
 

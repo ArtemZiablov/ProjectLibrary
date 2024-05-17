@@ -24,6 +24,9 @@ public interface BookOperationRepo extends JpaRepository<BookOperation, Integer>
     @Query("SELECT COUNT(DISTINCT bo.reader) FROM BookOperation bo WHERE bo.dateOfReturn IS NULL")
     int countOngoingReaders();
 
+    @Query("SELECT DISTINCT bo.reader FROM BookOperation bo WHERE bo.dateOfReturn IS NULL")
+    List<Reader> getOngoingReaders();
+
     @Query("SELECT bo.bookCopy.book FROM BookOperation bo WHERE bo.dateOfReturn IS NULL AND bo.reader.id = :readerId AND bo.bookCopy.book.isbn = :isbn")
     Optional<Book> findOpenBookOperationByReaderIdAndBookIsbn(Integer readerId, Long isbn);
 

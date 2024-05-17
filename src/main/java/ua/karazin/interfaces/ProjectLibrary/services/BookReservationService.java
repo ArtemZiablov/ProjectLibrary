@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ua.karazin.interfaces.ProjectLibrary.configs.BookProperties;
 import ua.karazin.interfaces.ProjectLibrary.models.Book;
 import ua.karazin.interfaces.ProjectLibrary.models.BookReservation;
 import ua.karazin.interfaces.ProjectLibrary.models.Reader;
@@ -19,6 +20,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class BookReservationService {
     private final BookReservationRepo bookReservationRepo;
+    private final BookProperties bookProperties;
 
     @Transactional
     public void addReservation(Book book, Reader reader, String status) {
@@ -69,17 +71,21 @@ public class BookReservationService {
         return bookReservationRepo.getOldestActiveReservationByIsbn(isbn);
     }
 
-    public List<BookReservation> findExpiredReservations(int days) {
+    public List<BookReservation> findExpiredActiveReservations(int days) {
         Date cutoffDate = new Date(System.currentTimeMillis() - days * 24 * 60 * 60 * 1000);
-        return bookReservationRepo.findByDateOfReservationBefore(cutoffDate);
+        return bookReservationRepo.findExpiredActiveReservations(cutoffDate);
     }
 
     public void removeReservation(BookReservation reservation) {
         bookReservationRepo.delete(reservation);
     }
 
+    public List<Reader> getReadersWhoReservedBooks() {
+        return bookReservationRepo.getReadersWhoReservedBooks();
+    }
+
     @Transactional
     public void activateReservation(BookReservation bookReservation) {
-        bookReservation.setStatus("active");
+        bookReservation.setStatus(bookProperties.activeReservationStatus());
     }
 }

@@ -37,7 +37,11 @@ public interface BookReservationRepo extends JpaRepository<BookReservation, Inte
     @Query("SELECT br.book FROM BookReservation br WHERE br.reader.id = :readerId")
     List<Book> findReadersReservedBooks(Integer readerId);
 
-    List<BookReservation> findByDateOfReservationBefore(Date date);
+    @Query("SELECT br FROM BookReservation br WHERE br.dateOfReservation < :date AND br.status = 'active'")
+    List<BookReservation> findExpiredActiveReservations(Date date);
+
+    @Query("SELECT DISTINCT br.reader FROM BookReservation br")
+    List<Reader> getReadersWhoReservedBooks();
 
     @Query("SELECT br FROM BookReservation br " +
             "WHERE br.book.isbn = :isbn AND br.status = 'await' " +
