@@ -1,0 +1,55 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #141414; /* Добавим светлый фон */
+    font-family: 'Titillium Web', sans-serif;
+}
+
+.login-form h2 {
+    margin-bottom: 20px; /* Добавим отступ между заголовком и полями ввода */
+    text-align: center;
+    font-family: 'Titillium Web', sans-serif;
+    color: #DDDDDD;
+}
+
+.login-form {
+    width: 300px; /* Зададим фиксированную ширину формы */
+    padding: 20px;
+    background-color: #1C1C1E;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1); /* Добавим тень */
+    text-align: center; /* Центрируем содержимое формы */
+    font-family: 'Titillium Web', sans-serif;
+}
+
+.login-form input {
+    width: calc(100% - 20px);
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Titillium Web', sans-serif;
+    background-color: #dddddd;
+}
+
+.login-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #272727;
+    color: #DDDDDD;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Добавим плавный переход при наведении */
+    font-family: 'Titillium Web', sans-serif;
+}
+
+.login-form button:hover {
+    background-color: #3F3F3F; /* Непрозрачный белый цвет при наведении */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #DDDDDD;
+}

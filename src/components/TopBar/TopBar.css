@@ -1,0 +1,50 @@
+.top-bar {
+    background-color: #1C1C1E;
+    color: #dddddd;
+    display: flex;
+    justify-content: space-between; /* Равномерное распределение элементов по ширине контейнера */
+    align-items: center; /* Выравнивание элементов по вертикали */
+}
+
+/* Стили для логотипа */
+.logo {
+    cursor: pointer; /* Изменение курсора при наведении для обозначения кликабельности */
+}
+
+/* Стили для кнопки поиска */
+.search {
+    flex: 1; /* Занимает всё доступное пространство */
+    margin: 0 10px; /* Пример отступов от краев */
+}
+
+/* Стили для аватарки пользователя */
+.user-avatar {
+}
+
+.sign-in {
+    margin-left: 20px; /* Добавляем отступ слева */
+    margin-right: 25px;
+    margin-top: -30px;
+    cursor: pointer; /* Делаем курсор указателем при наведении */
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+    background-color: #272727;
+    color: white; /* Цвет текста */
+    padding: 10px 20px; /* Внутренние отступы для более удобного размера */
+    border: none; /* Убираем границу */
+    border-radius: 5px; /* Закругляем углы */
+    font-size: 17px; /* Размер шрифта */
+    text-align: center; /* Выравнивание текста по центру */
+}
+
+.sign-in:hover {
+    background-color: #3F3F3F; /* Непрозрачный белый цвет при наведении */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #DDDDDD;
+    transform: scale(1.05);
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+}
+
+
+
+
+

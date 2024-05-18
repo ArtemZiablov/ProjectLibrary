@@ -1,0 +1,21 @@
+.user-avatar {
+    margin-left: 20px; /* Добавляем отступ слева */
+    margin-right: 25px;
+    margin-top: 10px;
+    border-radius: 50%;
+    cursor: pointer; /* Делаем курсор указателем при наведении */
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+}
+
+.user-avatar img {
+    width: 90px; /* Задаем ширину аватарки */
+    height: auto; /* Позволяет изображению подстраиваться под заданную ширину */
+    border-radius: 50%;
+    border: 2px solid #DDDDDD;
+}
+
+.user-avatar:hover{
+    transform: scale(1.07);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+}

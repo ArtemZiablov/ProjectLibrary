@@ -1,0 +1,23 @@
+/* src/components/BottomBar/BottomBar.css */
+
+.bottom-bar {
+    overflow: auto;
+    position: fixed; /* Фиксированное позиционирование */
+    bottom: 0; /* Располагаем внизу страницы */
+    left: 120px; /* Отступ слева */
+    right: 120px; /* Отступ справа */
+    height: calc(100vh - 160px); /* Высота бара */
+    background-color: #1C1C1E; /* Цвет фона */
+    scrollbar-width: none;
+}
+
+.top-container {
+    display: flex; /* Используем flexbox для отображения элементов в одной строке */
+    justify-content: center; /* Центрируем элементы по горизонтали */
+    align-items: center; /* Выравниваем элементы по вертикали */
+    padding: 10px; /* Отступы вокруг контейнера */
+}
+
+.bottom-container {
+
+}

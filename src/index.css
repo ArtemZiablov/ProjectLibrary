@@ -1,13 +1,21 @@
+@font-face {
+  font-family: 'Titillium Web';
+  src: local('../my-app/public'), url(TitilliumWeb-Regular.ttf) format('truetype');
+  src: local('../my-app/public'), url(TitilliumWeb-Bold.ttf) format('truetype');
+  /* Другие форматы, если необходимо */
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'Titillium Web',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', 'Titillium Web',
     monospace;
 }

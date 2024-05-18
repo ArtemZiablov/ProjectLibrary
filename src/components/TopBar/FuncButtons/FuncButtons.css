@@ -1,0 +1,26 @@
+.func-button{
+    display: flex;
+}
+.func-button button {
+    height: 35px;
+    width: 150px;
+    background-color: #272727;
+    color: #dddddd;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 7px;
+    font-size: 16px;
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+    font-family: 'Titillium Web', sans-serif;
+}
+
+.func-button button:hover {
+    background-color: #3F3F3F; /* Непрозрачный белый цвет при наведении */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #DDDDDD;
+    transform: scale(1.05);
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+}
+

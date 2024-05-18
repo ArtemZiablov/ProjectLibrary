@@ -1,0 +1,87 @@
+/* BookContainer.css */
+
+.book-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Только две книги на одном ряду */
+    grid-gap: 20px;
+    padding: 20px; /* Отступы от краев */
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.book {
+    border: 2px solid rgba(20, 20, 20, 0.68); /* Рамка */
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #252527;
+    color: #DDDDDD;
+    display: flex; /* Устанавливаем flex-контейнер */
+    align-items: center; /* Выравниваем элементы по центру по вертикали */
+    position: relative;
+}
+
+.book img {
+    border: 2px solid #DDDDDD;
+    width: 115px !important; /* Максимальная ширина изображения */
+    height: 155px !important;
+    border-radius: 5px;
+    margin-right: 10px; /* Отступ справа от изображения */
+}
+
+.book-info {
+    flex: 1; /* Расширяет контейнер с информацией, чтобы занять всю доступную ширину */
+    margin-left: 5px;
+    align-self: start;
+    margin-top: 5px;
+    margin-bottom: 40px;
+}
+
+.book-info h2 {
+    margin: 0 0 10px;
+    font-size: 22px; /* Размер текста в пикселях */
+}
+
+.book-info p {
+    margin: 0 0 0;
+    font-size: 18px; /* Размер текста в пикселях */
+}
+
+.title-button{
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: #DDDDDD; /* Цвет текста кнопки */
+    text-decoration: underline; /* Подчеркивание текста */
+    margin-top: 5px;
+    padding: 0;
+    font-size: 20px; /* Размер текста в пикселях */
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.accept-button {
+    position: absolute;
+    margin-top: 50px;
+    bottom: 5px;
+    right: 5px;
+    height: auto;
+    width: fit-content;
+    background-color: #272727;
+    color: #dddddd;
+    padding: 8px 10px;
+    border: 1px solid #DDDDDD; /* Добавляем границу */
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 7px;
+    font-size: 16px;
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавляем плавную анимацию */
+}
+
+.accept-button:hover {
+    background-color: #3F3F3F; /* Непрозрачный белый цвет при наведении */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #DDDDDD;
+    transform: scale(1.05);
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+}

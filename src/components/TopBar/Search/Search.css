@@ -1,0 +1,15 @@
+.search {
+    display: flex;
+    align-items: center;
+
+
+}
+
+.search-text-input {
+    flex: 1; /* Занимает всё доступное пространство */
+
+}
+
+.search-buttons {
+    margin-left: 1px; /* Пример отступа между элементами */
+}

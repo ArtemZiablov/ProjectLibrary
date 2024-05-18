@@ -1,0 +1,67 @@
+.case-buttons {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 25px;
+}
+
+.case-buttons button {
+    margin: 0 10px;
+    padding: 15px 30px;
+    background-color: #272727;
+    color: #dddddd;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 20px;
+}
+
+.case-buttons button.selected {
+    background-color: #3F3F3F; /* Непрозрачный белый цвет при наведении */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #DDDDDD;
+    transform: scale(1.05);
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+}
+
+.case-buttons button:not(:last-child) {
+    margin-right: 30px; /* добавляем правый отступ для всех кнопок, кроме последней */
+}
+
+.add-book-container p{
+    text-align: center;
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 20px;
+}
+
+.add-book-form .form-group {
+    margin-bottom: 0; /* Adjust as needed */
+}
+
+.button-group {
+    margin-top: 10px; /* Adjust as needed */
+}
+
+.close-button-reader {
+    position: absolute;
+    top: 35px !important;
+    right: 55px !important;
+    padding: 0 !important;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.close-button-reader img {
+    border: none !important;
+    width: 25px !important;
+    height: auto;
+}
+
+.close-button-reader:hover{
+    transition: transform 0.3s, box-shadow 0.3s;
+    transform: scale(1.07);
+}
+
+

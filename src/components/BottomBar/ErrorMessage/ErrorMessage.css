@@ -1,0 +1,13 @@
+.error-message {
+    position: fixed; /* Фиксированное позиционирование */
+    top: 50%; /* Располагаем верхнюю границу по середине страницы */
+    left: 50%; /* Располагаем левую границу по середине страницы */
+    transform: translate(-50%, -50%); /* Центрируем объект относительно центра страницы */
+    border: 2px solid rgba(20, 20, 20, 0.68); /* Рамка */
+    border-radius: 5px;
+    padding: 25px;
+    background-color: #252527;
+    color: #DDDDDD;
+    font-size: 26px;
+    font-family: 'Titillium Web', sans-serif;
+}

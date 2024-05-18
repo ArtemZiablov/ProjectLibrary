@@ -1,0 +1,15 @@
+/* src/components/Title/Title.css */
+
+.title {
+    font-size: 24px; /* Размер шрифта */
+    font-weight: bold; /* Жирный шрифт */
+    text-align: center; /* Выравнивание текста по центру */
+    background-color: #252527;
+    border: 2px solid rgba(20, 20, 20, 0.68); /* Рамка */
+    color: #DDDDDD;
+    padding: 10px 30px; /* Отступы внутри рамки */
+    border-radius: 8px; /* Скругление углов */
+    width: fit-content; /* Ширина элемента по содержимому */
+    margin-right: 7px; /* Отступ справа */
+    margin-top: 10px;
+}
