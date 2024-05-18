@@ -3,7 +3,7 @@
 ## Contributors
 - [Sviatoslav Siatynia](https://github.com/SviatoslavSiatynia)
 - [Artem Ziablov](https://github.com/ArtemZiablov)
-- [Taras Buksha](github.com/JustGNUKen)
+- [Taras Buksha](https://github.com/JustGNUKen)
 
 ## Overview
 
@@ -34,7 +34,7 @@ Welcome to the Library Management System (LMS) Web App – a cutting-edge and us
 
 1. **Search and Filters:**
    - Powerful search functionality to find books based on various criteria.
-   - Filters for quick access to specific genres, authors, or available books.
+   - Filters for quick access to specific genres, authors, or titles.
 
 2. **Book Reservation:**
    - Reserve books that are currently checked out by other readers.
@@ -44,8 +44,8 @@ Welcome to the Library Management System (LMS) Web App – a cutting-edge and us
    - Track personal reading history, including borrowed and reserved books.
 
 4. **Profile Management:**
-   - Access and update personal library account information.
+   - Access personal library account information.
    - View current reservations, borrowed books, and due dates.
 
 ## Database Schema
-[Link to Database Schema](https://drive.google.com/file/d/1YT6wqWTHhum-XA3YA2S9TzZfJEGQWzvP/view?usp=sharing)
+[Link to Database Schema](https://drive.google.com/file/d/1cFD5hATLckTpsOjdPXe2lb7o9cCpcEmp/view)
