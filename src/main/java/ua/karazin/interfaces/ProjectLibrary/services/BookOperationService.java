@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ua.karazin.interfaces.ProjectLibrary.dto.ReadersReturnedBookDTO;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.BookOperationDoesntExistException;
 import ua.karazin.interfaces.ProjectLibrary.models.*;
 import ua.karazin.interfaces.ProjectLibrary.repositories.BookOperationRepo;
@@ -12,6 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j(topic = "BookOperationService")
 @Service
@@ -80,4 +82,19 @@ public class BookOperationService {
         return bookOperationRepo.getOngoingReaders();
     }
 
+    public List<ReadersReturnedBookDTO> findReadersReturnedBooks(Integer id) {
+        var operations = bookOperationRepo.findByDateOfReturnNotNullAndReader_Id(id);
+        return operations.stream()
+                .map(operation -> new ReadersReturnedBookDTO(
+                        operation.getBookCopy().getBook().getIsbn(),
+                        operation.getBookCopy().getBook().getTitle(),
+                        operation.getBookCopy().getBook().getAuthors().stream().map(Author::getFullName)
+                                .collect(Collectors.joining(", ")),
+                        operation.getBookCopy().getBook().getGenres().stream().map(Genre::getGenreName)
+                                .collect(Collectors.joining(", ")),
+                        operation.getBookCopy().getBook().getBookPhoto(),
+                        operation.getDateOfIssuance(),
+                        operation.getDateOfReturn()
+                )).toList();
+    }
 }

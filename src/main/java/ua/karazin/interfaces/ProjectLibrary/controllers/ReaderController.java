@@ -4,24 +4,28 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import ua.karazin.interfaces.ProjectLibrary.configs.BookProperties;
 import ua.karazin.interfaces.ProjectLibrary.dto.*;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.NoRequestedParametersWereProvidedException;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.NotAuthenticatedException;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.ReaderNotExistException;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.ReadersNotFoundException;
 import ua.karazin.interfaces.ProjectLibrary.models.Author;
+import ua.karazin.interfaces.ProjectLibrary.models.BookReservation;
 import ua.karazin.interfaces.ProjectLibrary.models.Genre;
 import ua.karazin.interfaces.ProjectLibrary.models.Reader;
 import ua.karazin.interfaces.ProjectLibrary.security.LibrarianDetails;
 import ua.karazin.interfaces.ProjectLibrary.security.ReaderDetails;
 import ua.karazin.interfaces.ProjectLibrary.services.BookCopyService;
+import ua.karazin.interfaces.ProjectLibrary.services.BookOperationService;
 import ua.karazin.interfaces.ProjectLibrary.services.BookReservationService;
 import ua.karazin.interfaces.ProjectLibrary.services.ReaderService;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j(topic = "ReaderController")
@@ -33,6 +37,8 @@ public class ReaderController {
     private final ReaderService readerService;
     private final BookCopyService bookCopyService;
     private final BookReservationService bookReservationService;
+    private final BookOperationService bookOperationService;
+    private final BookProperties bookProperties;
 
     @GetMapping("/info")
     public ReadersInfoDTO getReadersInfo(@RequestParam("id") Integer id, Authentication authentication) {
@@ -100,27 +106,73 @@ public class ReaderController {
         return mapToSearchedReadersDTO(res);
     }
 
-    @GetMapping("taken-books")
+    @GetMapping("/taken-books")
     public List<ReadersBookCopyDTO> getReadersTakenBooks(@RequestParam("readerId") Optional<Integer> readerId) {
         return bookCopyService.getReadersBookCopies(readerId.orElseThrow(NoRequestedParametersWereProvidedException::new));
     }
 
-    @GetMapping("reserved-books")
-    public List<GetBookDTO> getReadersReservedBooks(@RequestParam("readerId") Optional<Integer> readerId) {
-        return bookReservationService.findReadersReservedBooks(readerId.orElseThrow(NoRequestedParametersWereProvidedException::new)).stream().map(book -> new GetBookDTO(
-                        book.getIsbn(),
-                        book.getTitle(),
-                        book.getAuthors().stream().
+    @GetMapping("/reserved-books")
+    public List<GetReservedBookDTO> getReadersReservedBooks(@RequestParam("readerId") Optional<Integer> readerId) {
+        var reservations = bookReservationService.getReadersReservations(readerId.orElseThrow(NoRequestedParametersWereProvidedException::new));
+
+        return reservations.stream()
+                .map(bookReservation -> new GetReservedBookDTO(
+                        bookReservation.getBook().getIsbn(),
+                        bookReservation.getBook().getTitle(),
+                        bookReservation.getBook().getAuthors().stream().
                                 map(Author::getFullName).collect(Collectors.joining(", ")),
-                        book.getGenres().stream().
+                        bookReservation.getBook().getGenres().stream().
                                 map(Genre::getGenreName).collect(Collectors.joining(", ")),
-                        book.getBookPhoto()
+                        bookReservation.getBook().getBookPhoto(),
+                        calculateDaysLeft(bookReservation)
                 ))
                 .toList();
     }
 
+    private int calculateDaysLeft(BookReservation reservation) {
 
-    @GetMapping("photo")
+        if (reservation.getStatus().equals(bookProperties.awaitReservationStatus()))
+            return -1;
+
+        Date dateOfReservation = reservation.getDateOfReservation();
+        LocalDateTime reservationDateTime = dateOfReservation.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime endOfWorkingDay = reservationDateTime.with(LocalTime.of(19, 0));
+        LocalDateTime startOfNextDay = reservationDateTime.with(LocalTime.of(7, 0)).plusDays(1);
+
+        int daysLeft = (int) (3 - ChronoUnit.DAYS.between(reservationDateTime.toLocalDate(), currentDateTime.toLocalDate()));
+
+        if (reservationDateTime.isBefore(startOfNextDay)) {
+            daysLeft -= 1;
+        } else if (currentDateTime.isAfter(endOfWorkingDay)) {
+            daysLeft -= 1;
+        }
+
+        if (daysLeft < 0) {
+            daysLeft = 0;
+        }
+
+        return daysLeft;
+    }
+
+
+    @GetMapping("/history")
+    public List<ReadersReturnedBookDTO> getReadersHistory(@RequestParam("readerId") Integer id, Authentication authentication) {
+        log.info("Req to /reader/history?readerId={}", id);
+        if (authentication != null && authentication.getPrincipal() instanceof ReaderDetails readerDetails) {
+            int readerId = readerDetails.reader().getId();
+            if (readerId == id) {
+                return bookOperationService.findReadersReturnedBooks(id);
+            } else throw new NotAuthenticatedException();
+        } else if (authentication != null && authentication.getPrincipal() instanceof LibrarianDetails librarianDetails) {
+            return bookOperationService.findReadersReturnedBooks(id);
+        }
+
+        throw new NotAuthenticatedException();
+
+    }
+
+    @GetMapping("/photo")
     public Map<String, String> getPhoto(Authentication authentication) {
         if (authentication != null && authentication.getPrincipal() instanceof ReaderDetails readerDetails) {
             int readerId = readerDetails.reader().getId();

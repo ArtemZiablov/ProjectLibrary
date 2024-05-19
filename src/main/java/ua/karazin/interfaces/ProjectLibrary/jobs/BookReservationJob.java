@@ -36,7 +36,7 @@ public class BookReservationJob {
                 if (oldestReservation != null) {
                     oldestReservation.setStatus(bookProperties.activeReservationStatus());
                     var reader = oldestReservation.getReader();
-                    String message = String.format("Your reservation for book %s was activated. You have two days to pick up it from the library. Cheers", reservation.getBook().getTitle());
+                    String message = String.format("Your reservation for book %s was activated. You have three days to pick up it from the library. Cheers", reservation.getBook().getTitle());
                     emailService.sendSimpleEmail(reader.getEmail(), "LMS", message);
                 }
             }

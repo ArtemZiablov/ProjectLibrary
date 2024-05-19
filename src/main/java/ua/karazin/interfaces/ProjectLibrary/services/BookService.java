@@ -95,10 +95,8 @@ public class BookService {
         var books = bookRepo.findBooksByGenreStartingWith(genres.get(0));
 
         for (int i = 1; i < genres.size(); i++) {
-            System.out.println(i + " " + books);
             books = sortByNextGenre(books, genres.get(i));
         }
-        System.out.println("Searched books: " + books);
         return books;
     }
 
@@ -111,5 +109,33 @@ public class BookService {
             }
         }
         return sortedBooks;
+    }
+
+    public List<Book> getSameAuthorsBooks(Long isbn) {
+        List<Author> authors = bookRepo.findBookAuthors(isbn);
+        List<Book> authorsBooks = new ArrayList<>();
+
+        for (Author author : authors) {
+            for (Book book : author.getBooks()) {
+                if (!authorsBooks.contains(book))
+                    authorsBooks.add(book);
+            }
+        }
+
+        return authorsBooks;
+    }
+
+    public List<Book> getSameGenresBooks(Long isbn) {
+        List<Genre> genres = bookRepo.findBookGenres(isbn);
+        List<Book> genresBooks = new ArrayList<>();
+
+        for (Genre genre : genres) {
+            for (Book book : genre.getBooks()) {
+                if (!genresBooks.contains(book))
+                    genresBooks.add(book);
+            }
+        }
+
+        return genresBooks;
     }
 }

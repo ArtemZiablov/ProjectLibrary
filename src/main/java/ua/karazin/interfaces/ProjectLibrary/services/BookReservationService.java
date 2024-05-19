@@ -51,6 +51,10 @@ public class BookReservationService {
         return bookReservationRepo.findReadersReservedBooks(readerId);
     }
 
+    public List<BookReservation> getReadersReservations(Integer readerId) {
+        return bookReservationRepo.getReadersReservations(readerId);
+    }
+
     public int countReadersWhoReservedBooks() {
         return bookReservationRepo.countReadersWhoReservedBooks();
     }
