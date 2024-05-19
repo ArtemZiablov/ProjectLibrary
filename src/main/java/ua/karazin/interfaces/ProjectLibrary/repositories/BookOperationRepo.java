@@ -18,6 +18,8 @@ public interface BookOperationRepo extends JpaRepository<BookOperation, Integer>
 
     List<BookOperation> findBookOperationsByDateOfReturnIsNull();
 
+    List<BookOperation> findByDateOfReturnNotNullAndReader_Id(int id);
+
     @Query("SELECT COUNT(bo) FROM BookOperation bo WHERE bo.dateOfReturn IS NULL AND bo.returnDeadline < CURRENT_DATE")
     int countOwedBooks();
 

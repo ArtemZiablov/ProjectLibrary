@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.karazin.interfaces.ProjectLibrary.configs.BookProperties;
@@ -14,6 +15,8 @@ import ua.karazin.interfaces.ProjectLibrary.dto.ReadersBookCopyDTO;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.*;
 import ua.karazin.interfaces.ProjectLibrary.models.BookCopy;
 import ua.karazin.interfaces.ProjectLibrary.models.BookReservation;
+import ua.karazin.interfaces.ProjectLibrary.models.Librarian;
+import ua.karazin.interfaces.ProjectLibrary.security.LibrarianDetails;
 import ua.karazin.interfaces.ProjectLibrary.services.*;
 
 import java.util.List;
@@ -74,8 +77,16 @@ public class BookCopyController {
     }
 
     @PostMapping("/assign-book-copies")
-    public ResponseEntity<HttpStatus> assignBookCopies(@RequestBody @Valid OperationWithBookCopyDTO assignBookCopiesDTO) {
+    public ResponseEntity<HttpStatus> assignBookCopies(@RequestBody @Valid OperationWithBookCopyDTO assignBookCopiesDTO,
+                                                       Authentication authentication) {
         log.info("Req to /book-copy/assign-book-copies : {}", assignBookCopiesDTO);
+
+        Librarian librarian;
+        
+        if (authentication.getPrincipal() instanceof LibrarianDetails librarianDetails) {
+            librarian = librarianDetails.librarian();
+        } else
+            throw new NotAuthenticatedException();
 
         var reader = readerService.findReaderById(assignBookCopiesDTO.readerId()).orElseThrow(ReaderNotExistException::new);
         List<BookCopy> bookCopies = bookCopyService.findBookCopiesByListOfCopiesId(assignBookCopiesDTO.bookCopiesId());
@@ -85,11 +96,9 @@ public class BookCopyController {
             System.out.println(readersBookAmount);
             throw new AssignBookLimitOutOfBoundsException();
         } else {
-            // TODO: add librarian using Spring Security
-            var librarian = librarianService.findLibrarianById(1);
             for (BookCopy bookCopy : bookCopies) {
                 if (bookOperationService.findOpenBookOperationByReaderIdAndBookIsbn(assignBookCopiesDTO.readerId(), bookCopy.getBook().getIsbn()).isEmpty())
-                    bookCopyService.assignBookCopy(bookCopy, reader, librarian.get());
+                    bookCopyService.assignBookCopy(bookCopy, reader, librarian);
                 else
                     throw new BookIsAlreadyTakenByReaderException();
             }

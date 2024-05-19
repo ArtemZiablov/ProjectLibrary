@@ -52,12 +52,13 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/email/send**", "/auth/login**", "/book/search**", "/book/info**", "/book/novelties", "auth/registration/admin",
+                        .requestMatchers("/email/send**", "/auth/login**", "/book/search**", "/book/info**", "/book/novelties",
+                                "/book/same-author**", "/book/same-genres**", "auth/registration/admin",
                                 "/auth/registration/multiple-readers**", "/auth/registration/multiple-librarians**").permitAll()
 
                         .requestMatchers("/book/add-book**", "/book-copy/add-book-copies**", "/book-copy/delete-book-copy",
                                 "/book-copy/assign-book-copy", "/book-copy/release-book-copy**", "/reader/search**",
-                                "/librarian/info**", "/librarian/photo**", "/book-operation**").hasRole("LIBRARIAN")
+                                "/librarian/info**", "/librarian/photo**", "/book-operation**", "auth/registration/reader").hasRole("LIBRARIAN")
 
                         .requestMatchers("/book-copy/get-readers-books**", "/book-reservation/reserve-book**", "/reader/photo**").hasRole("READER")
 

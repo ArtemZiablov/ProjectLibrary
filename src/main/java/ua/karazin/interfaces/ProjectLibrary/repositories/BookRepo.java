@@ -5,13 +5,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import ua.karazin.interfaces.ProjectLibrary.models.Author;
 import ua.karazin.interfaces.ProjectLibrary.models.Book;
+import ua.karazin.interfaces.ProjectLibrary.models.Genre;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface BookRepo extends JpaRepository<Book, Long> {
+
+    @Query("SELECT b.authors FROM Book b WHERE b.isbn = :isbn")
+    List<Author> findBookAuthors(Long isbn);
+
+    @Query("SELECT b.genres FROM Book b WHERE b.isbn = :isbn")
+    List<Genre> findBookGenres(Long isbn);
+
     Optional<Book> findByIsbn(Long isbn);
 
     @Query("SELECT b FROM Book b WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%'))")

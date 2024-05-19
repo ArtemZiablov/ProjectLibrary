@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import ua.karazin.interfaces.ProjectLibrary.configs.BookProperties;
 import ua.karazin.interfaces.ProjectLibrary.dto.BookDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.BooksInfoDTO;
+import ua.karazin.interfaces.ProjectLibrary.dto.GetBookDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.GetListBookDTO;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.NoNoveltiesWereFoundException;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.NoRequestedParametersWereProvidedException;
+import ua.karazin.interfaces.ProjectLibrary.models.Author;
 import ua.karazin.interfaces.ProjectLibrary.models.Book;
+import ua.karazin.interfaces.ProjectLibrary.models.Genre;
 import ua.karazin.interfaces.ProjectLibrary.security.LibrarianDetails;
 import ua.karazin.interfaces.ProjectLibrary.security.ReaderDetails;
 import ua.karazin.interfaces.ProjectLibrary.services.BookCopyService;
@@ -88,7 +91,6 @@ public class BookController {
                     .collect(Collectors.toList());
             System.out.println(genres);
             if (genres.size() > 1) {
-                System.out.println("1");
                 res = bookService.getBooksByGenres(genres);
             } else
                 res = bookService.findBooksByGenreStartingWith(genre.get().trim());
@@ -120,6 +122,36 @@ public class BookController {
                 .orElseThrow(NoRequestedParametersWereProvidedException::new);
         log.info("Res: {}", res);
         return res;
+    }
+
+    @GetMapping("/same-author")
+    public List<GetBookDTO> getSameAuthorsBooks(@RequestParam(value = "isbn") Optional<Long> isbn) {
+        log.info("Req to /book/same-author with isbn={}", isbn);
+        return mapToGetListBookDTO(bookService.getSameAuthorsBooks(isbn.
+                orElseThrow(NoRequestedParametersWereProvidedException::new)));
+    }
+
+    @GetMapping("/same-genres")
+    public List<GetBookDTO> getSameGenresBooks(@RequestParam(value = "isbn") Optional<Long> isbn) {
+        log.info("Req to /book/same-genres with isbn={}", isbn);
+
+        return mapToGetListBookDTO(bookService.getSameGenresBooks(isbn.
+                orElseThrow(NoRequestedParametersWereProvidedException::new)));
+
+    }
+
+    private List<GetBookDTO> mapToGetListBookDTO(List<Book> books) {
+        return books.stream().
+                map(book -> new GetBookDTO(
+                        book.getIsbn(),
+                        book.getTitle(),
+                        book.getAuthors().stream().
+                                map(Author::getFullName).collect(Collectors.joining(", ")),
+                        book.getGenres().stream().
+                                map(Genre::getGenreName).collect(Collectors.joining(", ")),
+                        book.getBookPhoto()
+                ))
+                .toList();
     }
 
     @GetMapping("/novelties")

@@ -58,10 +58,10 @@ public class BookReservationController {
                     status = bookProperties.awaitReservationStatus();
                 bookReservationService.addReservation(book, reader, status);
 
-                res.put("response", "ok");
+                res.put("response", "Book reservation created successfully, you have two days to pick it up");
                 return res;
             }
-            res.put("response", "not acceptable");
+            res.put("response", "You will receive an email when you can get your book");
             return res;
         }
     }

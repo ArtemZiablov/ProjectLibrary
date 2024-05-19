@@ -34,6 +34,9 @@ public interface BookReservationRepo extends JpaRepository<BookReservation, Inte
     @Query("SELECT COUNT(br) FROM BookReservation br WHERE br.book.isbn = :isbn AND br.status = 'await'")
     int countAwaitReservationsByIsbn(Long isbn);
 
+    @Query("SELECT br FROM BookReservation br WHERE br.reader.id = :readerId")
+    List<BookReservation> getReadersReservations(Integer readerId);
+
     @Query("SELECT br.book FROM BookReservation br WHERE br.reader.id = :readerId")
     List<Book> findReadersReservedBooks(Integer readerId);
 
