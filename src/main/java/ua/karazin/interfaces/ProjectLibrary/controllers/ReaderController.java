@@ -47,16 +47,16 @@ public class ReaderController {
         if (authentication != null && authentication.getPrincipal() instanceof ReaderDetails readerDetails) {
             int readerId = readerDetails.reader().getId();
             if (readerId == id) {
-                return getInfo(id);
+                return mapInfo(id);
             } else throw new NotAuthenticatedException();
         } else if (authentication != null && authentication.getPrincipal() instanceof LibrarianDetails librarianDetails) {
-            return getInfo(id);
+            return mapInfo(id);
         }
 
         throw new NotAuthenticatedException();
     }
 
-    private ReadersInfoDTO getInfo(Integer id) {
+    private ReadersInfoDTO mapInfo(Integer id) {
         return readerService.findReaderById(id).map(reader ->
                 new ReadersInfoDTO(
                         reader.getId(),
@@ -67,17 +67,7 @@ public class ReaderController {
                         reader.isDebtor(),
                         reader.getProfilePhoto(),
                         bookCopyService.getReadersBookCopies(id),
-                        bookReservationService.findReadersReservedBooks(id).stream()
-                                .map(book -> new GetBookDTO(
-                                        book.getIsbn(),
-                                        book.getTitle(),
-                                        book.getAuthors().stream().
-                                                map(Author::getFullName).collect(Collectors.joining(", ")),
-                                        book.getGenres().stream().
-                                                map(Genre::getGenreName).collect(Collectors.joining(", ")),
-                                        book.getBookPhoto()
-                                ))
-                                .toList(),
+                        mapToListOfGetReservedBookDTO(bookReservationService.getReadersReservations(id)),
                         bookOperationService.findReadersReturnedBooks(id)
 
                 )
@@ -116,24 +106,13 @@ public class ReaderController {
     public List<GetReservedBookDTO> getReadersReservedBooks(@RequestParam("readerId") Optional<Integer> readerId) {
         var reservations = bookReservationService.getReadersReservations(readerId.orElseThrow(NoRequestedParametersWereProvidedException::new));
 
-        return reservations.stream()
-                .map(bookReservation -> new GetReservedBookDTO(
-                        bookReservation.getBook().getIsbn(),
-                        bookReservation.getBook().getTitle(),
-                        bookReservation.getBook().getAuthors().stream().
-                                map(Author::getFullName).collect(Collectors.joining(", ")),
-                        bookReservation.getBook().getGenres().stream().
-                                map(Genre::getGenreName).collect(Collectors.joining(", ")),
-                        bookReservation.getBook().getBookPhoto(),
-                        calculateDaysLeft(bookReservation)
-                ))
-                .toList();
+        return mapToListOfGetReservedBookDTO(reservations);
     }
 
-    private int calculateDaysLeft(BookReservation reservation) {
+    private String getDaysLeftMessage(BookReservation reservation) {
 
         if (reservation.getStatus().equals(bookProperties.awaitReservationStatus()))
-            return -1;
+            return "await for email";
 
         Date dateOfReservation = reservation.getDateOfReservation();
         LocalDateTime reservationDateTime = dateOfReservation.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
@@ -153,7 +132,14 @@ public class ReaderController {
             daysLeft = 0;
         }
 
-        return daysLeft;
+        String message;
+        if (daysLeft == 0)
+            message = "pick up today";
+        else
+            message = String.format("%d left", daysLeft);
+
+        return message;
+
     }
 
 
@@ -185,7 +171,22 @@ public class ReaderController {
         } else throw new NotAuthenticatedException();
     }
 
-    protected SearchedReadersDTO mapToSearchedReadersDTO(Optional<List<Reader>> optionalReaders) {
+    private List<GetReservedBookDTO> mapToListOfGetReservedBookDTO(List<BookReservation> reservations) {
+        return reservations.stream()
+                .map(bookReservation -> new GetReservedBookDTO(
+                        bookReservation.getBook().getIsbn(),
+                        bookReservation.getBook().getTitle(),
+                        bookReservation.getBook().getAuthors().stream().
+                                map(Author::getFullName).collect(Collectors.joining(", ")),
+                        bookReservation.getBook().getGenres().stream().
+                                map(Genre::getGenreName).collect(Collectors.joining(", ")),
+                        bookReservation.getBook().getBookPhoto(),
+                        getDaysLeftMessage(bookReservation)
+                ))
+                .toList();
+    }
+
+    private SearchedReadersDTO mapToSearchedReadersDTO(Optional<List<Reader>> optionalReaders) {
         return optionalReaders.map(readers -> readers.stream()
                         .map(reader -> new SearchReaderDTO(
                                 reader.getId(), reader.getFullName(), reader.getPhoneNumber(), reader.getProfilePhoto()

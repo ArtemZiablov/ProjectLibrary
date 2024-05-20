@@ -6,6 +6,6 @@ public record GetReservedBookDTO(
         String authors,
         String genres,
         String bookPhoto,
-        Integer daysLeft
+        String daysLeft
 ) {
 }

@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ua.karazin.interfaces.ProjectLibrary.dto.AuthenticationDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.RegisterLibrarianDTO;
@@ -28,6 +29,7 @@ import ua.karazin.interfaces.ProjectLibrary.utils.ReaderValidator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -58,8 +60,7 @@ public class AuthController {
     }
 
     @PostMapping("/registration/reader")
-    public ResponseEntity<HttpStatus> registerReader(@RequestBody RegisterReaderDTO reader,
-                                                     BindingResult bindingResult) {
+    public ResponseEntity<?> registerReader(@RequestBody RegisterReaderDTO reader, BindingResult bindingResult) {
         log.info("Registering reader: " + reader.fullName());
 
         var readerToRegister = new Reader(
@@ -72,7 +73,10 @@ public class AuthController {
         );
         readerValidator.validate(readerToRegister, bindingResult);
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpStatus.BAD_REQUEST);
+            List<String> errorMessages = bindingResult.getFieldErrors().stream()
+                    .map(FieldError::getDefaultMessage)
+                    .collect(Collectors.toList());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessages);
         }
         registrationService.registerReader(readerToRegister);
 
