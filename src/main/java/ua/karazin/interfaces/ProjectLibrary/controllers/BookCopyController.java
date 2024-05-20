@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import ua.karazin.interfaces.ProjectLibrary.configs.BookProperties;
 import ua.karazin.interfaces.ProjectLibrary.dto.BookCopiesToAddDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.OperationWithBookCopyDTO;
-import ua.karazin.interfaces.ProjectLibrary.dto.ReadersBookCopyDTO;
 import ua.karazin.interfaces.ProjectLibrary.exceptions.*;
 import ua.karazin.interfaces.ProjectLibrary.models.BookCopy;
 import ua.karazin.interfaces.ProjectLibrary.models.BookReservation;
 import ua.karazin.interfaces.ProjectLibrary.models.Librarian;
+import ua.karazin.interfaces.ProjectLibrary.models.Reader;
 import ua.karazin.interfaces.ProjectLibrary.security.LibrarianDetails;
 import ua.karazin.interfaces.ProjectLibrary.services.*;
 
@@ -88,7 +88,10 @@ public class BookCopyController {
         } else
             throw new NotAuthenticatedException();
 
-        var reader = readerService.findReaderById(assignBookCopiesDTO.readerId()).orElseThrow(ReaderNotExistException::new);
+        Reader reader = readerService.findReaderById(assignBookCopiesDTO.readerId()).orElseThrow(ReaderNotExistException::new);
+        if (reader.isDebtor())
+            throw new ReaderIsDebtorException();
+
         List<BookCopy> bookCopies = bookCopyService.findBookCopiesByListOfCopiesId(assignBookCopiesDTO.bookCopiesId());
 
         var readersBookAmount = (long) reader.getBookCopies().size() + assignBookCopiesDTO.bookCopiesId().size();
@@ -132,11 +135,13 @@ public class BookCopyController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+/*
     @GetMapping("/get-readers-books")
     public List<ReadersBookCopyDTO> getReadersBooks(@RequestParam(name = "readerId") Integer readerId) { // TODO: deprecate
         log.info("Req to /book-copy/get_readers_books with readerID: {}", readerId);
 
         return bookCopyService.getReadersBookCopies(readerId);
     }
+*/
 
 }
