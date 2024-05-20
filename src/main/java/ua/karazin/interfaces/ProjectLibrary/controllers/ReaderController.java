@@ -77,7 +77,8 @@ public class ReaderController {
                                                 map(Genre::getGenreName).collect(Collectors.joining(", ")),
                                         book.getBookPhoto()
                                 ))
-                                .toList()
+                                .toList(),
+                        bookOperationService.findReadersReturnedBooks(id)
 
                 )
         ).orElseThrow(ReaderNotExistException::new);
