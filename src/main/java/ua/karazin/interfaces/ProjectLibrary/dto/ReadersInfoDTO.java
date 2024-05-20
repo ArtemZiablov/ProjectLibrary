@@ -12,7 +12,8 @@ public record ReadersInfoDTO(
         Boolean debtor,
         String profilePhoto,
         List<ReadersBookCopyDTO> readersBooks,
-        List<GetBookDTO> reservedBooks,
+        List<GetReservedBookDTO> reservedBooks,
         List<ReadersReturnedBookDTO> history
+
 ) {
 }
