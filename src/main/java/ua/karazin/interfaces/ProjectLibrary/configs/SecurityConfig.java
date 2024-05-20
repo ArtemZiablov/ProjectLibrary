@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -50,7 +51,7 @@ public class SecurityConfig {
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
                 .authenticationProvider(authenticationProvider())
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/email/send**", "/auth/login**", "/book/search**", "/book/info**", "/book/novelties",
                                 "/book/same-author**", "/book/same-genres**", "auth/registration/admin",
@@ -58,11 +59,12 @@ public class SecurityConfig {
 
                         .requestMatchers("/book/add-book**", "/book-copy/add-book-copies**", "/book-copy/delete-book-copy",
                                 "/book-copy/assign-book-copy", "/book-copy/release-book-copy**", "/reader/search**",
-                                "/librarian/info**", "/librarian/photo**", "/book-operation**", "auth/registration/reader").hasRole("LIBRARIAN")
+                                "/librarian/info**", "/librarian/photo**", "/book-operation**", "auth/registration/reader",
+                                "/auth/registration/reader**").hasRole("LIBRARIAN")
 
-                        .requestMatchers("/book-copy/get-readers-books**", "/book-reservation/reserve-book**", "/reader/photo**").hasRole("READER")
+                        .requestMatchers("/book-reservation/reserve-book**", "/reader/photo**").hasRole("READER")
 
-                        .requestMatchers("/auth/registration/reader**", "/auth/registration/librarian**").hasRole("ADMIN")
+                        .requestMatchers("/auth/registration/librarian**").hasRole("ADMIN")
 
                         .anyRequest().hasAnyRole("READER", "LIBRARIAN", "ADMIN")// Require authentication for all other requests
                 )
