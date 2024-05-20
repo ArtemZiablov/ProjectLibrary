@@ -117,7 +117,7 @@ public class BookService {
 
         for (Author author : authors) {
             for (Book book : author.getBooks()) {
-                if (!authorsBooks.contains(book))
+                if (!authorsBooks.contains(book) && !book.getIsbn().equals(isbn))
                     authorsBooks.add(book);
             }
         }
@@ -131,7 +131,7 @@ public class BookService {
 
         for (Genre genre : genres) {
             for (Book book : genre.getBooks()) {
-                if (!genresBooks.contains(book))
+                if (!genresBooks.contains(book) && !book.getIsbn().equals(isbn))
                     genresBooks.add(book);
             }
         }
