@@ -6,6 +6,7 @@ import ua.karazin.interfaces.ProjectLibrary.configs.StatisticsProperties;
 import ua.karazin.interfaces.ProjectLibrary.models.Reader;
 import ua.karazin.interfaces.ProjectLibrary.repositories.ReaderRepo;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +38,18 @@ public class ReaderService {
 
     public Optional<List<Reader>> findReadersByPhoneNumber(String phoneNumber) {
         return readerRepo.findReadersByPhoneNumber(phoneNumber);
+    }
+
+    public Optional<Reader> findByFullName(String fullName) {
+        return readerRepo.findByFullName(fullName);
+    }
+
+    public Optional<Reader> findByEmail(String email) {
+        return readerRepo.findByEmail(email);
+    }
+
+    public Optional<Reader> findByDateOfBirth(Date birthDate) {
+        return readerRepo.findByDateOfBirth(birthDate);
     }
 
     public Long countReaders() {

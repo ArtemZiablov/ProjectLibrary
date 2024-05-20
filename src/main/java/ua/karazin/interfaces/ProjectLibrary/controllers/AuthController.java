@@ -9,6 +9,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.karazin.interfaces.ProjectLibrary.dto.AuthenticationDTO;
 import ua.karazin.interfaces.ProjectLibrary.dto.RegisterLibrarianDTO;
@@ -21,7 +23,7 @@ import ua.karazin.interfaces.ProjectLibrary.security.JWTUtil;
 import ua.karazin.interfaces.ProjectLibrary.security.LibrarianDetails;
 import ua.karazin.interfaces.ProjectLibrary.security.ReaderDetails;
 import ua.karazin.interfaces.ProjectLibrary.services.RegistrationService;
-import org.springframework.security.core.GrantedAuthority;
+import ua.karazin.interfaces.ProjectLibrary.utils.ReaderValidator;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +37,7 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
     private final RegistrationService registrationService;
+    private final ReaderValidator readerValidator;
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
 
@@ -55,8 +58,10 @@ public class AuthController {
     }
 
     @PostMapping("/registration/reader")
-    public ResponseEntity<HttpStatus> registerReader(@RequestBody RegisterReaderDTO reader) {
+    public ResponseEntity<HttpStatus> registerReader(@RequestBody RegisterReaderDTO reader,
+                                                     BindingResult bindingResult) {
         log.info("Registering reader: " + reader.fullName());
+
         var readerToRegister = new Reader(
                 reader.fullName(),
                 reader.dateOfBirth(),
@@ -65,6 +70,10 @@ public class AuthController {
                 reader.email(),
                 reader.photo()
         );
+        readerValidator.validate(readerToRegister, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HttpStatus.BAD_REQUEST);
+        }
         registrationService.registerReader(readerToRegister);
 
         return ResponseEntity.ok(HttpStatus.OK);
