@@ -19,16 +19,15 @@ export interface ReaderInfo {
     phoneNumber: string;
     email: string;
     readersBooks: Book[];
-    reservedBooks: Book[]
+    reservedBooks: Book[];
+    history: Book[];
 }
 
 const ReaderProfile: React.FC<ReaderProfileProps> = ({ readerInfo , onClick}) => {
     const sortOptions = ['Title A-Z', 'Title Z-A', 'Author A-Z', 'Author Z-A', 'Genre A-Z', 'Genre Z-A'];
-    const [isLoading, setIsLoading] = useState(true);
     const [bookInfoLoaded, setBookInfoLoaded] = useState(false);
     const [book, setBook] = useState<BookInfo | null>(null);
     const [isTitleClicked, setIsTitleClicked] = useState(false);
-    const [errorState, setErrorState] = useState<string>("");
     const [selectedCase, setSelectedCase] = useState<number>(0);
     const [books, setBooks] = useState<string[]>([""]); // массив для хранения ISBN книг
     const [error, setError] = useState<string>("");
@@ -45,7 +44,6 @@ const ReaderProfile: React.FC<ReaderProfileProps> = ({ readerInfo , onClick}) =>
             setBookInfoLoaded(true);
         } catch (error) {
             console.error('Ошибка при загрузке информации о книге:', error);
-            setErrorState("idk")
         }
     };
 
@@ -89,21 +87,37 @@ const ReaderProfile: React.FC<ReaderProfileProps> = ({ readerInfo , onClick}) =>
     const reloadReaderBooks = async () => {
         try {
             // Обратите внимание на правильное формирование URL запроса с параметром query
-            const response = await fetch(`http://localhost:8080/reader/taken-books?readerId=${readerInfo.readerId}`, {
+            const response1 = await fetch(`http://localhost:8080/reader/taken-books?readerId=${readerInfo.readerId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },});
-            readerInfo.readersBooks = await response.json()
+
+            const response2 = await fetch(`http://localhost:8080/reader/reserved-books?readerId=${readerInfo.readerId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },});
+
+            const response3 = await fetch(`http://localhost:8080/reader/history?readerId=${readerInfo.readerId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },});
+
+            readerInfo.readersBooks = await response1.json()
+            readerInfo.reservedBooks = await response2.json()
+            readerInfo.history = await response3.json()
+
         } catch (error) {
             console.error('Ошибка при загрузке информации о книге:', error);
-            setErrorState("idk")
         }
     }
 
     const handleAccept = async () => {
-        // Место для логики приема книг
         const isEmpty = books.some(book => book.trim() === "");
         if (isEmpty) {
             setError("Please fill in all book ISBNs.");
@@ -134,23 +148,23 @@ const ReaderProfile: React.FC<ReaderProfileProps> = ({ readerInfo , onClick}) =>
                 if (response.ok) {
                     setBooks([""]);
                     setError("");
-                    reloadReaderBooks();
+                    await reloadReaderBooks();
                     setRequestStatus("success");
                 } else {
                     setRequestStatus("failure");
                 }
 
-                setTimeout(() => {
+                /*setTimeout(() => {
                     setRequestStatus("initial");
-                }, 1500);
+                }, 1500);*/
 
             } catch (error) {
                 console.error('Ошибка при загрузке информации о книге:', error);
                 setRequestStatus("failure");
 
-                setTimeout(() => {
+                /*setTimeout(() => {
                     setRequestStatus("initial");
-                }, 1500);
+                }, 1500);*/
             }
         }
     };
@@ -184,22 +198,26 @@ const ReaderProfile: React.FC<ReaderProfileProps> = ({ readerInfo , onClick}) =>
                     setRequestStatus("failure");
                 }
 
-                setTimeout(() => {
+                /*setTimeout(() => {
                     setRequestStatus("initial");
-                }, 1500);
+                }, 1500);*/
 
             } catch (error) {
                 console.error('Ошибка при загрузке информации о книге:', error);
                 setRequestStatus("failure");
 
-                setTimeout(() => {
+                /*setTimeout(() => {
                     setRequestStatus("initial");
-                }, 1500);
+                }, 1500);*/
             }
         };
 
 
         fetchRelease();
+    }
+
+    const handleOkClick = () =>{
+        setRequestStatus("initial");
     }
 
     return (
@@ -242,13 +260,27 @@ const ReaderProfile: React.FC<ReaderProfileProps> = ({ readerInfo , onClick}) =>
                         books={readerInfo.reservedBooks}
                         onTitleClick={handleTitleClick}
                         title={"Reader`s reserved books"}
+                        useHorizontalScroll={true}
+                        showViewMore={false}
                     />): null}
+                    {readerInfo.readersBooks.length > 0 ?(
                     <ListOfBooks
                         sortOptions={sortOptions}
                         books={readerInfo.readersBooks}
                         onTitleClick={handleTitleClick}
                         title={"Reader`s books"}
-                    />
+                        useHorizontalScroll={true}
+                        showViewMore={false}
+                    />): null}
+                    {readerInfo.history.length > 0 ?(
+                        <ListOfBooks
+                            sortOptions={sortOptions}
+                            books={readerInfo.history}
+                            onTitleClick={handleTitleClick}
+                            title={"Reader`s history"}
+                            useHorizontalScroll={false}
+                            showViewMore={true}
+                        />): null}
                 </>
             )}
             {selectedCase === 1 && (
@@ -286,8 +318,8 @@ const ReaderProfile: React.FC<ReaderProfileProps> = ({ readerInfo , onClick}) =>
                             <button type="button" className="submitButton" onClick={handleAccept}>Accept</button>
                         </form>
                     )}
-                    {requestStatus === "success" && <SuccNotifications message={"Book successfully issued"} requestStatus={requestStatus}/>}
-                    {requestStatus === "failure" && <SuccNotifications message={"Failed to issue book"} requestStatus={requestStatus}/>}
+                    {requestStatus === "success" && <SuccNotifications message={"Book successfully issued"} requestStatus={requestStatus} onOkClick={handleOkClick}/>}
+                    {requestStatus === "failure" && <SuccNotifications message={"Failed to issue book"} requestStatus={requestStatus} onOkClick={handleOkClick}/>}
                 </div>
             )}
 
@@ -303,15 +335,17 @@ const ReaderProfile: React.FC<ReaderProfileProps> = ({ readerInfo , onClick}) =>
                                                 <span style={{color: '#DC143C'}}> - {book.status}</span> : ''}</h2>
                                             <p>Author: {book.authors}</p>
                                             <p>Genre: {book.genres}</p>
-                                            {book.reserved && <p>Reserved: {book.reserved}</p>}
+                                            {book.daysLeft && <p>Reserved: {book.daysLeft}</p>}
                                             {book.returnDeadline && (
                                                 <p>
                                                     Return Date:{" "}
                                                     <span style={{color: book.status === "Owed" ? "#DC143C" : ''}}>
-                                        {book.returnDeadline}
-                                    </span>
+                                    {book.returnDeadline}
+                                </span>
                                                 </p>
                                             )}
+                                            {book.assignDate && <p>Reserved: {book.assignDate}</p>}
+                                            {book.releaseDate && <p>Reserved: {book.releaseDate}</p>}
                                         </div>
                                         <button className="accept-button" onClick={() => releaseBook(book.copyId)}>Accept the
                                             book
@@ -327,9 +361,9 @@ const ReaderProfile: React.FC<ReaderProfileProps> = ({ readerInfo , onClick}) =>
                             </div>
                         )}
                         {requestStatus === "success" &&
-                            <SuccNotifications message={"Book successfully released"} requestStatus={requestStatus}/>}
+                            <SuccNotifications message={"Book successfully released"} requestStatus={requestStatus} onOkClick={handleOkClick}/>}
                         {requestStatus === "failure" &&
-                            <SuccNotifications message={"Failed to release book"} requestStatus={requestStatus}/>}
+                            <SuccNotifications message={"Failed to release book"} requestStatus={requestStatus} onOkClick={handleOkClick}/>}
                     </div>
                 )}
             </>

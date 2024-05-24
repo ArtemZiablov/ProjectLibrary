@@ -111,6 +111,8 @@ const GuestBottomBar: React.FC<GuestBottomBarProps> = ({isTitleClicked, onTitleC
                             books={booksFromSearch}
                             onTitleClick={handleTitleClick}
                             title={`Search by ${splitted[0]}: ${splitted[1]}`}
+                            useHorizontalScroll={false}
+                            showViewMore={false}
                         />
                     )}
                     {!isTitleClicked && isNovelties && booksLoaded && (
@@ -119,6 +121,8 @@ const GuestBottomBar: React.FC<GuestBottomBarProps> = ({isTitleClicked, onTitleC
                             books={books}
                             onTitleClick={handleTitleClick}
                             title={"Novelties"}
+                            useHorizontalScroll={false}
+                            showViewMore={false}
                         />
                     )}
                     {/*{isTitleClicked && (!book || !bookInfoLoaded) && (*/}

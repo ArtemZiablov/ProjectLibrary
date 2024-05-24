@@ -2,7 +2,7 @@
     display: flex;
 }
 .func-button button {
-    height: 35px;
+    height: 40px;
     width: 150px;
     background-color: #272727;
     color: #dddddd;
@@ -10,8 +10,8 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-right: 7px;
-    font-size: 16px;
+    margin-right: 15px;
+    font-size: 18px;
     transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
     font-family: 'Titillium Web', sans-serif;
 }

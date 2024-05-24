@@ -9,9 +9,11 @@ interface ListOfBooksProps {
     books: Book[];
     onTitleClick: (isbn: string) => void; // Добавляем параметр isbn
     title: string;
+    useHorizontalScroll: boolean;
+    showViewMore: boolean;
 }
 
-const ListOfBooks: React.FC<ListOfBooksProps> = ({ sortOptions, books, onTitleClick, title }) => {
+const ListOfBooks: React.FC<ListOfBooksProps> = ({ sortOptions, books, onTitleClick, title, useHorizontalScroll, showViewMore }) => {
     const [sortedBooks, setSortedBooks] = useState<Book[]>(books);
     const [sortOption, setSortOption] = useState<string>('Title'); // Изменение начального значения на 'Title'
 
@@ -65,7 +67,7 @@ const ListOfBooks: React.FC<ListOfBooksProps> = ({ sortOptions, books, onTitleCl
                         </div>
                     </div>
                 ) : (
-                    <BookContainer books={sortedBooks} onClick={handleTitleClick}/>
+                    <BookContainer books={sortedBooks} onClick={handleTitleClick} useHorizontalScroll={useHorizontalScroll} showViewMore={showViewMore}/>
                 )}
             </div>
         </div>

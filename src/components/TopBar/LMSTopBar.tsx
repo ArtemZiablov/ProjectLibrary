@@ -73,6 +73,7 @@ const LMSTopBar: React.FC<LMSTopBarProps> = ({
             break;
         case 3:
         case 4:
+        case 5:
         default:
             componentToDisplay = <FuncButtons onButtonSelect={handleButtonSelect} />;
     }

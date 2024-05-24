@@ -26,7 +26,7 @@ const Login: React.FC = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify({username, password})
             });
 
             const responseData = await response.json();
@@ -39,7 +39,7 @@ const Login: React.FC = () => {
                 throw new Error(responseData.message || 'Login failed');
             }
 
-            const { 'jwt-token': token } = responseData;
+            const {'jwt-token': token} = responseData;
 
             // сохранить токен в localStorage или в состоянии приложения
             localStorage.setItem('token', token);
@@ -52,14 +52,19 @@ const Login: React.FC = () => {
         } catch (error) {
             console.error('Login error:', error);
             setRequestStatus("failure");
-            setTimeout(() => {
-                setRequestStatus("initial");
-            }, 1500);
         }
     };
 
+    const handleOkClick = () => {
+        setRequestStatus("initial");
+    }
+
     return (
         <div className="login-container">
+            <div className="header">
+                <img src="https://i.imgur.com/lZ7rw2l.png" alt="Logo" className="logo-login"/>
+                <h1 className="app-title">Library Management System</h1>
+            </div>
             <form className="login-form" onSubmit={handleSubmit}>
                 <h2>Login</h2>
                 <input
@@ -75,7 +80,9 @@ const Login: React.FC = () => {
                     onChange={handlePasswordChange}
                 />
                 <button type="submit">Login</button>
-                {requestStatus === "failure" && <SuccNotifications message={"Incorrect email or password"} requestStatus={requestStatus}/>}
+                {requestStatus === "failure" &&
+                    <SuccNotifications message={"Incorrect email or password"} requestStatus={requestStatus}
+                                       onOkClick={handleOkClick}/>}
             </form>
         </div>
     );

@@ -83,11 +83,10 @@ const AddBook: React.FC = () => {
         if (!exists) {
             setShowFullForm(true); // Показываем полную форму, если книга существует
         } else {
-            console.log('OK'); // Добавить состояния про успешно или нет
             setRequestStatus("success");
-            setTimeout(() => {
+            /*setTimeout(() => {
                 setRequestStatus("initial");
-            }, 1500);
+            }, 1500);*/
         }
     };
 
@@ -116,18 +115,18 @@ const AddBook: React.FC = () => {
             } else {
                 setRequestStatus("failure");
             }
-            setTimeout(() => {
+            /*setTimeout(() => {
                 setRequestStatus("initial");
-            }, 1500);
+            }, 1500);*/
 
             return response.ok;
         } catch (error) {
             console.error('Error add book:', error);
             setRequestStatus("failure");
 
-            setTimeout(() => {
+            /*setTimeout(() => {
                 setRequestStatus("initial");
-            }, 1500);
+            }, 1500);*/
             return false;
         }
     }
@@ -234,6 +233,10 @@ const AddBook: React.FC = () => {
         }
     };
 
+    const handleOkClick = () =>{
+        setRequestStatus("initial");
+    }
+
 
     const renderForm = () => {
         if (!showFullForm) {
@@ -248,7 +251,7 @@ const AddBook: React.FC = () => {
                         <input type="text" placeholder={"Copies amount..."} name="copiesAmount" value={formData.copiesAmount} onChange={handleChange} />
                     </div>
                     <button className={"submitButton"} type="submit">Check Book</button>
-                    {requestStatus === "success" && <SuccNotifications message={"Book copies successfully added"} requestStatus={requestStatus}/>}
+                    {requestStatus === "success" && <SuccNotifications message={"Book copies successfully added"} requestStatus={requestStatus} onOkClick={handleOkClick}/>}
                 </form>
             );
         } else {
@@ -337,8 +340,8 @@ const AddBook: React.FC = () => {
                         </div>
 
                         <button className={"submitButton"} type="submit">Submit</button>
-                        {requestStatus === "success" && <SuccNotifications message={"Book successfully added"} requestStatus={requestStatus}/>}
-                        {requestStatus === "failure" && <SuccNotifications message={"Failed to add book"} requestStatus={requestStatus}/>}
+                        {requestStatus === "success" && <SuccNotifications message={"Book successfully added"} requestStatus={requestStatus} onOkClick={handleOkClick}/>}
+                        {requestStatus === "failure" && <SuccNotifications message={"Failed to add book"} requestStatus={requestStatus} onOkClick={handleOkClick}/>}
                     </form>
                 </div>
             );

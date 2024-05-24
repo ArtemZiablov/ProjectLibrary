@@ -11,6 +11,7 @@ import AddBook from "./AddBook/AddBook";
 import ReaderProfile, {ReaderInfo} from "./ReaderProfile/ReaderProfile";
 import Statistics from "./Statistics/Statistics";
 import LibrarianProfile from "./LibrarianProfile/LibrarianProfile";
+import RegisterReader from "./RegisterReader/RegisterReader";
 
 interface BottomBarProps {
     isAvatarClicked: boolean; // Пропс для определения, была ли нажата кнопка UserAvatar
@@ -165,17 +166,16 @@ const BottomBar: React.FC<BottomBarProps> = ({   isAvatarClicked,
                 },});
             const data = await response.json();
 
-            // Убираем обертку readersBooks, оставляя все остальные данные
-            const { readersBooks, reservedBooks, ...rest } = data;
+            const { readersBooks, reservedBooks, history, ...rest } = data;
 
             const sortedBooks = readersBooks && readersBooks.length > 0 ?
                 readersBooks.sort((a: Book, b: Book) => a.title.localeCompare(b.title)) : [];
             const sortedReservedBooks = reservedBooks && reservedBooks.length > 0 ?
                 reservedBooks.sort((a: Book, b: Book) => a.title.localeCompare(b.title)) : [];
+            const sortedHistory = history && history.length > 0 ?
+                history.sort((a: Book, b: Book) => a.title.localeCompare(b.title)) : [];
 
-
-            // Устанавливаем данные читателя без обертки в состояние
-            setReader({ ...rest, readersBooks: sortedBooks , reservedBooks: sortedReservedBooks});
+            setReader({ ...rest, readersBooks: sortedBooks , reservedBooks: sortedReservedBooks, history: sortedHistory});
             setReaderInfoLoaded(true);
         } catch (error) {
             console.error('Ошибка при загрузке информации о читателе:', error);
@@ -209,7 +209,10 @@ const BottomBar: React.FC<BottomBarProps> = ({   isAvatarClicked,
                     {selectedButton === 4 && (
                         <Statistics/>
                     )}
-                    {selectedButton !== 3 && selectedButton !== 4 && ( // Проверяем, не выбраны ли кнопки 3 или 4
+                    {selectedButton === 5 && (
+                        <RegisterReader/>
+                    )}
+                    {selectedButton !== 3 && selectedButton !== 4 && selectedButton !== 5 && ( // Проверяем, не выбраны ли кнопки 3 или 4
                         <>
                             {isTitleClicked && book && bookInfoLoaded && (
                                 <BookProfile book={book} onClick={onBackBookClick}/>
@@ -223,6 +226,8 @@ const BottomBar: React.FC<BottomBarProps> = ({   isAvatarClicked,
                                     books={booksFromSearch}
                                     onTitleClick={handleTitleClick}
                                     title={`Search by ${splittedBook[0]}: ${splittedBook[1]}`}
+                                    useHorizontalScroll={false}
+                                    showViewMore={false}
                                 />
                             )}
                             {!isTitleClicked && !isReaderClicked && isSearchReader && readerSearchLoaded && (
@@ -239,6 +244,8 @@ const BottomBar: React.FC<BottomBarProps> = ({   isAvatarClicked,
                                     books={books}
                                     onTitleClick={handleTitleClick}
                                     title={"Novelties"}
+                                    useHorizontalScroll={false}
+                                    showViewMore={false}
                                 />
                             )}
                             {!isTitleClicked && !isReaderClicked && isSearchBook && !bookSearchLoaded && (

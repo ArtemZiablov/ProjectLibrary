@@ -54,15 +54,17 @@ const UserProfile: React.FC<UserProfileProps> = ({onBackClick}) => {
                 const data = await response.json();
 
                 // Устанавливаем данные читателя без обертки в состояние
-                const { readersBooks, reservedBooks, ...rest } = data;
+                const { readersBooks, reservedBooks, history, ...rest } = data;
 
                 const sortedBooks = readersBooks && readersBooks.length > 0 ?
                     readersBooks.sort((a: Book, b: Book) => a.title.localeCompare(b.title)) : [];
                 const sortedReservedBooks = reservedBooks && reservedBooks.length > 0 ?
                     reservedBooks.sort((a: Book, b: Book) => a.title.localeCompare(b.title)) : [];
+                const sortedHistory = history && history.length > 0 ?
+                    history.sort((a: Book, b: Book) => a.title.localeCompare(b.title)) : [];
 
                 // Устанавливаем данные читателя без обертки в состояние
-                setReader({ ...rest, readersBooks: sortedBooks , reservedBooks: sortedReservedBooks});
+                setReader({ ...rest, readersBooks: sortedBooks , reservedBooks: sortedReservedBooks, history: sortedHistory});
                 setReaderInfoLoaded(true);
             } catch (error) {
                 console.error(error);
@@ -120,10 +122,31 @@ const UserProfile: React.FC<UserProfileProps> = ({onBackClick}) => {
                     </div>
                     <div className="profile-bottom-container">
                         {reader && reader.reservedBooks && reader.reservedBooks.length > 0 ? (
-                            <ListOfBooks sortOptions={sortOptions} books={reader.reservedBooks} onTitleClick={handleTitleClick} title={"Reserved books"} />
+                            <ListOfBooks sortOptions={sortOptions}
+                                         books={reader.reservedBooks}
+                                         onTitleClick={handleTitleClick}
+                                         title={"Reserved books"}
+                                         useHorizontalScroll={true}
+                                         showViewMore={false}
+                            />
                         ) : null}
                         {reader ?(
-                            <ListOfBooks sortOptions={sortOptions} books={reader.readersBooks} onTitleClick={handleTitleClick} title={"Taken books"} />
+                            <ListOfBooks sortOptions={sortOptions}
+                                         books={reader.readersBooks}
+                                         onTitleClick={handleTitleClick}
+                                         title={"Taken books"}
+                                         useHorizontalScroll={true}
+                                         showViewMore={false}
+                            />
+                        ): null}
+                        {reader ?(
+                            <ListOfBooks sortOptions={sortOptions}
+                                         books={reader.history}
+                                         onTitleClick={handleTitleClick}
+                                         title={"History"}
+                                         useHorizontalScroll={false}
+                                         showViewMore={true}
+                            />
                         ): null}
                     </div>
                 </>

@@ -114,6 +114,8 @@ const BottomBar: React.FC<BottomBarProps> = ({ isAvatarClicked, isTitleClicked, 
                             books={booksFromSearch}
                             onTitleClick={handleTitleClick}
                             title={`Search by ${splitted[0]}: ${splitted[1]}`}
+                            useHorizontalScroll={false}
+                            showViewMore={false}
                         />
                     )}
                     {!isTitleClicked && isNovelties && booksLoaded && (
@@ -122,6 +124,8 @@ const BottomBar: React.FC<BottomBarProps> = ({ isAvatarClicked, isTitleClicked, 
                             books={books}
                             onTitleClick={handleTitleClick}
                             title={"Novelties"}
+                            useHorizontalScroll={false}
+                            showViewMore={false}
                         />
                     )}
                     {/*{isTitleClicked && (!book || !bookInfoLoaded) && (*/}

@@ -60,6 +60,28 @@
     text-align: left;
 }
 
+.view-more-button {
+    padding: 10px 20px; /* Отступы внутри кнопки */
+    background-color: #272727; /* Цвет фона кнопки */
+    color: #dddddd; /* Цвет текста кнопки */
+    border: 1px solid #DDDDDD; /* Граница кнопки */
+    border-radius: 5px; /* Скругление углов кнопки */
+    cursor: pointer; /* Курсор при наведении */
+    font-size: 16px; /* Размер текста кнопки */
+    transition: background-color 0.3s, color 0.3s; /* Плавные переходы */
+    margin-top: auto; /* Отступ от верхнего края */
+    margin-bottom: 20px; /* Отступ от нижнего края */
+    margin-left: auto;
+    margin-right: auto;
+    display: block; /* Делаем кнопку блочным элементом, чтобы установить ширину */
+    width: fit-content; /* Ширина кнопки будет подстраиваться под её содержимое */
+}
+
+.view-more-button:hover {
+    background-color: #3F3F3F; /* Непрозрачный белый цвет при наведении */
+    color: #DDDDDD; /* Цвет текста при наведении */
+}
+
 .accept-button {
     position: absolute;
     margin-top: 50px;
@@ -84,4 +106,40 @@
     color: #DDDDDD;
     transform: scale(1.05);
     transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+}
+
+.book-container.horizontal-scroll {
+    display: flex;
+    overflow-x: auto;
+    padding: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.book-container.horizontal-scroll .book {
+    flex: 0 0 auto;
+    margin-right: 20px;
+    width: 390px;
+}
+
+.book-container.horizontal-scroll::-webkit-scrollbar {
+    height: 8px; /* Высота полосы прокрутки */
+}
+
+.book-container.horizontal-scroll::-webkit-scrollbar-thumb {
+    background: #272727; /* Цвет полосы прокрутки */
+    border-radius: 4px; /* Скругление углов полосы прокрутки */
+}
+
+.book-container.horizontal-scroll::-webkit-scrollbar-thumb:hover {
+    background: #3F3F3F; /* Цвет полосы прокрутки при наведении */
+}
+
+.book-container.horizontal-scroll::-webkit-scrollbar-track {
+    background: #dddddd; /* Цвет фона для трека полосы прокрутки */
+    border-radius: 4px; /* Скругление углов трека полосы прокрутки */
+}
+
+.book-container.horizontal-scroll::-webkit-scrollbar-track:hover {
+    background: #ccc; /* Цвет фона для трека полосы прокрутки при наведении */
 }
