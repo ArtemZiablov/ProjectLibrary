@@ -1,0 +1,17 @@
+[33mcommit 3339d66ba99bb4d7300fe6d60be8cfdaa11c796d[m[33m ([m[1;36mHEAD -> [m[1;32mfrontend[m[33m)[m
+Author: Sviatoslav Siatynia <svyatiks0304@gmail.com>
+Date:   Fri May 24 13:52:28 2024 +0300
+
+    some changes ReaderProfile, Login, Notifications, etc.
+
+[33mcommit 802f625b43d0c82d7835e36af7a3013608e4074f[m[33m ([m[1;31morigin/frontend[m[33m, [m[1;32mmaster[m[33m)[m
+Author: Sviatoslav Siatynia <svyatiks0304@gmail.com>
+Date:   Sat May 18 19:58:30 2024 +0300
+
+    add my-app commit
+
+[33mcommit f632e664b2e706e3ca94efa667e2ddca526bcc8a[m
+Author: Sviatoslav Siatynia <svyatiks0304@gmail.com>
+Date:   Tue Apr 16 16:09:50 2024 +0300
+
+    Initialize project using Create React App
