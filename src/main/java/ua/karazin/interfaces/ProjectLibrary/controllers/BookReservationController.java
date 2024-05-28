@@ -52,17 +52,21 @@ public class BookReservationController {
                     throw new ReservationBookLimitOutOfBoundsException();
 
                 String status;
-                if (bookCopyService.countAvailableBookCopies(isbn.get()) > 0)
+                String message;
+                if (bookCopyService.countAvailableBookCopies(isbn.get()) > 0) {
                     status = bookProperties.activeReservationStatus();
-                else
+                    message = "Book has been successfully reserved, you have two days to pick it up";
+                } else {
                     status = bookProperties.awaitReservationStatus();
+                    message = "You will receive an email when you can get your book";
+                }
                 bookReservationService.addReservation(book, reader, status);
 
-                res.put("response", "Book has been successfully reserved, you have two days to pick it up");
+                res.put("response", message);
                 return res;
-            }
-            res.put("response", "You will receive an email when you can get your book");
-            return res;
+            } else throw new NoRequestedParametersWereProvidedException();
+            /*res.put("response", message);
+            return res;*/
         }
     }
 }
