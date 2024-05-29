@@ -35,7 +35,6 @@ public class BookCopyController {
     private final ReaderService readerService;
     private final BookProperties bookProperties;
     private final BookOperationService bookOperationService;
-    private final LibrarianService librarianService;
     private final BookReservationService bookReservationService;
 
     @PostMapping("/add-book-copies")
@@ -82,7 +81,7 @@ public class BookCopyController {
         log.info("Req to /book-copy/assign-book-copies : {}", assignBookCopiesDTO);
 
         Librarian librarian;
-        
+
         if (authentication.getPrincipal() instanceof LibrarianDetails librarianDetails) {
             librarian = librarianDetails.librarian();
         } else
