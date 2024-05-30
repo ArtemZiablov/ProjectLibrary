@@ -1,0 +1,104 @@
+.add-book-container {
+    max-width: 600px;
+    margin: 15px auto;
+    padding: 20px;
+    border: 2px solid rgba(20, 20, 20, 0.68);
+    border-radius: 5px;
+    background-color: #252527;
+    color: #DDDDDD;
+}
+.add-book-form h2{
+    display: block; /* Убеждаемся, что кнопка является блочным элементом */
+    margin: 0 auto;
+}
+.add-book-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px !important;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 580px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #dddddd;
+    resize: vertical;
+    appearance: textfield;
+}
+
+.submitButton{
+    display: block; /* Убеждаемся, что кнопка является блочным элементом */
+    margin: 0 auto; /* Автоматический отступ слева и справа делает кнопку центрированной по горизонтали */
+    height: auto;
+    width: 300px;
+    background-color: #272727;
+    color: #dddddd;
+    padding: 8px 10px;
+    border: 1px solid #DDDDDD; /* Добавляем границу */
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 5px;
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавляем плавную анимацию */
+}
+
+.submitButton:hover{
+    background-color: #3F3F3F; /* Непрозрачный белый цвет при наведении */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #DDDDDD;
+    transform: scale(1.05);
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+}
+
+.addButton{
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding-bottom: 0;
+    margin-top: 0;
+}
+
+.addButton img {
+    border: none !important;
+    width: 20px !important;
+    height: auto;
+}
+
+.submit-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+.author-details {
+    display: flex;
+}
+
+.author-details .form-group {
+    flex: 1; /* Равномерно распределяем доступное пространство */
+    margin-right: 20px; /* Пространство между полями */
+}
+
+.author-details .form-group:last-child {
+    margin-right: 0; /* Убираем правый отступ у последнего элемента */
+}
+
+.author-details .form-group input {
+    width: calc(90%); /* Ширина поля ввода (50% - половина от доступной ширины минус половина отступа) */
+}

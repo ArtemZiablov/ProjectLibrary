@@ -1,0 +1,41 @@
+/* src/components/TopBar/FilterButtons/FilterButtons.css */
+
+.filter-buttons-container {
+    margin-top: 5px; /* Добавляем отступ сверху */
+    display: flex;
+    padding: 8px 0;
+    border-radius: 5px;
+}
+
+.filter-button {
+    height: 35px;
+    width: 65px;
+    background-color: #272727;
+    color: #dddddd;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 7px;
+    font-size: 16px;
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+    font-family: 'Titillium Web', sans-serif;
+}
+
+.filter-button:hover {
+    background-color: #3F3F3F; /* Непрозрачный белый цвет при наведении */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #DDDDDD;
+    transform: scale(1.05);
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+}
+
+.filter-button:last-child {
+    margin-right: 0;
+}
+
+.filter-button.active {
+    background-color: #DDDDDD;
+    color: #252527;
+
+}

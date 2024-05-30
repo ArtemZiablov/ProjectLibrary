@@ -1,0 +1,11 @@
+.search-input {
+    width : 1200px; /* Заставляем поле ввода растягиваться, занимая все доступное пространство */
+    height: 25px;
+    padding: 10px 15px;
+    background-color: #dddddd;
+    font-size: 20px;
+    margin-top: 25px;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Titillium Web', sans-serif;
+}

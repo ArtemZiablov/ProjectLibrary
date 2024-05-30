@@ -1,0 +1,63 @@
+.notification-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.notification {
+    display: flex;
+    flex-direction: column; /* Устанавливаем вертикальное расположение элементов */
+    align-items: center; /* Выравниваем по центру по горизонтали */
+    color: #dddddd;
+    padding: 15px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    border: 2px solid rgba(20, 20, 20, 0.68);
+    white-space: pre-line;
+    font-size: 17px;
+}
+
+.notification.success {
+    background-color: #006400; /* Цвет для успешного состояния */
+}
+
+.notification.error {
+    background-color: #8B0000; /* Цвет для неуспешного состояния */
+}
+
+.notification-container.show .notification {
+    opacity: 1;
+}
+
+.notification-text {
+    margin-top: 2px;
+    margin-bottom: 5px;
+    position: relative;
+}
+
+.notification-container.hide .notification {
+    opacity: 0;
+    transition: opacity 0.5s ease; /* Анимация исчезновения */
+}
+
+.notification-button {
+    background-color: transparent; /* Прозрачный фон */
+    border: 1px solid #DDDDDD; /* Убираем границу */
+    color: #dddddd; /* Цвет текста кнопки */
+    cursor: pointer; /* Курсор в виде руки */
+    font-size: 16px; /* Размер текста кнопки */
+    margin-top: 2px;
+    padding: 5px 10px; /* Внутренние отступы кнопки */
+    border-radius: 5px; /* Скругленные углы */
+    text-align: center; /* Выравнивание текста по центру */
+
+}
+.notification-button:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Фон при наведении */
+}

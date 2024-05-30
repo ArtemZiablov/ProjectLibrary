@@ -1,0 +1,54 @@
+.reader-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Только две книги на одном ряду */
+    grid-gap: 20px;
+    padding: 20px; /* Отступы от краев */
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.reader {
+    border: 2px solid rgba(20, 20, 20, 0.68); /* Рамка */
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #252527;
+    color: #DDDDDD;
+    display: flex; /* Устанавливаем flex-контейнер */
+    align-items: center; /* Выравниваем элементы по центру по вертикали */
+}
+
+.reader img {
+    border: 2px solid #DDDDDD;
+    max-width: 110px; /* Максимальная ширина изображения */
+    height: auto;
+    border-radius: 50%;
+    margin-right: 0; /* Отступ справа от изображения */
+    margin-left: 5px;
+}
+
+.reader-info {
+    flex: 1; /* Расширяет контейнер с информацией, чтобы занять всю доступную ширину */
+    margin-left: 20px; /* Увеличиваем отступ слева */
+    align-self: start;
+    margin-top: 5px;
+    margin-right: 10px;
+}
+
+.reader-info p {
+    margin: 0 0 0;
+    font-size: 18px; /* Размер текста в пикселях */
+}
+
+.reader-name {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: #DDDDDD; /* Цвет текста кнопки */
+    text-decoration: underline; /* Подчеркивание текста */
+    margin-top: 5px;
+    padding: 0;
+    font-size: 20px; /* Размер текста в пикселях */
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-align: left;
+}

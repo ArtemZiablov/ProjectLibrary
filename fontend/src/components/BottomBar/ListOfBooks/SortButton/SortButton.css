@@ -1,0 +1,64 @@
+.sort-button {
+    position: relative;
+    display: inline-block;
+    background-color: #252527;
+    border: 2px solid rgba(20, 20, 20, 0.68);
+    padding: 0; /* Увеличил отступы внутри рамки */
+    margin-top: 10px;
+    border-radius: 8px;
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+    font-family: 'Titillium Web', sans-serif;
+
+}
+
+.sort-button img {
+    width: 55px;
+    height: 55px;
+    cursor: pointer;
+    vertical-align: middle; /* Выравнивание изображения по вертикали */
+}
+
+.sort-button button {
+    background-color: #252527;
+    border: 2px solid rgba(20, 20, 20, 0.68);
+    padding: 5px 10px;
+    cursor: pointer;
+    color: #DDDDDD;
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+}
+
+.sort-button:hover {
+    /*transform: scale(1.01);*/
+    background-color: #2D2D30;
+    color: #DDDDDD;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.sort-button .options {
+    position: absolute;
+    top: calc(100% + 5px); /* Добавил небольшой отступ между кнопкой и вариантами сортировки */
+    left: 0;
+    background-color: #252527;
+    color: #DDDDDD;
+    border: 2px solid rgba(20, 20, 20, 0.68);
+    border-top: none;
+    padding: 5px 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    border-radius: 5px;
+    column-count: 2; /* Разбиваем на два столбца */
+    column-gap: 10px; /* Отступ между столбцами */
+}
+
+.sort-button .options div {
+    padding: 5px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    font-size: 18px; /* Задаем размер текста */
+}
+
+.sort-button .options div:hover {
+    background-color: #2D2D30;
+    color: #DDDDDD;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

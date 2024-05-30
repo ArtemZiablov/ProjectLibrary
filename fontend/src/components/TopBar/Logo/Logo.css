@@ -1,0 +1,17 @@
+.logo {
+    margin-right: 20px; /* Добавляем отступ слева */
+    margin-top: 10px;
+    margin-left: 25px;
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+}
+
+.logo img {
+    width: 100px; /* Задаем ширину аватарки */
+    height: auto; /* Позволяет изображению подстраиваться под заданную ширину */
+}
+
+.logo:hover{
+    transform: scale(1.07);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+}

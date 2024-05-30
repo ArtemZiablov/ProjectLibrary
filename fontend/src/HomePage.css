@@ -1,0 +1,16 @@
+@font-face {
+    font-family: 'Titillium Web';
+    src: local('../my-app/public'), url(TitilliumWeb-Regular.ttf) format('truetype');
+    /* Другие форматы, если необходимо */
+}
+
+body {
+    overflow: auto;
+    margin: 0;
+    padding: 0;
+    background-color: #141414; /* Цвет фона */
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+
+}

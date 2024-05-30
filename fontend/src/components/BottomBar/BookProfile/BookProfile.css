@@ -1,0 +1,188 @@
+.book-profile-info {
+    margin: 15px;
+    border: 2px solid rgba(20, 20, 20, 0.68);
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #252527;
+    color: #DDDDDD;
+    align-items: center;
+    position: relative;
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 17px;
+}
+
+.close-button-book {
+    position: absolute;
+    top: 10px !important;
+    right: 0 !important;
+    padding: 0 !important;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.close-button-book img {
+    border: none !important;
+    width: 25px !important;
+    height: auto;
+}
+
+.close-button-book:hover{
+    transition: transform 0.3s, box-shadow 0.3s;
+    transform: scale(1.07);
+}
+
+.book-profile-numbers{
+    margin: 15px;
+    border: 2px solid rgba(20, 20, 20, 0.68);
+    border-radius: 5px;
+    padding: 10px 15px;
+    background-color: #252527;
+    color: #DDDDDD;
+    align-items: center;
+    position: relative;
+    font-size: 17px;
+}
+
+.book-profile-info img {
+    border: 2px solid #DDDDDD;
+    width: 185px;
+    float: left; /* Помещаем изображение слева */
+    margin-right: 20px;
+    margin-top: 10px;
+}
+
+.book-description {
+    white-space: pre-line;
+    display: inline-block;
+    margin: 16px 0 0;
+}
+
+.reserve-button {
+    position: absolute;
+    bottom: 10px;
+    right: 5px;
+    height: auto;
+    width: fit-content;
+    background-color: #272727;
+    color: #dddddd;
+    padding: 8px 10px;
+    border: 1px solid #DDDDDD; /* Добавляем границу */
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 7px;
+    font-size: 16px;
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавляем плавную анимацию */
+}
+
+.reserve-button:hover {
+    background-color: #3F3F3F; /* Непрозрачный белый цвет при наведении */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #DDDDDD;
+    transform: scale(1.05);
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+}
+
+.book-profile-info h2 {
+    margin: 1px 0 8px;
+    font-size: 33px;
+}
+
+.book-profile-info p {
+    margin: 0 0 5px;
+
+}
+
+.delete-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный чёрный цвет */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Titillium Web', sans-serif;
+}
+
+.delete-content {
+    width: 300px;
+    background-color: #252527;
+    color: #dddddd;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    font-family: 'Titillium Web', sans-serif;
+    text-align: center;
+}
+
+.delete-content h2{
+    font-size: 26px;
+    margin-top: 0; /* уменьшаем верхний отступ */
+    /*margin-bottom: 5px; !* уменьшаем нижний отступ *!*/
+}
+
+/* Дополнительные стили для центрирования формы */
+.delete-content form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.delete-content input[type="text"] {
+    width: calc(100% - 30px); /* Ширина инпута на всю ширину с отступами по 10px с каждой стороны */
+    margin-top: 0;
+    margin-bottom: 10px;
+    height: 20px;
+    font-size: 16px;
+    padding: 10px; /* Увеличение отступов для улучшения внешнего вида */
+    border: 1px solid #dddddd; /* Цвет рамки */
+    background-color: #dddddd;
+    border-radius: 5px; /* Скругление углов */
+}
+
+.delete-content button[type="submit"] {
+    margin-top: 10px;
+    margin-bottom: 0;
+    width: 130px;
+    padding: 10px 0 10px 0; /* Увеличение отступов для улучшения внешнего вида */
+    background-color: #272727;
+    color: #dddddd;
+    border: 1px solid #DDDDDD; /* Добавляем границу */
+    border-radius: 5px; /* Скругление углов */
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Изменение цвета кнопки при наведении */
+.delete-content button[type="submit"]:hover {
+    background-color: #3F3F3F; /* Непрозрачный белый цвет при наведении */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #DDDDDD;
+    transform: scale(1.05);
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+}
+
+.close-button-book-delete {
+    position: absolute;
+    top: 257px !important;
+    right: 607px !important;
+    padding: 0 !important;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 999; /* Значение z-index для кнопки */
+}
+
+.close-button-book-delete img{
+    border: none !important;
+    width: 20px !important;
+    height: auto;
+}
+
+.close-button-book-delete:hover {
+    transition: transform 0.3s, box-shadow 0.3s;
+    transform: scale(1.07);
+}

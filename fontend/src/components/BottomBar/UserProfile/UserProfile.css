@@ -1,0 +1,27 @@
+.profile-top-container{
+
+}
+
+.profile-bottom-container .title{
+width: 300px;
+}
+
+.logout {
+    background-color: #8B0000; /* Цвет фона */
+    color: #dddddd; /* Цвет текста */
+    border: 2px solid rgba(20, 20, 20, 0.68);
+    padding: 8px 16px; /* Отступы внутри кнопки */
+    border-radius: 5px; /* Скругление углов */
+    cursor: pointer; /* Изменяем курсор при наведении */
+    font-size: 17px; /* Размер шрифта */
+    position: absolute;
+    top: 175px !important;
+    right: 55px !important;
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+}
+
+.logout:hover {
+    background-color: #5b0101; /* Изменяем цвет фона при наведении */
+    transform: scale(1.02);
+    transition: transform 0.3s, box-shadow 0.3s; /* Добавил плавную анимацию */
+}

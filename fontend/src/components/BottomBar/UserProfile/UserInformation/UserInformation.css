@@ -1,0 +1,41 @@
+/* UserInformation.css */
+
+.user-information-container {
+    margin-top: 20px;
+    margin-right: 40px;
+    margin-left: 40px;
+    border: 2px solid rgba(20, 20, 20, 0.68); /* Рамка */
+    border-radius: 5px;
+    padding: 25px;
+    background-color: #252527;
+    color: #DDDDDD;
+    display: flex; /* Устанавливаем flex-контейнер */
+    align-items: center; /* Выравниваем элементы по центру по вертикали */
+    font-size: 18px;
+
+}
+
+.avatar {
+    margin-right: 20px; /* Отступ справа для аватарки */
+}
+
+.avatar img {
+    width: 140px; /* Ширина аватарки */
+    height: auto; /* Автоматическая высота */
+    border-radius: 50%; /* Скругление углов для круглой формы */
+    border: 2px solid #DDDDDD;
+}
+
+.user-details {
+    flex: 1; /* Занимает оставшееся пространство */
+}
+
+.user-details p {
+    margin: 0; /* Убираем отступы */
+    margin-bottom: 5px; /* Отступ между строками */
+}
+
+.user-details h2 {
+    margin: 0; /* Убираем отступы */
+    margin-bottom: 5px; /* Отступ между строками */
+}
