@@ -1,6 +1,7 @@
 services:
   db:
-    image: ./database
+    build:
+      context: ./database
     restart: always
     ports:
       - "5432:5432"
@@ -8,7 +9,8 @@ services:
       - db-data:/var/lib/postgresql
 
   backend:
-    image: .
+    build:
+      context: .
     restart: always
     depends_on:
       - db
@@ -16,7 +18,8 @@ services:
       - "8080:8080"
 
   frontend:
-    image: ./fontend
+    build:
+      context: ./frontend
     depends_on:
       - backend
     restart: always
