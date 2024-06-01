@@ -53,18 +53,22 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/book/multiple-add-book**", "/email/send**", "/auth/login**", "/book/search**", "/book/info**", "/book/novelties",
-                                "/book/same-author**", "/book/same-genres**", "auth/registration/admin",
-                                "/auth/registration/multiple-readers**", "/auth/registration/multiple-librarians**").permitAll()
+                        .requestMatchers("/book/multiple-add-book**", "/email/send**", "/auth/login**",
+                                "/book/search**", "/book/info**", "/book/novelties",
+                                "/book/same-author**", "/book/same-genres**").permitAll()
 
                         .requestMatchers("/book/add-book**", "/book-copy/add-book-copies**", "/book-copy/delete-book-copy",
                                 "/book-copy/assign-book-copy", "/book-copy/release-book-copy**", "/reader/search**",
-                                "/librarian/info**", "/librarian/photo**", "/book-operation**", "auth/registration/reader",
-                                "/auth/registration/reader**").hasRole("LIBRARIAN")
+                                "/librarian/info**", "/librarian/photo**", "/book-operation**",
+                                "/auth/registration/reader**")
+                        .hasRole("LIBRARIAN")
 
-                        .requestMatchers("/book-reservation/reserve-book**", "/reader/photo**").hasRole("READER")
+                        .requestMatchers("/book-reservation/reserve-book**", "/reader/photo**")
+                        .hasRole("READER")
 
-                        .requestMatchers("/auth/registration/librarian**").hasRole("ADMIN")
+                        .requestMatchers("/auth/registration/librarian**", "auth/registration/admin**",
+                                "/auth/registration/multiple-readers**", "/auth/registration/multiple-librarians**")
+                        .hasRole("ADMIN")
 
                         .anyRequest().hasAnyRole("READER", "LIBRARIAN", "ADMIN")// Require authentication for all other requests
                 )

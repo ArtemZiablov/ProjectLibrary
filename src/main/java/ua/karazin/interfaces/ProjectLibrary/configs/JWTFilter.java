@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import ua.karazin.interfaces.ProjectLibrary.services.CompositeUserDetailsService
 
 import java.io.IOException;
 
+@Slf4j(topic = "JWTFilter")
 @Component
 @RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
@@ -35,12 +37,11 @@ public class JWTFilter extends OncePerRequestFilter {
             else {
                 try {
                     String username = jwtUtil.verifyToken(jwt);
-                    System.out.println("username: " + username);
+                    log.info("username {}", username);
                     UserDetails userDetails = compositeUserDetailsService.loadUserByUsername(username);
-                    System.out.println(userDetails.getUsername());
 
                     UsernamePasswordAuthenticationToken authToken =
-                            new UsernamePasswordAuthenticationToken( userDetails,
+                            new UsernamePasswordAuthenticationToken(userDetails,
                                     userDetails.getPassword(),
                                     userDetails.getAuthorities());
 
